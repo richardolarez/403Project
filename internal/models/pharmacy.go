@@ -9,10 +9,14 @@ type Pharmacy struct {
 }
 
 // Constructor function for creating a new Pharmacy instance
-func NewPharmacy(name, location string, isOpen bool) *Pharmacy {
+func NewPharmacy(name, location string, isOpen bool, website string, owner string, phone-number int, working-hours string) *Pharmacy {
     return &Pharmacy{
         name:     name,
         location: location,
+        website: website,
+        owner: owner,
+        phone-number: phone-number,
+        working-hours: working hours,
         isOpen:   isOpen,
     }
 }
