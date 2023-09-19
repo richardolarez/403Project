@@ -1,6 +1,6 @@
 package models
 
-import "fmt"
+
 
 type Pharmacy struct {
     name     string
