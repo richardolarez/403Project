@@ -15,7 +15,7 @@ func NewPharmacy(name, location string, isOpen bool) *Pharmacy {
         location: location,
         isOpen:   isOpen,
     }
-}
+} 
 
 // Setter method to update the isOpen status of the Pharmacy
 func (p *Pharmacy) SetIsOpen(isOpen bool) {
