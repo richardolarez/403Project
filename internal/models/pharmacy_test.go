@@ -12,7 +12,7 @@ func TestNewPharmacy(t *testing.T) {
     pharmacy := NewPharmacy(name, location, isOpen)
 
     if pharmacy.name != name {
-        t.Errorf("Expected name to be %s, but got %s", name, pharmacy.name)
+        t.Errorf("Expected names to be %s, but got %s", name, pharmacy.name)
     }
 
     if pharmacy.location != location {
