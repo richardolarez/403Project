@@ -1,28 +1,34 @@
 package models
 
-import "fmt"
-
 type Pharmacy struct {
-    name     string
-    location string
-    isOpen   bool
+	name         string
+	location     string
+	isOpen       bool
+	website      string
+	owner        string
+	phoneNumber  int
+	workingHours string
 }
 
 // Constructor function for creating a new Pharmacy instance
-func NewPharmacy(name, location string, isOpen bool) *Pharmacy {
-    return &Pharmacy{
-        name:     name,
-        location: location,
-        isOpen:   isOpen,
-    }
+func NewPharmacy(name, location string, isOpen bool, website string, owner string, phoneNumber int, workingHours string) *Pharmacy {
+	return &Pharmacy{
+		name:         name,
+		location:     location,
+		website:      website,
+		owner:        owner,
+		phoneNumber:  phoneNumber,
+		workingHours: workingHours,
+		isOpen:       isOpen,
+	}
 }
 
 // Setter method to update the isOpen status of the Pharmacy
 func (p *Pharmacy) SetIsOpen(isOpen bool) {
-    p.isOpen = isOpen
+	p.isOpen = isOpen
 }
 
 // Getter method to retrieve the isOpen status of the Pharmacy
 func (p *Pharmacy) GetIsOpen() bool {
-    return p.isOpen
+	return p.isOpen
 }
