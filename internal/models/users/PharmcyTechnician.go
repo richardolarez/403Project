@@ -1,19 +1,22 @@
 package models
 
 type PharmacyTechnician struct {
-	name string
-    employeeID int
+	Name       string
+	EmployeeID int
+	password   string
+	firstLogin bool
 }
 
 // Constructor
-func NewPharmacyTechnician(name, employeeID) *PharmacyTechnician {
-    return &PharmacyTechnician{
-        name:     name,
-        employeeID: employeeID,
-    }
+func NewPharmacyTechnician(name string, employeeID int) *PharmacyTechnician {
+	return &PharmacyTechnician{
+		Name:       name,
+		EmployeeID: employeeID,
+		password:   "defaultpassword",
+		firstLogin: false,
+	}
 }
 
-
 // func (p *PharmacyTechnician) Set...() {
-    
+
 // }

@@ -1,19 +1,22 @@
 package models
 
 type Cashier struct {
-	name string
-    employeeID int
+	Name       string
+	EmployeeID int
+	password   string
+	firstLogin bool
 }
 
 // Constructor
-func NewCashier(name, employeeID) *Cashier {
-    return &Cashier{
-        name:     name,
-        employeeID: employeeID,
-    }
+func NewCashier(name string, employeeID int) *Cashier {
+	return &Cashier{
+		Name:       name,
+		EmployeeID: employeeID,
+		password:   "defaultpassword",
+		firstLogin: false,
+	}
 }
 
-
 // func (c *Cashier) Set...() {
-    
+
 // }
