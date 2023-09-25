@@ -1,5 +1,9 @@
 package models
 
+import (
+	"time"
+)
+
 type Pharmacy struct {
 	name         string
 	location     string
@@ -7,11 +11,11 @@ type Pharmacy struct {
 	website      string
 	owner        string
 	phoneNumber  int
-	workingHours string
+	workingHours time.Time
 }
 
 // Constructor function for creating a new Pharmacy instance
-func NewPharmacy(name, location string, isOpen bool, website string, owner string, phoneNumber int, workingHours string) *Pharmacy {
+func NewPharmacy(name, location string, isOpen bool, website string, owner string, phoneNumber int, workingHours time.Time) *Pharmacy {
 	return &Pharmacy{
 		name:         name,
 		location:     location,
