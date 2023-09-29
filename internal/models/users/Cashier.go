@@ -20,3 +20,11 @@ func NewCashier(name string, employeeID int) *Cashier {
 // func (c *Cashier) Set...() {
 
 // }
+func (p *Cashier) SetfirstLogin(firstLogin bool) {
+	p.firstLogin = firstLogin
+}
+
+// Getter method to retrieve the firstLogin status of the Cashier
+func (p *Cashier) GetfirstLogin() bool {
+	return p.firstLogin
+}

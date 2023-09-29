@@ -20,3 +20,12 @@ func NewPharmacist(name string, employeeID int) *Pharmacist {
 // func (p *Pharmacist) Set...() {
 
 // }
+
+func (p *Pharmacist) SetfirstLogin(firstLogin bool) {
+	p.firstLogin = firstLogin
+}
+
+// Getter method to retrieve the firstLogin status of the Pharmacist
+func (p *Pharmacist) GetfirstLogin() bool {
+	return p.firstLogin
+}
