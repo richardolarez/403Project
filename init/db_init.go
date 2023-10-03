@@ -1,12 +1,12 @@
-package initializer
+package dbinitializer
 
 import (
 	"encoding/json"
 	"fmt"
 	"os"
 
-	"github.com/SFWE403/UArizonaPharmacy/internal/models"
 	// Import the Pharmacy struct from pharmacy.go in the same directory
+	"github.com/SFWE403/UArizonaPharmacy/internal/models"
 )
 
 // InitializeDatabase initializes a JSON database with sample data

@@ -1,86 +1,86 @@
 package models
 
 type Pharmacy struct {
-	name         string
-	location     string
-	isOpen       bool
-	website      string
-	owner        string
-	phoneNumber  int
-	workingHours string
+	Name         string `json:"name"`
+	Location     string `json:"location"`
+	IsOpen       bool   `json:"isOpen"`
+	Website      string `json:"website"`
+	Owner        string `json:"owner"`
+	PhoneNumber  int    `json:"phoneNumber"`
+	WorkingHours string `json:"workingHours"`
 }
 
 // Constructor function for creating a new Pharmacy instance
 func NewPharmacy(name, location string, isOpen bool, website string, owner string, phoneNumber int, workingHours string) *Pharmacy {
 	return &Pharmacy{
-		name:         name,
-		location:     location,
-		website:      website,
-		owner:        owner,
-		phoneNumber:  phoneNumber,
-		workingHours: workingHours,
-		isOpen:       isOpen,
+		Name:         name,
+		Location:     location,
+		Website:      website,
+		Owner:        owner,
+		PhoneNumber:  phoneNumber,
+		WorkingHours: workingHours,
+		IsOpen:       isOpen,
 	}
 }
 
 // Getter methods for all attributes
 
 func (p *Pharmacy) GetName() string {
-	return p.name
+	return p.Name
 }
 
 func (p *Pharmacy) GetLocation() string {
-	return p.location
+	return p.Location
 }
 
 func (p *Pharmacy) GetWebsite() string {
-	return p.website
+	return p.Website
 }
 
 func (p *Pharmacy) GetOwner() string {
-	return p.owner
+	return p.Owner
 }
 
 func (p *Pharmacy) GetPhoneNumber() int {
-	return p.phoneNumber
+	return p.PhoneNumber
 }
 
 func (p *Pharmacy) GetWorkingHours() string {
-	return p.workingHours
+	return p.WorkingHours
 }
 
 // Setter methods for all attributes
 
 func (p *Pharmacy) SetName(name string) {
-	p.name = name
+	p.Name = name
 }
 
 func (p *Pharmacy) SetLocation(location string) {
-	p.location = location
+	p.Location = location
 }
 
 func (p *Pharmacy) SetWebsite(website string) {
-	p.website = website
+	p.Website = website
 }
 
 func (p *Pharmacy) SetOwner(owner string) {
-	p.owner = owner
+	p.Owner = owner
 }
 
 func (p *Pharmacy) SetPhoneNumber(phoneNumber int) {
-	p.phoneNumber = phoneNumber
+	p.PhoneNumber = phoneNumber
 }
 
 func (p *Pharmacy) SetWorkingHours(workingHours string) {
-	p.workingHours = workingHours
+	p.WorkingHours = workingHours
 }
 
 // Setter method to update the isOpen status of the Pharmacy
 func (p *Pharmacy) SetIsOpen(isOpen bool) {
-	p.isOpen = isOpen
+	p.IsOpen = isOpen
 }
 
 // Getter method to retrieve the isOpen status of the Pharmacy
 func (p *Pharmacy) GetIsOpen() bool {
-	return p.isOpen
+	return p.IsOpen
 }
