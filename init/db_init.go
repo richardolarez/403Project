@@ -25,7 +25,7 @@ func InitializeDatabase() error {
 	}
 
 	// Write JSON data to a file
-	file, err := os.Create("pharmacies.json")
+	file, err := os.Create("./db/pharmacies.json")
 	if err != nil {
 		return err
 	}

@@ -1,12 +1,14 @@
-package models
+package test
 
 import (
 	"testing"
+
+	"github.com/SFWE403/UArizonaPharmacy/internal/models"
 )
 
 func TestPharmacy(t *testing.T) {
 	// Create a Pharmacy instance for testing
-	pharmacy := NewPharmacy("Test Pharmacy", "Test Location", true, "test.com", "Test Owner", 1234567890, "9:00 AM - 5:00 PM")
+	pharmacy := models.NewPharmacy("Test Pharmacy", "Test Location", true, "test.com", "Test Owner", 1234567890, "9:00 AM - 5:00 PM")
 
 	// Test getters and setters for all attributes
 	t.Run("Test getters and setters", func(t *testing.T) {

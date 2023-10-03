@@ -6,6 +6,10 @@ build:
 run:
 	go run main.go
 
+.PHONY: test
+test:
+	go test ./test
+
 clean:
 	go clean
 	rm -f ${BINARY_NAME}
