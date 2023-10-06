@@ -4,6 +4,7 @@ import {
     UserOutlined,
     VideoCameraOutlined,
     UploadOutlined,
+    InfoCircleOutlined,
   } from '@ant-design/icons';
 import {useNavigate}  from 'react-router';
 const SideNav = () => {
@@ -17,6 +18,9 @@ const handleVideosClick = () => {
 const handleFileClick = () => {
         history('/files');
     }
+const handleInfoClick = () => {
+        history('/info');
+}
 return (
       <div>
         <div style={{height: "32px", background: "rgba(255, 255, 255, 0.2)", margin: "16px"}}></div>
@@ -32,6 +36,10 @@ return (
                 <Menu.Item key="3" onClick={handleFileClick}>
                     <UploadOutlined />
                     <span> Files</span>
+                </Menu.Item>
+                <Menu.Item key="4" onClick={handleInfoClick}>
+                    <InfoCircleOutlined />
+                    <span> Info</span>
                 </Menu.Item>
             </Menu>
         </div>
