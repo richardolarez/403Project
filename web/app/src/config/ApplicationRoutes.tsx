@@ -42,6 +42,7 @@ const handleToggle = (event: any) => {
                     <Route path="/form" Component={Form} />
                     <Route path="/files" Component={File} />
                     <Route path="/videos" Component={Videos} />
+                    <Route path="/info" Component={Videos} />
                     
                 </Routes>
               </Content>
