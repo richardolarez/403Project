@@ -1,14 +1,15 @@
-# note: call scripts from /scripts
-
 BINARY_NAME=main.out
- 
+
 build:
-    go build -o ${BINARY_NAME} main.go
- 
+	go build -o ${BINARY_NAME} main.go
+
 run:
-    go build -o ${BINARY_NAME} main.go
-    ./${BINARY_NAME}
- 
+	go run main.go
+
+.PHONY: test
+test:
+	go test ./test
+
 clean:
-    go clean
-    rm ${BINARY_NAME}
+	go clean
+	rm -f ${BINARY_NAME}
