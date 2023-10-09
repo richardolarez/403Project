@@ -3,6 +3,7 @@
 package service
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/SFWE403/UArizonaPharmacy/internal/models"
@@ -39,6 +40,11 @@ func Checkout(customerName string, items []*models.InventoryItem, paymentMethod 
 		PaymentMethod:   paymentMethod,
 	}
 
+	// Update the inventory quantities based on items sold
+	if err := updateInventoryQuantities(items); err != nil {
+		return nil, nil, err
+	}
+
 	// Save the transaction to the database (you can implement this logic)
 
 	// Generate a sales receipt using the SalesReceipt.GenerateReceipt function
@@ -54,4 +60,23 @@ func generateUniqueTransactionID() int {
 	// Implement your logic to generate a unique ID (e.g., using a database sequence)
 	// Return a unique ID here
 	return 12345
+}
+
+// updateInventoryQuantities updates the inventory item quantities after a sale.
+func updateInventoryQuantities(items []*models.InventoryItem) error {
+	// Implement logic to update the inventory quantities.
+	// For example, you can decrement the quantity of each sold item.
+	for _, item := range items {
+		// Ensure that the quantity does not go negative
+		if item.Quantity < 0 {
+			return fmt.Errorf("item quantity cannot go negative: %s", item.Name)
+		}
+
+		// Decrement the quantity of the item
+		item.DecreaseQuantity(1) // Decrement by 1 for each sold item
+	}
+
+	// Save the updated inventory quantities to the database (you can implement this logic)
+
+	return nil
 }
