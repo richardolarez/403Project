@@ -20,7 +20,7 @@ type SalesTransaction struct {
 }
 
 // Checkout creates a new sales transaction and returns a sales receipt.
-func Checkout(customerName string, items []*models.InventoryItem, paymentMethod string) (*SalesTransaction, *string, error) {
+func Checkout(customerName string, items []*models.InventoryItem, paymentMethod string, customerRepo models.CustomerRepository) (*models.Customer, *SalesTransaction, error) {
 	// Calculate the total amount based on item prices and quantities
 	var totalAmount float64
 	for _, item := range items {
@@ -40,19 +40,30 @@ func Checkout(customerName string, items []*models.InventoryItem, paymentMethod 
 		PaymentMethod:   paymentMethod,
 	}
 
+	// Retrieve or create the customer object using the customer repository
+	customer, err := customerRepo.GetByName(customerName)
+	if err != nil {
+		return nil, nil, err
+	}
+
+	// Append the transaction to the customer's transaction history using the customer repository
+	if err := customerRepo.AddTransaction(customer, transaction); err != nil {
+		return nil, nil, err
+	}
+
 	// Update the inventory quantities based on items sold
 	if err := updateInventoryQuantities(items); err != nil {
 		return nil, nil, err
 	}
 
-	// Save the transaction to the database (you can implement this logic)
+	// Save the transaction and customer to the database (you can implement this logic)
 
 	// Generate a sales receipt using the SalesReceipt.GenerateReceipt function
 	receipt := GenerateReceipt(transaction)
 
 	// Print or save the receipt as needed
 
-	return transaction, &receipt, nil
+	return customer, transaction, nil
 }
 
 // generateUniqueTransactionID generates a unique transaction ID.
