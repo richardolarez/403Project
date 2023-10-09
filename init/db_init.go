@@ -28,41 +28,30 @@ func InitializeDatabase() error {
 	// Create an array of InventoryItems
 	items := []*models.InventoryItem{item1, item2, medicine1, medicine2}
 
-	// Serialize the pharmacies array to JSON
-	pharmaciesData, err := json.MarshalIndent(pharmacies, "", "  ")
+	// Create objects with arrays
+	data := map[string]interface{}{
+		"pharmacies": pharmacies,
+		"items":      items,
+	}
+
+	// Serialize the data to JSON
+	dataJSON, err := json.MarshalIndent(data, "", "  ")
 	if err != nil {
 		return err
 	}
 
-	// Serialize the items array to JSON
-	itemsData, err := json.MarshalIndent(items, "", "  ")
+	// Write JSON data to a single file
+	dataFile, err := os.Create("./db/database.json")
+	if err != nil {
+		return err
+	}
+	defer dataFile.Close()
+
+	_, err = dataFile.Write(dataJSON)
 	if err != nil {
 		return err
 	}
 
-	// Write JSON data to respective files
-	pharmaciesFile, err := os.Create("./db/pharmacies.json")
-	if err != nil {
-		return err
-	}
-	defer pharmaciesFile.Close()
-
-	_, err = pharmaciesFile.Write(pharmaciesData)
-	if err != nil {
-		return err
-	}
-
-	itemsFile, err := os.Create("./db/items.json")
-	if err != nil {
-		return err
-	}
-	defer itemsFile.Close()
-
-	_, err = itemsFile.Write(itemsData)
-	if err != nil {
-		return err
-	}
-
-	fmt.Println("JSON database initialized and saved to 'pharmacies.json' and 'items.json'")
+	fmt.Println("JSON database initialized and saved to 'database.json'")
 	return nil
 }

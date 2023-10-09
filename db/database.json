@@ -1,0 +1,52 @@
+{
+  "items": [
+    {
+      "ID": 1,
+      "Name": "Item 1",
+      "Description": "Description of Item 1",
+      "Price": 10.99,
+      "Quantity": 100
+    },
+    {
+      "ID": 2,
+      "Name": "Item 2",
+      "Description": "Description of Item 2",
+      "Price": 5.99,
+      "Quantity": 50
+    },
+    {
+      "ID": 3,
+      "Name": "Medicine 1",
+      "Description": "Description of Medicine 1",
+      "Price": 15.99,
+      "Quantity": 200
+    },
+    {
+      "ID": 4,
+      "Name": "Medicine 2",
+      "Description": "Description of Medicine 2",
+      "Price": 8.99,
+      "Quantity": 75
+    }
+  ],
+  "pharmacies": [
+    {
+      "name": "Pharmacy A",
+      "location": "Location A",
+      "isOpen": true,
+      "website": "pharmacyA.com",
+      "owner": "Owner A",
+      "phoneNumber": 1234567890,
+      "workingHours": "9:00 AM - 5:00 PM"
+    },
+    {
+      "name": "Pharmacy B",
+      "location": "Location B",
+      "isOpen": false,
+      "website": "pharmacyB.com",
+      "owner": "Owner B",
+      "phoneNumber": 9876543210,
+      "workingHours": "10:00 AM - 6:00 PM"
+    }
+  ]
+}
