@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"net/http"
 
-	dbinitializer "github.com/SFWE403/UArizonaPharmacy/init"
-	accountmanager "github.com/SFWE403/UArizonaPharmacy/internal/account_manager"
-	"github.com/SFWE403/UArizonaPharmacy/internal/models"
+	dbinitializer "github.com/richardolarez/403Project/init"
+	accountmanager "github.com/richardolarez/403Project/internal/account_manager"
+	"github.com/richardolarez/403Project/internal/models"
 )
 
 func enableCors(w *http.ResponseWriter) {
@@ -62,6 +62,30 @@ func main() {
 
 		// Write the JSON response to the client
 		w.Write(inventoryJSON)
+	})
+
+	// Define an endpoint to retrieve all employees
+	http.HandleFunc("/employees", func(w http.ResponseWriter, r *http.Request) {
+		// Retrieve all employees from the database
+		enableCors(&w)
+		employees, err := models.GetAllEmployees()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Convert the list of employees to JSON
+		employeesJSON, err := json.Marshal(employees)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Set the Content-Type header to application/json
+		w.Header().Set("Content-Type", "application/json")
+
+		// Write the JSON response to the client
+		w.Write(employeesJSON)
 	})
 
 	// Define an endpoint to authenticate an employee login
