@@ -59,7 +59,11 @@ func main() {
 	// Define an endpoint to authenticate an employee login
 	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
 		enableCors(&w)
-
+		
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
 		// Parse the username and password from the request body
 		var loginRequest LoginRequest
 		err := json.NewDecoder(r.Body).Decode(&loginRequest)

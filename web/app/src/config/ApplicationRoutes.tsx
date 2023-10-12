@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate} from "react-router-dom";
+import { Route, Routes, Navigate} from "react-router-dom";
 import List from "../components/pages/list";
 import Form from "../components/pages/form";
 import File from "../components/pages/files";

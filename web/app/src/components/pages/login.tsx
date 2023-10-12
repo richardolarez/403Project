@@ -1,11 +1,9 @@
 import React from 'react';
 import { Form, Input, Button, Row, Col } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
-import { useNavigate} from 'react-router-dom'; 
 
 
 const Login: React.FC = () => {
-  const navigate = useNavigate();
   const onFinish = (values: { username: string, password: string }) => {
     // Call the /login endpoint to authenticate the employee
     fetch('http://localhost:8080/login', {
@@ -24,7 +22,7 @@ const Login: React.FC = () => {
     .then(employee => {
       console.log('Authenticated employee:', employee);
       sessionStorage.setItem('authenticated', 'true');
-      navigate('/');
+      window.location.reload();
     })
     .catch(error => {
       console.error('Failed to authenticate employee:', error);
