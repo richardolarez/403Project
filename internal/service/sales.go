@@ -21,7 +21,7 @@ type SalesTransaction struct {
 }
 
 // Checkout creates a new sales transaction and returns a sales receipt.
-func Checkout(customerID int, items []*models.InventoryItem, paymentMethod string) (*string, *SalesTransaction, error) {
+func Checkout(customerName string, items []*models.InventoryItem, paymentMethod string, customerRepo models.CustomerRepository) (*string, *SalesTransaction, error) {
 	// Calculate the total amount based on item prices and quantities
 	var totalAmount float64
 	for _, item := range items {
