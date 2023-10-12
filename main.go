@@ -8,6 +8,7 @@ import (
 	"net/http"
 
 	dbinitializer "github.com/SFWE403/UArizonaPharmacy/init"
+	accountmanager "github.com/SFWE403/UArizonaPharmacy/internal/account_manager"
 	"github.com/SFWE403/UArizonaPharmacy/internal/models"
 )
 
@@ -17,6 +18,12 @@ func main() {
 	if err != nil {
 		fmt.Printf("Error initializing database: %v\n", err)
 		return
+	}
+
+	// LoginRequest represents a request to authenticate an employee login.
+	type LoginRequest struct {
+		Username string `json:"username"`
+		Password string `json:"password"`
 	}
 
 	// Define an endpoint to retrieve all inventory items
@@ -40,6 +47,37 @@ func main() {
 
 		// Write the JSON response to the client
 		w.Write(inventoryJSON)
+	})
+
+	// Define an endpoint to authenticate an employee login
+	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+		// Parse the username and password from the request body
+		var loginRequest LoginRequest
+		err := json.NewDecoder(r.Body).Decode(&loginRequest)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		// Authenticate the employee login
+		employee, err := accountmanager.AuthenticateEmployee(loginRequest.Username, loginRequest.Password)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusUnauthorized)
+			return
+		}
+
+		// Convert the employee to JSON
+		employeeJSON, err := json.Marshal(employee)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Set the Content-Type header to application/json
+		w.Header().Set("Content-Type", "application/json")
+
+		// Write the JSON response to the client
+		w.Write(employeeJSON)
 	})
 
 	// Start the server
