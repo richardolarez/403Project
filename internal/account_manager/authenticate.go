@@ -13,16 +13,37 @@ import (
 // AuthenticateEmployee authenticates an employee login with the provided username and password.
 func AuthenticateEmployee(username, password string) (*models.Employee, error) {
 	// Read the employees data from the JSON file
-	employeesData, err := ioutil.ReadFile("employees.json")
+	data, err := ioutil.ReadFile("database.json")
 	if err != nil {
 		return nil, fmt.Errorf("error reading employees data: %v", err)
 	}
 
-	// Unmarshal the employees data into an array of Employee objects
-	var employees []*models.Employee
-	err = json.Unmarshal(employeesData, &employees)
+	// Unmarshal the employees data into a map
+	var employeesData map[string]interface{}
+	err = json.Unmarshal(data, &employeesData)
 	if err != nil {
 		return nil, fmt.Errorf("error unmarshaling employees data: %v", err)
+	}
+
+	// Get the employees array from the data map
+	employeesArray, ok := employeesData["employees"].([]interface{})
+	if !ok {
+		return nil, fmt.Errorf("error getting employees array from data")
+	}
+
+	// Convert the employees array to an array of Employee objects
+	var employees []*models.Employee
+	for _, employeeData := range employeesArray {
+		employeeJSON, err := json.Marshal(employeeData)
+		if err != nil {
+			return nil, fmt.Errorf("error marshaling employee data: %v", err)
+		}
+		var employee models.Employee
+		err = json.Unmarshal(employeeJSON, &employee)
+		if err != nil {
+			return nil, fmt.Errorf("error unmarshaling employee data: %v", err)
+		}
+		employees = append(employees, &employee)
 	}
 
 	// Find the employee with the provided username

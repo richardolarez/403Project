@@ -8,7 +8,6 @@ import (
 	"github.com/SFWE403/UArizonaPharmacy/internal/models"
 )
 
-// InitializeDatabase initializes a JSON database with sample data
 func InitializeDatabase() error {
 	// Create sample Pharmacy instances using the constructor
 	pharmacy1 := models.NewPharmacy("Pharmacy A", "Location A", true, "pharmacyA.com", "Owner A", 1234567890, "9:00 AM - 5:00 PM")
@@ -36,36 +35,21 @@ func InitializeDatabase() error {
 	// Create an array of employees
 	employees := []*models.Employee{cashier, manager, pharmacist}
 
-	// Serialize the pharmacies array to JSON
-	pharmaciesData, err := json.MarshalIndent(pharmacies, "", "  ")
+	// Create a map to hold the data
+	data := map[string]interface{}{
+		"pharmacies": pharmacies,
+		"items":      items,
+		"employees":  employees,
+	}
+
+	// Marshal the data to JSON
+	dataJSON, err := json.MarshalIndent(data, "", "  ")
 	if err != nil {
 		return err
 	}
 
-	// Serialize the items array to JSON
-	itemsData, err := json.MarshalIndent(items, "", "  ")
-	if err != nil {
-		return err
-	}
-
-	// Serialize the employees array to JSON
-	employeesData, err := json.MarshalIndent(employees, "", "  ")
-	if err != nil {
-		return err
-	}
-
-	// Write JSON data to respective files
-	err = os.WriteFile("./db/pharmacies.json", pharmaciesData, 0644)
-	if err != nil {
-		return err
-	}
-
-	err = os.WriteFile("./db/items.json", itemsData, 0644)
-	if err != nil {
-		return err
-	}
-
-	err = os.WriteFile("./db/employees.json", employeesData, 0644)
+	// Write the JSON data to the database file
+	err = os.WriteFile("./db/database.json", dataJSON, 0644)
 	if err != nil {
 		return err
 	}

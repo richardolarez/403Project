@@ -22,16 +22,37 @@ type Customer struct {
 // GetCustomer retrieves a customer by ID.
 func GetCustomer(id int) (*Customer, error) {
 	// Read the customers data from the JSON file
-	customersData, err := ioutil.ReadFile("customers.json")
+	customersData, err := ioutil.ReadFile("database.json")
 	if err != nil {
 		return nil, fmt.Errorf("error reading customers data: %v", err)
 	}
 
-	// Unmarshal the customers data into an array of Customer objects
-	var customers []*Customer
-	err = json.Unmarshal(customersData, &customers)
+	// Unmarshal the customers data into a map
+	var data map[string]interface{}
+	err = json.Unmarshal(customersData, &data)
 	if err != nil {
 		return nil, fmt.Errorf("error unmarshaling customers data: %v", err)
+	}
+
+	// Get the customers array from the data map
+	customersArray, ok := data["customers"].([]interface{})
+	if !ok {
+		return nil, fmt.Errorf("error getting customers array from data")
+	}
+
+	// Convert the customers array to an array of Customer objects
+	var customers []*Customer
+	for _, customerData := range customersArray {
+		customerJSON, err := json.Marshal(customerData)
+		if err != nil {
+			return nil, fmt.Errorf("error marshaling customer data: %v", err)
+		}
+		var customer Customer
+		err = json.Unmarshal(customerJSON, &customer)
+		if err != nil {
+			return nil, fmt.Errorf("error unmarshaling customer data: %v", err)
+		}
+		customers = append(customers, &customer)
 	}
 
 	// Find the customer with the provided ID
