@@ -7,12 +7,13 @@ import (
 	"time"
 
 	"github.com/SFWE403/UArizonaPharmacy/internal/models"
+	"github.com/SFWE403/UArizonaPharmacy/internal/users"
 )
 
 // SalesTransaction represents a sales transaction.
 type SalesTransaction struct {
 	TransactionID   int
-	CustomerName    string
+	CustomerID      int
 	TransactionDate time.Time
 	ItemsSold       []*models.InventoryItem
 	TotalAmount     float64
@@ -20,7 +21,7 @@ type SalesTransaction struct {
 }
 
 // Checkout creates a new sales transaction and returns a sales receipt.
-func Checkout(customerName string, items []*models.InventoryItem, paymentMethod string) (*SalesTransaction, *string, error) {
+func Checkout(customerID int, items []*models.InventoryItem, paymentMethod string) (*string, *SalesTransaction, error) {
 	// Calculate the total amount based on item prices and quantities
 	var totalAmount float64
 	for _, item := range items {
@@ -33,26 +34,35 @@ func Checkout(customerName string, items []*models.InventoryItem, paymentMethod 
 	// Create a SalesTransaction object
 	transaction := &SalesTransaction{
 		TransactionID:   transactionID,
-		CustomerName:    customerName,
+		CustomerID:      customerID,
 		TransactionDate: time.Now(),
 		ItemsSold:       items,
 		TotalAmount:     totalAmount,
 		PaymentMethod:   paymentMethod,
 	}
 
+	// Retrieve or create the customer object using the customer repository
+	customer, err := users.GetCustomer(customerID)
+	if err != nil {
+		return nil, nil, nil, err
+	}
+
+	// Append the transaction to the customer's transaction history
+	customer.AddTransaction(transaction)
+
 	// Update the inventory quantities based on items sold
 	if err := updateInventoryQuantities(items); err != nil {
 		return nil, nil, err
 	}
 
-	// Save the transaction to the database (you can implement this logic)
+	// Save the transaction and customer to the database (you can implement this logic)
 
 	// Generate a sales receipt using the SalesReceipt.GenerateReceipt function
 	receipt := GenerateReceipt(transaction)
 
 	// Print or save the receipt as needed
 
-	return transaction, &receipt, nil
+	return &receipt, transaction, nil
 }
 
 // generateUniqueTransactionID generates a unique transaction ID.
