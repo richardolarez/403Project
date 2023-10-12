@@ -1,6 +1,10 @@
-// employee/employee.go
-
 package models
+
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+)
 
 // Employee represents an employee with basic information and a role.
 type Employee struct {
@@ -25,15 +29,44 @@ func NewEmployee(username, password, firstName, lastName, role string) *Employee
 
 // GetEmployeeByID retrieves an employee by ID.
 func GetEmployeeByID(id int) (*Employee, error) {
-	// Retrieve the employee from the database (you can implement this logic)
-	// For now, we'll just return a dummy employee object
-	employee := &Employee{
-		ID:        id,
-		Username:  "johndoe",
-		FirstName: "John",
-		LastName:  "Doe",
-		Role:      "Manager",
+	// Read the contents of the database file
+	data, err := ioutil.ReadFile("database.json")
+	if err != nil {
+		return nil, err
 	}
 
-	return employee, nil
+	// Unmarshal the JSON data into an array of Employee objects
+	var employees []*Employee
+	err = json.Unmarshal(data, &employees)
+	if err != nil {
+		return nil, err
+	}
+
+	// Find the employee with the specified ID
+	for _, employee := range employees {
+		if employee.ID == id {
+			return employee, nil
+		}
+	}
+
+	// If no employee was found, return an error
+	return nil, fmt.Errorf("employee with ID %d not found", id)
+}
+
+// GetAllEmployees retrieves all employees from the database.
+func GetAllEmployees() ([]*Employee, error) {
+	// Read the contents of the database file
+	data, err := ioutil.ReadFile("database.json")
+	if err != nil {
+		return nil, err
+	}
+
+	// Unmarshal the JSON data into an array of Employee objects
+	var employees []*Employee
+	err = json.Unmarshal(data, &employees)
+	if err != nil {
+		return nil, err
+	}
+
+	return employees, nil
 }
