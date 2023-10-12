@@ -21,9 +21,10 @@ const (
 
 // LogEntry represents the entry to be logged.
 type LogEntry struct {
-	Level     LogLevel `json:"level"`
-	Timestamp string   `json:"timestamp"`
-	Message   string   `json:"message"`
+	Level          LogLevel               `json:"level"`
+	Timestamp      string                 `json:"timestamp"`
+	Message        string                 `json:"message"`
+	Additionaldata map[string]interface{} `json:"additional_data"`
 	// Add more fields here if needed
 }
 
@@ -48,13 +49,10 @@ func (l *Logger) Log(level LogLevel, message string, additionalData map[string]i
 	timestamp := time.Now().Format("2023-01-01 15:03:02")
 
 	logEntry := LogEntry{
-		Timestamp: timestamp,
-		Level:     level,
-		Message:   message,
-	}
-
-	for key, value := range additionalData {
-		logEntry[key] = value
+		Timestamp:      timestamp,
+		Level:          level,
+		Message:        message,
+		Additionaldata: additionalData,
 	}
 
 	logEntryJSON, err := json.Marshal(logEntry)
@@ -62,7 +60,7 @@ func (l *Logger) Log(level LogLevel, message string, additionalData map[string]i
 		return
 	}
 
-	err = l.saveLogEntryToFle(logEntryJSON)
+	err = l.saveLogEntryToFile(logEntryJSON)
 	if err != nil {
 		return
 	}
