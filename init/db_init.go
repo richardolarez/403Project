@@ -22,36 +22,54 @@ func InitializeDatabase() error {
 	medicine1 := models.NewInventoryItem(3, "Medicine 1", "Description of Medicine 1", 15.99, 200)
 	medicine2 := models.NewInventoryItem(4, "Medicine 2", "Description of Medicine 2", 8.99, 75)
 
+	// Create sample employees
+	cashier := models.NewEmployee("johndoe", "password123", "John", "Doe", "Cashier")
+	manager := models.NewEmployee("janedoe", "password123", "Jane", "Doe", "Manager")
+	pharmacist := models.NewEmployee("bobsmith", "password123", "Bob", "Smith", "Pharmacist")
+
 	// Create an array of Pharmacy instances
 	pharmacies := []*models.Pharmacy{pharmacy1, pharmacy2}
 
 	// Create an array of InventoryItems
 	items := []*models.InventoryItem{item1, item2, medicine1, medicine2}
 
-	// Create objects with arrays
-	data := map[string]interface{}{
-		"pharmacies": pharmacies,
-		"items":      items,
-	}
+	// Create an array of employees
+	employees := []*models.Employee{cashier, manager, pharmacist}
 
-	// Serialize the data to JSON
-	dataJSON, err := json.MarshalIndent(data, "", "  ")
+	// Serialize the pharmacies array to JSON
+	pharmaciesData, err := json.MarshalIndent(pharmacies, "", "  ")
 	if err != nil {
 		return err
 	}
 
-	// Write JSON data to a single file
-	dataFile, err := os.Create("./db/database.json")
-	if err != nil {
-		return err
-	}
-	defer dataFile.Close()
-
-	_, err = dataFile.Write(dataJSON)
+	// Serialize the items array to JSON
+	itemsData, err := json.MarshalIndent(items, "", "  ")
 	if err != nil {
 		return err
 	}
 
-	fmt.Println("JSON database initialized and saved to 'database.json'")
+	// Serialize the employees array to JSON
+	employeesData, err := json.MarshalIndent(employees, "", "  ")
+	if err != nil {
+		return err
+	}
+
+	// Write JSON data to respective files
+	err = os.WriteFile("./db/pharmacies.json", pharmaciesData, 0644)
+	if err != nil {
+		return err
+	}
+
+	err = os.WriteFile("./db/items.json", itemsData, 0644)
+	if err != nil {
+		return err
+	}
+
+	err = os.WriteFile("./db/employees.json", employeesData, 0644)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Database initialized successfully")
 	return nil
 }
