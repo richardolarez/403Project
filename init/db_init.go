@@ -22,11 +22,19 @@ func InitializeDatabase() error {
 	medicine1 := models.NewInventoryItem(3, "Medicine 1", "Description of Medicine 1", 15.99, 200)
 	medicine2 := models.NewInventoryItem(4, "Medicine 2", "Description of Medicine 2", 8.99, 75)
 
+	// Create sample employees
+	cashier := models.NewEmployee("johndoe", "password123", "John", "Doe", "Cashier")
+	manager := models.NewEmployee("janedoe", "password123", "Jane", "Doe", "Manager")
+	pharmacist := models.NewEmployee("bobsmith", "password123", "Bob", "Smith", "Pharmacist")
+
 	// Create an array of Pharmacy instances
 	pharmacies := []*models.Pharmacy{pharmacy1, pharmacy2}
 
 	// Create an array of InventoryItems
 	items := []*models.InventoryItem{item1, item2, medicine1, medicine2}
+
+	// Create an array of employees
+	employees := []*models.Employee{cashier, manager, pharmacist}
 
 	// Serialize the pharmacies array to JSON
 	pharmaciesData, err := json.MarshalIndent(pharmacies, "", "  ")
@@ -40,29 +48,29 @@ func InitializeDatabase() error {
 		return err
 	}
 
+	// Serialize the employees array to JSON
+	employeesData, err := json.MarshalIndent(employees, "", "  ")
+	if err != nil {
+		return err
+	}
+
 	// Write JSON data to respective files
-	pharmaciesFile, err := os.Create("./db/pharmacies.json")
-	if err != nil {
-		return err
-	}
-	defer pharmaciesFile.Close()
-
-	_, err = pharmaciesFile.Write(pharmaciesData)
+	err = os.WriteFile("./db/pharmacies.json", pharmaciesData, 0644)
 	if err != nil {
 		return err
 	}
 
-	itemsFile, err := os.Create("./db/items.json")
-	if err != nil {
-		return err
-	}
-	defer itemsFile.Close()
-
-	_, err = itemsFile.Write(itemsData)
+	err = os.WriteFile("./db/items.json", itemsData, 0644)
 	if err != nil {
 		return err
 	}
 
-	fmt.Println("JSON database initialized and saved to 'pharmacies.json' and 'items.json'")
+	err = os.WriteFile("./db/employees.json", employeesData, 0644)
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Database initialized successfully")
+
 	return nil
 }
