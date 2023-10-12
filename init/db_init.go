@@ -13,14 +13,6 @@ func InitializeDatabase() error {
 	pharmacy1 := models.NewPharmacy("Pharmacy A", "Location A", true, "pharmacyA.com", "Owner A", 1234567890, "9:00 AM - 5:00 PM")
 	pharmacy2 := models.NewPharmacy("Pharmacy B", "Location B", false, "pharmacyB.com", "Owner B", 9876543210, "10:00 AM - 6:00 PM")
 
-	// Create sample InventoryItems
-	item1 := models.NewInventoryItem(1, "Item 1", "Description of Item 1", 10.99, 100)
-	item2 := models.NewInventoryItem(2, "Item 2", "Description of Item 2", 5.99, 50)
-
-	// Create sample Medicines
-	medicine1 := models.NewInventoryItem(3, "Medicine 1", "Description of Medicine 1", 15.99, 200)
-	medicine2 := models.NewInventoryItem(4, "Medicine 2", "Description of Medicine 2", 8.99, 75)
-
 	// Create sample employees
 	cashier := models.NewEmployee("johndoe", "password123", "John", "Doe", "Cashier")
 	manager := models.NewEmployee("janedoe", "password123", "Jane", "Doe", "Manager")
@@ -30,8 +22,36 @@ func InitializeDatabase() error {
 	pharmacies := []*models.Pharmacy{pharmacy1, pharmacy2}
 
 	// Create an array of InventoryItems
-	items := []*models.InventoryItem{item1, item2, medicine1, medicine2}
-
+	items := []*models.InventoryItem{
+		&models.InventoryItem{
+			ID:          1,
+			Name:        "Item 1",
+			Description: "Description for Item 1",
+			Price:       10.99,
+			Quantity:    5,
+		},
+		&models.InventoryItem{
+			ID:          2,
+			Name:        "Item 2",
+			Description: "Description for Item 2",
+			Price:       15.99,
+			Quantity:    10,
+		},
+		&models.InventoryItem{
+			ID:          3,
+			Name:        "Medicine 1",
+			Description: "Description for Medicine 1",
+			Price:       20.99,
+			Quantity:    15,
+		},
+		&models.InventoryItem{
+			ID:          4,
+			Name:        "Medicine 2",
+			Description: "Description for Medicine 2",
+			Price:       25.99,
+			Quantity:    20,
+		},
+	}
 	// Create an array of employees
 	employees := []*models.Employee{cashier, manager, pharmacist}
 
