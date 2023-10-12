@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/SFWE403/UArizonaPharmacy/internal/models"
+	"github.com/richardolarez/403Project/internal/models"
 )
 
 // AuthenticateEmployee authenticates an employee login with the provided username and password.
