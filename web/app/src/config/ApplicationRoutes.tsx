@@ -1,54 +1,44 @@
-//src/config/ApplicationRoutes.tsx
-import React, {useState, useEffect} from 'react';
-import { BrowserRouter as Router, Route, Routes} from "react-router-dom";
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes, Navigate} from "react-router-dom";
 import List from "../components/pages/list";
 import Form from "../components/pages/form";
-import SideNav from "../components/layouts/sidebar";
 import File from "../components/pages/files";
 import Videos from "../components/pages/videos";
-import { Layout } from 'antd';
-import {
-    MenuUnfoldOutlined,
-    MenuFoldOutlined
-  } from '@ant-design/icons';
+import Login from '../components/pages/login';
+import MainLayout from '../components/layouts/MainLayout'; // Import the main application layout
+import LoginLayout from '../components/layouts/LoginLayout'; // Import the login page layout
 
-const { Header, Sider, Content} = Layout;
-const ApplicationRoutes = () => {
-  const [collapse, setCollapse] = useState(false);
-useEffect(() => {
-    window.innerWidth <= 760 ? setCollapse(true) : setCollapse(false);
-  }, []);
-const handleToggle = (event: any) => {
-        event.preventDefault();
-        collapse ? setCollapse(false) : setCollapse(true);
-    }
+const ApplicationRoutes: React.FC = () => {
+  const isUserAuthenticated = false; // Replace with your authentication logic
+
   return (
-      <Router>
-        <Layout>
-          <Sider trigger={null} collapsible collapsed={collapse}>
-            <SideNav />
-          </Sider>
-          <Layout>
-            <Header className="siteLayoutBackground" style={{padding: 0, background: "#001529"}}>
-                      {React.createElement(collapse ? MenuUnfoldOutlined : MenuFoldOutlined, {
-                          className: 'trigger',
-                          onClick: handleToggle,
-                          style: {color: "#fff"}
-                      })}
-            </Header>
-              <Content style={{margin: '24px 16px', padding: 24, minHeight: "calc(100vh - 114px)", background: "#fff"}}>
-                <Routes>
-                    <Route path="/list" Component={List} />
-                    <Route path="/form" Component={Form} />
-                    <Route path="/files" Component={File} />
-                    <Route path="/videos" Component={Videos} />
-                    <Route path="/info" Component={Videos} />
-                    
-                </Routes>
-              </Content>
-          </Layout>
-        </Layout>
-    </Router>
+    <Routes>
+      <Route
+        path="/login"
+        element={
+          isUserAuthenticated ? <Navigate to="/" /> : <LoginLayout><Login /></LoginLayout>
+        }
+      />
+      <Route
+        path="/"
+        element={
+          isUserAuthenticated ? (
+            <MainLayout>
+              <Routes>
+                <Route path="list" element={<List />} />
+                <Route path="form" element={<Form />} />
+                <Route path="files" element={<File />} />
+                <Route path="videos" element={<Videos />} />
+                <Route path="info" element={<Videos />} />
+              </Routes>
+            </MainLayout>
+          ) : (
+            <Navigate to="/login" replace />
+          )
+        }
+      />
+    </Routes>
   );
-}
+};
+
 export default ApplicationRoutes;

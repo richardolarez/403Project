@@ -23,7 +23,7 @@ const handleInfoClick = () => {
 }
 return (
       <div>
-        <div style={{height: "32px", background: "rgba(255, 255, 255, 0.2)", margin: "16px"}}></div>
+<div style={{height: "32px", background: "rgba(255, 255, 255, 0.2)", margin: "16px"}}></div>
             <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
                 <Menu.Item key="1" onClick={handleUserClick}>
                     <UserOutlined />
@@ -37,7 +37,12 @@ return (
                     <UploadOutlined />
                     <span> Files</span>
                 </Menu.Item>
-                <Menu.Item key="4" onClick={handleInfoClick}>
+                <Menu.Item style={{
+                    position: 'absolute',
+                    bottom: 0,
+                    zIndex: 1,
+                    transition: 'all 0.2s',
+                    }}key="4" onClick={handleInfoClick}>
                     <InfoCircleOutlined />
                     <span> Info</span>
                 </Menu.Item>
