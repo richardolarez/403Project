@@ -9,7 +9,7 @@ import MainLayout from '../components/layouts/MainLayout'; // Import the main ap
 import LoginLayout from '../components/layouts/LoginLayout'; // Import the login page layout
 
 const ApplicationRoutes: React.FC = () => {
-  const isUserAuthenticated = false; // Replace with your authentication logic
+  const isUserAuthenticated = sessionStorage.getItem("authenticated"); // Replace with your authentication logic
 
   return (
     <Routes>
