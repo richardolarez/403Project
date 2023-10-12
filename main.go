@@ -56,6 +56,30 @@ func main() {
 		w.Write(inventoryJSON)
 	})
 
+	// Define an endpoint to retrieve all employees
+	http.HandleFunc("/employees", func(w http.ResponseWriter, r *http.Request) {
+		// Retrieve all employees from the database
+		enableCors(&w)
+		employees, err := models.GetAllEmployees()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Convert the list of employees to JSON
+		employeesJSON, err := json.Marshal(employees)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Set the Content-Type header to application/json
+		w.Header().Set("Content-Type", "application/json")
+
+		// Write the JSON response to the client
+		w.Write(employeesJSON)
+	})
+
 	// Define an endpoint to authenticate an employee login
 	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
 		enableCors(&w)
