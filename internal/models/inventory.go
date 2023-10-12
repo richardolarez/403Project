@@ -2,6 +2,12 @@
 
 package models
 
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+)
+
 // InventoryItem represents an item in the pharmacy's inventory.
 type InventoryItem struct {
 	ID          int     // Unique identifier for the item
@@ -9,6 +15,25 @@ type InventoryItem struct {
 	Description string  // Description of the item
 	Price       float64 // Price of the item
 	Quantity    int     // Quantity of the item in stock
+}
+
+// GetInventory retrieves all inventory items.
+func GetInventory() ([]*InventoryItem, error) {
+	// Read the inventory data from the JSON file
+	inventoryData, err := ioutil.ReadFile("inventory.json")
+	if err != nil {
+		return nil, fmt.Errorf("error reading inventory data: %v", err)
+	}
+
+	// Unmarshal the inventory data into an array of InventoryItem objects
+	var inventory []*InventoryItem
+	err = json.Unmarshal(inventoryData, &inventory)
+	if err != nil {
+		return nil, fmt.Errorf("error unmarshaling inventory data: %v", err)
+	}
+
+	// Return the list of inventory items
+	return inventory, nil
 }
 
 // NewInventoryItem creates a new InventoryItem with the provided information.
