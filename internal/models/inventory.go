@@ -2,6 +2,12 @@
 
 package models
 
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+)
+
 // InventoryItem represents an item in the pharmacy's inventory.
 type InventoryItem struct {
 	ID          int     // Unique identifier for the item
@@ -11,15 +17,44 @@ type InventoryItem struct {
 	Quantity    int     // Quantity of the item in stock
 }
 
-// NewInventoryItem creates a new InventoryItem with the provided information.
-func NewInventoryItem(id int, name string, description string, price float64, quantity int) *InventoryItem {
-	return &InventoryItem{
-		ID:          id,
-		Name:        name,
-		Description: description,
-		Price:       price,
-		Quantity:    quantity,
+// GetInventory retrieves all inventory items.
+func GetInventory() ([]*InventoryItem, error) {
+	// Read the inventory data from the JSON file
+	data, err := ioutil.ReadFile("database.json")
+	if err != nil {
+		return nil, fmt.Errorf("error reading inventory data: %v", err)
 	}
+
+	// Unmarshal the inventory data into a map
+	var inventoryData map[string]interface{}
+	err = json.Unmarshal(data, &inventoryData)
+	if err != nil {
+		return nil, fmt.Errorf("error unmarshaling inventory data: %v", err)
+	}
+
+	// Get the inventory array from the data map
+	inventoryArray, ok := inventoryData["inventory"].([]interface{})
+	if !ok {
+		return nil, fmt.Errorf("error getting inventory array from data")
+	}
+
+	// Convert the inventory array to an array of InventoryItem objects
+	var inventory []*InventoryItem
+	for _, itemData := range inventoryArray {
+		itemJSON, err := json.Marshal(itemData)
+		if err != nil {
+			return nil, fmt.Errorf("error marshaling inventory item data: %v", err)
+		}
+		var item InventoryItem
+		err = json.Unmarshal(itemJSON, &item)
+		if err != nil {
+			return nil, fmt.Errorf("error unmarshaling inventory item data: %v", err)
+		}
+		inventory = append(inventory, &item)
+	}
+
+	// Return the list of inventory items
+	return inventory, nil
 }
 
 // IncreaseQuantity increases the quantity of the item in stock.
