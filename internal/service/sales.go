@@ -7,12 +7,13 @@ import (
 	"time"
 
 	"github.com/SFWE403/UArizonaPharmacy/internal/models"
+	"github.com/SFWE403/UArizonaPharmacy/internal/users"
 )
 
 // SalesTransaction represents a sales transaction.
 type SalesTransaction struct {
 	TransactionID   int
-	CustomerName    string
+	CustomerID      int
 	TransactionDate time.Time
 	ItemsSold       []*models.InventoryItem
 	TotalAmount     float64
@@ -33,7 +34,7 @@ func Checkout(customerName string, items []*models.InventoryItem, paymentMethod 
 	// Create a SalesTransaction object
 	transaction := &SalesTransaction{
 		TransactionID:   transactionID,
-		CustomerName:    customerName,
+		CustomerID:      customerID,
 		TransactionDate: time.Now(),
 		ItemsSold:       items,
 		TotalAmount:     totalAmount,
@@ -41,15 +42,13 @@ func Checkout(customerName string, items []*models.InventoryItem, paymentMethod 
 	}
 
 	// Retrieve or create the customer object using the customer repository
-	customer, err := customerRepo.GetByName(customerName)
+	customer, err := users.GetCustomer(customerID)
 	if err != nil {
-		return nil, nil, err
+		return nil, nil, nil, err
 	}
 
-	// Append the transaction to the customer's transaction history using the customer repository
-	if err := customerRepo.AddTransaction(customer, transaction); err != nil {
-		return nil, nil, err
-	}
+	// Append the transaction to the customer's transaction history
+	customer.AddTransaction(transaction)
 
 	// Update the inventory quantities based on items sold
 	if err := updateInventoryQuantities(items); err != nil {

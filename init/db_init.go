@@ -71,6 +71,5 @@ func InitializeDatabase() error {
 	}
 
 	fmt.Println("Database initialized successfully")
-
 	return nil
 }
