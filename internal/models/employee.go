@@ -35,9 +35,28 @@ func GetEmployeeByID(id int) (*Employee, error) {
 		return nil, err
 	}
 
+	// Unmarshal the JSON data into a map
+	var db map[string]interface{}
+	err = json.Unmarshal(data, &db)
+	if err != nil {
+		return nil, err
+	}
+
+	// Get the employees object from the map
+	employeesObj, ok := db["employees"]
+	if !ok {
+		return nil, fmt.Errorf("employees object not found in database")
+	}
+
+	// Convert the employees object to a JSON string
+	employeesJSON, err := json.Marshal(employeesObj)
+	if err != nil {
+		return nil, err
+	}
+
 	// Unmarshal the JSON data into an array of Employee objects
 	var employees []*Employee
-	err = json.Unmarshal(data, &employees)
+	err = json.Unmarshal(employeesJSON, &employees)
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +72,7 @@ func GetEmployeeByID(id int) (*Employee, error) {
 	return nil, fmt.Errorf("employee with ID %d not found", id)
 }
 
-// GetAllEmployees retrieves all employees from the database.
+// GetAllEmployees retrieves all employees.
 func GetAllEmployees() ([]*Employee, error) {
 	// Read the contents of the database file
 	data, err := ioutil.ReadFile("database.json")
@@ -61,12 +80,32 @@ func GetAllEmployees() ([]*Employee, error) {
 		return nil, err
 	}
 
-	// Unmarshal the JSON data into an array of Employee objects
-	var employees []*Employee
-	err = json.Unmarshal(data, &employees)
+	// Unmarshal the JSON data into a map
+	var db map[string]interface{}
+	err = json.Unmarshal(data, &db)
 	if err != nil {
 		return nil, err
 	}
 
+	// Get the employees object from the map
+	employeesObj, ok := db["employees"]
+	if !ok {
+		return nil, fmt.Errorf("employees object not found in database")
+	}
+
+	// Convert the employees object to a JSON string
+	employeesJSON, err := json.Marshal(employeesObj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Unmarshal the JSON data into an array of Employee objects
+	var employees []*Employee
+	err = json.Unmarshal(employeesJSON, &employees)
+	if err != nil {
+		return nil, err
+	}
+
+	// Return the array of Employee objects
 	return employees, nil
 }
