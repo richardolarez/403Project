@@ -8,7 +8,7 @@ const List = () => {
   const history = useNavigate();
   const [allData, setAllData] = useState([]);
 useEffect(() => {
-    axios.get(`http://localhost:5000/users`).then(res => {
+    axios.get(`http://localhost:8080/employees`).then(res => {
       setAllData(res.data);
     });
   }, []);
@@ -18,27 +18,27 @@ const columns = [
       dataIndex: 'username',
     },
     {
-      title: 'Email',
-      dataIndex: 'email'
+      title: 'First Name',
+      dataIndex: 'FirstName'
     },
     {
-      title: 'Gender',
-      dataIndex: 'gender'
+      title: 'Last Name',
+      dataIndex: 'LastName'
     },
     {
-      title: 'Review',
-      dataIndex: 'review'
+      title: 'Role',
+      dataIndex: 'Role'
     },
   ];
 const data = [{
   }];
 allData.map((user: any) => {
     data.push({
-     key: user.id,
-     username: user.username,
-     email: user.email,
-     gender: user.gender,
-     review: user.review + '%',
+     key: user.ID,
+     Username: user.Username,
+		 FirstName: user.firstName,
+		 LastName:  user.lastName,
+	   Role:      user.role,
    })
    return data;
  });

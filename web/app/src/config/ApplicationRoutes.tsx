@@ -20,16 +20,16 @@ const ApplicationRoutes: React.FC = () => {
         }
       />
       <Route
-        path="/"
+        path="*"
         element={
           isUserAuthenticated ? (
             <MainLayout>
               <Routes>
-                <Route path="list" element={<List />} />
-                <Route path="form" element={<Form />} />
-                <Route path="files" element={<File />} />
-                <Route path="videos" element={<Videos />} />
-                <Route path="info" element={<Videos />} />
+                <Route path="/list" element={<List />} />
+                <Route path="/form" element={<Form />} />
+                <Route path="/files" element={<File />} />
+                <Route path="/videos" element={<Videos />} />
+                <Route path="/info" element={<Videos />} />
               </Routes>
             </MainLayout>
           ) : (
