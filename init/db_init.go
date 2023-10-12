@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/SFWE403/UArizonaPharmacy/internal/models"
+	"github.com/richardolarez/403Project/internal/models"
 )
 
 func InitializeDatabase() error {

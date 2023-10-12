@@ -1,3 +1,3 @@
-module github.com/SFWE403/UArizonaPharmacy
+module github.com/richardolarez/403Project
 
 go 1.19
