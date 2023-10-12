@@ -6,8 +6,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/SFWE403/UArizonaPharmacy/internal/models"
-	"github.com/SFWE403/UArizonaPharmacy/internal/users"
+	"github.com/richardolarez/SFWE403/internal/models"
 )
 
 // SalesTransaction represents a sales transaction.
