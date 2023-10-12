@@ -54,6 +54,7 @@ func main() {
 		// Parse the username and password from the request body
 		var loginRequest LoginRequest
 		err := json.NewDecoder(r.Body).Decode(&loginRequest)
+		fmt.Println(r)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return

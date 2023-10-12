@@ -6,7 +6,11 @@ build:
 run:
 	go run main.go
 
+generate:
+	java -jar swagger-codegen-cli.jar generate -i openapi.yml -l go -o server
+
 .PHONY: test
+
 test:
 	go test ./test
 

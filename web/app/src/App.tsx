@@ -9,7 +9,7 @@ function Login() {
     event.preventDefault();
 
     // Call the /login endpoint to authenticate the employee
-    const response = await fetch('/login', {
+    const response = await fetch('http://localhost:8080/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
