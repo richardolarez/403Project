@@ -5,29 +5,34 @@ import { useNavigate} from 'react-router-dom';
 
 
 const Login: React.FC = () => {
-  const onFinish =  async (values: { username: string, password: string }) => {
-
+  const navigate = useNavigate();
+  const onFinish = (values: { username: string, password: string }) => {
     // Call the /login endpoint to authenticate the employee
-    const response = await fetch('/login', {
+    fetch('http://localhost:8080/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({ username: values.username, password: values.password })
-    });
-
-    if (response.ok) {
-      const navigate = useNavigate();
-      const employee = await response.json();
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      return response.json();
+    })
+    .then(employee => {
       console.log('Authenticated employee:', employee);
       sessionStorage.setItem('authenticated', 'true');
-      
       navigate('/');
-    } else {
-      console.error('Failed to authenticate employee:', response.statusText);
+    })
+    .catch(error => {
+      console.error('Failed to authenticate employee:', error);
       // TODO: Handle authentication error
-    }
+    });
   };
+  
+  
 
   return (
     <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
