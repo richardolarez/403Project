@@ -12,6 +12,12 @@ import (
 	"github.com/SFWE403/UArizonaPharmacy/internal/models"
 )
 
+func enableCors(w *http.ResponseWriter) {
+    (*w).Header().Set("Access-Control-Allow-Origin", "*")
+    (*w).Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+    (*w).Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+}
+
 func main() {
 	// Initialize the database
 	err := dbinitializer.InitializeDatabase()
@@ -29,6 +35,7 @@ func main() {
 	// Define an endpoint to retrieve all inventory items
 	http.HandleFunc("/inventory", func(w http.ResponseWriter, r *http.Request) {
 		// Retrieve all inventory items from the database
+		enableCors(&w)
 		inventory, err := models.GetInventory()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -51,6 +58,12 @@ func main() {
 
 	// Define an endpoint to authenticate an employee login
 	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w)
+		
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
 		// Parse the username and password from the request body
 		var loginRequest LoginRequest
 		err := json.NewDecoder(r.Body).Decode(&loginRequest)
@@ -81,6 +94,7 @@ func main() {
 	})
 
 	// Start the server
+	
 	server := &http.Server{
 		Addr: ":8080",
 	}
