@@ -34,10 +34,9 @@ func main() {
 
 	// CheckoutRequest represents a request to process a sales transaction.
 	type CheckoutRequest struct {
-		CustomerID    int                       `json:"customer_id"`
-		Items         []*models.InventoryItem   `json:"items"`
-		PaymentMethod string                    `json:"payment_method"`
-		customerRepo  models.CustomerRepository `json:"customer_repo"`
+		CustomerID    int                     `json:"customer_id"`
+		Items         []*models.InventoryItem `json:"items"`
+		PaymentMethod string                  `json:"payment_method"`
 	}
 
 	// Define an endpoint to retrieve all inventory items
@@ -142,7 +141,7 @@ func main() {
 		}
 
 		// Call the Checkout function to process the order and get a sales transaction
-		transaction, err := Checkout(checkoutRequest.CustomerID, checkoutRequest.Items, checkoutRequest.PaymentMethod, checkoutRequest.CustomerRepository)
+		transaction, err := Checkout(checkoutRequest.CustomerID, checkoutRequest.Items, checkoutRequest.PaymentMethod)
 
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
