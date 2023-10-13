@@ -15,7 +15,7 @@ useEffect(() => {
 const columns = [
     {
       title: 'Username',
-      dataIndex: 'username',
+      dataIndex: 'Username',
     },
     {
       title: 'First Name',
@@ -30,18 +30,19 @@ const columns = [
       dataIndex: 'Role'
     },
   ];
-const data = [{
-  }];
-allData.map((user: any) => {
-    data.push({
-     key: user.ID,
-     Username: user.Username,
-		 FirstName: user.firstName,
-		 LastName:  user.lastName,
-	   Role:      user.role,
-   })
-   return data;
- });
+  const data: { key: any; Username: any; FirstName: any; LastName: any; Role: any; }[] = [];
+  allData.map((user: any) => {
+      data.push({
+       key: user.ID,
+       Username: user.Username,
+       FirstName: user.FirstName,
+       LastName:  user.LastName,
+       Role:      user.Role,
+     })
+     return data;
+   });
+ 
+ console.log(data)
 const handleClick = () => {
     history('/form')
   }

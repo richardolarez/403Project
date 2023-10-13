@@ -21,7 +21,7 @@ type InventoryItem struct {
 // GetInventory retrieves all inventory items.
 func GetInventory() ([]*InventoryItem, error) {
 	// Read the inventory data from the JSON file
-	data, err := ioutil.ReadFile("database.json")
+	data, err := ioutil.ReadFile("./db/database.json")
 	if err != nil {
 		return nil, fmt.Errorf("error reading inventory data: %v", err)
 	}
@@ -61,7 +61,7 @@ func GetInventory() ([]*InventoryItem, error) {
 // NewInventoryItem adds a new inventory item to the database.
 func NewInventoryItem(id int, name string, description string, price float64, quantity int) error {
 	// Read the inventory data from the JSON file
-	data, err := ioutil.ReadFile("database.json")
+	data, err := ioutil.ReadFile("./db/database.json")
 	if err != nil {
 		return fmt.Errorf("error reading inventory data: %v", err)
 	}

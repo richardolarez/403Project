@@ -22,7 +22,7 @@ type Customer struct {
 // GetCustomer retrieves a customer by ID.
 func GetCustomer(id int) (*Customer, error) {
 	// Read the customers data from the JSON file
-	customersData, err := ioutil.ReadFile("database.json")
+	customersData, err := ioutil.ReadFile("./db/database.json")
 	if err != nil {
 		return nil, fmt.Errorf("error reading customers data: %v", err)
 	}
