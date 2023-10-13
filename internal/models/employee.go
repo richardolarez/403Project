@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"math/rand"
+	"time"
 )
 
 // Employee represents an employee with basic information and a role.
@@ -16,9 +18,12 @@ type Employee struct {
 	Role      string // Role of the employee (e.g., Manager, Sales Associate, etc.)
 }
 
-// NewEmployee creates a new Employee object with the specified properties.
+// NewEmployee creates a new Employee object with the specified properties and a new ID.
 func NewEmployee(username, password, firstName, lastName, role string) *Employee {
+	rand.Seed(time.Now().UnixNano())
+	id := rand.Intn(1000000)
 	return &Employee{
+		ID:        id,
 		Username:  username,
 		Password:  password,
 		FirstName: firstName,
