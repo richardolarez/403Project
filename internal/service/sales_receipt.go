@@ -5,7 +5,7 @@ package service
 import (
 	"fmt"
 
-	"github.com/SFWE403/UArizonaPharmacy/internal/models"
+	"github.com/richardolarez/403Project/internal/models"
 )
 
 // SalesReceipt represents a sales receipt.
