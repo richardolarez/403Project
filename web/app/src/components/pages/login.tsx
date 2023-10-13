@@ -22,6 +22,7 @@ const Login: React.FC = () => {
     .then(employee => {
       console.log('Authenticated employee:', employee);
       sessionStorage.setItem('authenticated', 'true');
+      sessionStorage.setItem('UserFName', employee.FirstName);
       window.location.reload();
     })
     .catch(error => {
