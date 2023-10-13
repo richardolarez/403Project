@@ -31,7 +31,6 @@ type LogEntry struct {
 type Logger struct {
 	mu     sync.Mutex
 	logDir string
-	logs   []LogEntry
 }
 
 // Creates a new Logger instance
