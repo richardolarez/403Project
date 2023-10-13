@@ -9,18 +9,8 @@ import (
 	"github.com/richardolarez/403Project/internal/models"
 )
 
-// SalesTransaction represents a sales transaction.
-type SalesTransaction struct {
-	TransactionID   int
-	CustomerID      int
-	TransactionDate time.Time
-	ItemsSold       []*models.InventoryItem
-	TotalAmount     float64
-	PaymentMethod   string
-}
-
 // Checkout creates a new sales transaction and returns a sales receipt.
-func Checkout(customerID int, items []*models.InventoryItem, paymentMethod string, customerRepo models.CustomerRepository) (*string, *SalesTransaction, error) {
+func Checkout(customerID int, items []*models.InventoryItem, paymentMethod string) (*string, *models.SalesTransaction, error) {
 	// Calculate the total amount based on item prices and quantities
 	var totalAmount float64
 	for _, item := range items {
@@ -31,7 +21,7 @@ func Checkout(customerID int, items []*models.InventoryItem, paymentMethod strin
 	transactionID := generateUniqueTransactionID()
 
 	// Create a SalesTransaction object
-	transaction := &SalesTransaction{
+	transaction := &models.SalesTransaction{
 		TransactionID:   transactionID,
 		CustomerID:      customerID,
 		TransactionDate: time.Now(),
@@ -43,7 +33,7 @@ func Checkout(customerID int, items []*models.InventoryItem, paymentMethod strin
 	// Retrieve or create the customer object using the customer repository
 	customer, err := models.GetCustomer(customerID)
 	if err != nil {
-		return nil, nil, nil, err
+		return nil, nil, nil
 	}
 
 	// Append the transaction to the customer's transaction history
