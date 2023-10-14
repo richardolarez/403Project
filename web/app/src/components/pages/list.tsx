@@ -8,40 +8,41 @@ const List = () => {
   const history = useNavigate();
   const [allData, setAllData] = useState([]);
 useEffect(() => {
-    axios.get(`http://localhost:5000/users`).then(res => {
+    axios.get(`http://localhost:8080/employees`).then(res => {
       setAllData(res.data);
     });
   }, []);
 const columns = [
     {
       title: 'Username',
-      dataIndex: 'username',
+      dataIndex: 'Username',
     },
     {
-      title: 'Email',
-      dataIndex: 'email'
+      title: 'First Name',
+      dataIndex: 'FirstName'
     },
     {
-      title: 'Gender',
-      dataIndex: 'gender'
+      title: 'Last Name',
+      dataIndex: 'LastName'
     },
     {
-      title: 'Review',
-      dataIndex: 'review'
+      title: 'Role',
+      dataIndex: 'Role'
     },
   ];
-const data = [{
-  }];
-allData.map((user: any) => {
-    data.push({
-     key: user.id,
-     username: user.username,
-     email: user.email,
-     gender: user.gender,
-     review: user.review + '%',
-   })
-   return data;
- });
+  const data: { key: any; Username: any; FirstName: any; LastName: any; Role: any; }[] = [];
+  allData.map((user: any) => {
+      data.push({
+       key: user.ID,
+       Username: user.Username,
+       FirstName: user.FirstName,
+       LastName:  user.LastName,
+       Role:      user.Role,
+     })
+     return data;
+   });
+ 
+ console.log(data)
 const handleClick = () => {
     history('/form')
   }
