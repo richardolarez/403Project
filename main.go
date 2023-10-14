@@ -10,6 +10,7 @@ import (
 	dbinitializer "github.com/richardolarez/403Project/init"
 	accountmanager "github.com/richardolarez/403Project/internal/account_manager"
 	"github.com/richardolarez/403Project/internal/models"
+	"github.com/richardolarez/403Project/internal/service"
 )
 
 func enableCors(w *http.ResponseWriter) {
@@ -140,8 +141,10 @@ func main() {
 			return
 		}
 
+		var receipt *string
+
 		// Call the Checkout function to process the order and get a sales transaction
-		transaction, err := Checkout(checkoutRequest.CustomerID, checkoutRequest.Items, checkoutRequest.PaymentMethod)
+		receipt, transaction, err := service.Checkout(checkoutRequest.CustomerID, checkoutRequest.Items, checkoutRequest.PaymentMethod)
 
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -155,11 +158,21 @@ func main() {
 			return
 		}
 
+		// Convert the receipt to JSON
+		receiptJSON, err := json.Marshal(receipt)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
 		// Set the Content-Type header to application/json
 		w.Header().Set("Content-Type", "application/json")
 
 		// Write the JSON response to the client
 		w.Write(transactionJSON)
+
+		// Write the JSON response to the client
+		w.Write(receiptJSON)
 
 	})
 

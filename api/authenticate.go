@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/SFWE403/UArizonaPharmacy/internal/accountmanager"
+	accountmanager "github.com/richardolarez/403Project/internal/account_manager"
 )
 
 // AuthenticateEmployeeHandler handles requests to authenticate an employee login.

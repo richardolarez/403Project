@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"math/rand"
+	"time"
 )
 
 // Employee represents an employee with basic information and a role.
@@ -19,6 +20,7 @@ type Employee struct {
 
 // NewEmployee creates a new Employee object with the specified properties and a new ID.
 func NewEmployee(username, password, firstName, lastName, role string) *Employee {
+	rand.Seed(time.Now().UnixNano()) // ??? Problematic ???
 	id := rand.Intn(1000000)
 	return &Employee{
 		ID:        id,
