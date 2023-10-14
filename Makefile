@@ -12,6 +12,6 @@ test:
 	go test ./test
 
 clean:
-	go clean
-	npm --prefix web/app update
+	go clean &
+	npm --prefix web/app cache clean --force
 	rm -f ${BINARY_NAME}
