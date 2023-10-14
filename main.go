@@ -10,6 +10,7 @@ import (
 	dbinitializer "github.com/richardolarez/403Project/init"
 	accountmanager "github.com/richardolarez/403Project/internal/account_manager"
 	"github.com/richardolarez/403Project/internal/models"
+	"github.com/richardolarez/403Project/internal/service"
 )
 
 func enableCors(w *http.ResponseWriter) {
@@ -141,7 +142,7 @@ func main() {
 		}
 
 		// Call the Checkout function to process the order and get a sales transaction
-		transaction, err := Checkout(checkoutRequest.CustomerID, checkoutRequest.Items, checkoutRequest.PaymentMethod)
+		transaction, err := service.Checkout(checkoutRequest.CustomerID, checkoutRequest.Items, checkoutRequest.PaymentMethod)
 
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
