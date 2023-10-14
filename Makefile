@@ -4,7 +4,8 @@ build:
 	go build -o ${BINARY_NAME} main.go
 
 run:
-	go run main.go
+	go run main.go &
+	npm --prefix web/app start
 
 .PHONY: test
 test:
@@ -12,4 +13,5 @@ test:
 
 clean:
 	go clean
+	npm --prefix web/app update
 	rm -f ${BINARY_NAME}
