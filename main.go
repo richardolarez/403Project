@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 
 	dbinitializer "github.com/richardolarez/403Project/init"
 	accountmanager "github.com/richardolarez/403Project/internal/account_manager"
@@ -20,11 +21,16 @@ func enableCors(w *http.ResponseWriter) {
 }
 
 func main() {
-	// Initialize the database
-	err := dbinitializer.InitializeDatabase()
-	if err != nil {
-		fmt.Printf("Error initializing database: %v\n", err)
-		return
+	// Check if the database file exists
+	if _, err := os.Stat("./db/database.json"); os.IsNotExist(err) {
+		// Initialize the database
+		err := dbinitializer.InitializeDatabase()
+		if err != nil {
+			fmt.Printf("Error initializing database: %v\n", err)
+			return
+		}
+	} else {
+		fmt.Println("Database file already exists.")
 	}
 
 	// LoginRequest represents a request to authenticate an employee login.
@@ -42,7 +48,7 @@ func main() {
 
 	// DeleteRequest represents a request to delete an employee
 	type DeleteRequest struct {
-		ID int `json:"id"`
+		ID        int    `json:"id"`
 		FirstName string `json:"firstName"`
 	}
 
