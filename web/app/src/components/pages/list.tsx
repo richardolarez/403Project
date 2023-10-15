@@ -9,7 +9,7 @@ const {Title} = Typography;
 const List = () => {
   const history = useNavigate();
   const [allData, setAllData] = useState([]);
-  const [selectedUser, setSelectedUser] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(false);
 
   useEffect(() => {
       axios.get(`http://localhost:8080/employees`).then(res => {
@@ -69,17 +69,21 @@ const List = () => {
     history('/form')
     }
   const handleRowClick = (record : UserData) => {
-    console.log(record);
+    setSelectedUser(record.Username) // using horrible JS true value interpretation
+    
   }
   
   return (
       <div>
           <Row gutter={[40, 0]}>
-            <Col span={18}>
+            <Col span={8}>
               <Title level={2}>
               User List
               </Title>
               </Col>
+            <Col span={10}>
+              {selectedUser && <Title level={3}>Selected User: {selectedUser}</Title>}
+            </Col>
             <Col span={2}>
             <Button onClick={handleAddClick} block>Add</Button>
             </Col> 
