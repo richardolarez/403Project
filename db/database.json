@@ -1,28 +1,52 @@
 {
   "employees": [
     {
-      "ID": 535880,
-      "Username": "johndoe",
+      "ID": 994764,
+      "Username": "richardo",
       "Password": "password123",
-      "FirstName": "John",
-      "LastName": "Doe",
+      "FirstName": "Richardo",
+      "LastName": "Larez",
       "Role": "Cashier"
     },
     {
-      "ID": 549152,
-      "Username": "janedoe",
+      "ID": 29915,
+      "Username": "evan",
       "Password": "password123",
-      "FirstName": "Jane",
-      "LastName": "Doe",
+      "FirstName": "Evan",
+      "LastName": "Martin",
+      "Role": "Pharmacist"
+    },
+    {
+      "ID": 103202,
+      "Username": "javier",
+      "Password": "password123",
+      "FirstName": "Javier",
+      "LastName": "Cota",
       "Role": "Manager"
     },
     {
-      "ID": 887246,
-      "Username": "bobsmith",
+      "ID": 675251,
+      "Username": "carlos",
       "Password": "password123",
-      "FirstName": "Bob",
-      "LastName": "Smith",
+      "FirstName": "Carlos",
+      "LastName": "Robles",
       "Role": "Pharmacist"
+    },
+    {
+      "ID": 159987,
+      "Username": "mario",
+      "Password": "password123",
+      "FirstName": "Mario",
+      "LastName": "Weiler",
+      "Role": "Cashier"
+    },
+    {
+      "ID": 791693,
+      "Username": "antony",
+      "Password": "password123",
+      "FirstName": "Antony",
+      "LastName": "Mangala",
+      "Role": "Cashier"
     }
   ],
   "items": [

@@ -13,38 +13,33 @@ func InitializeDatabase() error {
 	pharmacy1 := models.NewPharmacy("Pharmacy A", "Location A", true, "pharmacyA.com", "Owner A", 1234567890, "9:00 AM - 5:00 PM")
 	pharmacy2 := models.NewPharmacy("Pharmacy B", "Location B", false, "pharmacyB.com", "Owner B", 9876543210, "10:00 AM - 6:00 PM")
 
-	// Create sample employees
-	cashier := models.NewEmployee("johndoe", "password123", "John", "Doe", "Cashier")
-	manager := models.NewEmployee("janedoe", "password123", "Jane", "Doe", "Manager")
-	pharmacist := models.NewEmployee("bobsmith", "password123", "Bob", "Smith", "Pharmacist")
-
 	// Create an array of Pharmacy instances
 	pharmacies := []*models.Pharmacy{pharmacy1, pharmacy2}
 
 	// Create an array of InventoryItems
 	items := []*models.InventoryItem{
-		&models.InventoryItem{
+		{
 			ID:          1,
 			Name:        "Item 1",
 			Description: "Description for Item 1",
 			Price:       10.99,
 			Quantity:    5,
 		},
-		&models.InventoryItem{
+		{
 			ID:          2,
 			Name:        "Item 2",
 			Description: "Description for Item 2",
 			Price:       15.99,
 			Quantity:    10,
 		},
-		&models.InventoryItem{
+		{
 			ID:          3,
 			Name:        "Medicine 1",
 			Description: "Description for Medicine 1",
 			Price:       20.99,
 			Quantity:    15,
 		},
-		&models.InventoryItem{
+		{
 			ID:          4,
 			Name:        "Medicine 2",
 			Description: "Description for Medicine 2",
@@ -52,8 +47,17 @@ func InitializeDatabase() error {
 			Quantity:    20,
 		},
 	}
+
+	// Create sample employees and append a new employee to the employees slice
+	richardo := models.NewEmployee("richardo", "password123", "Richardo", "Larez", "Cashier")
+	evan := models.NewEmployee("evan", "password123", "Evan", "Martin", "Pharmacist")
+	javier := models.NewEmployee("javier", "password123", "Javier", "Cota", "Manager")
+	carlos := models.NewEmployee("carlos", "password123", "Carlos", "Robles", "Pharmacist")
+	mario := models.NewEmployee("mario", "password123", "Mario", "Weiler", "Cashier")
+	antony := models.NewEmployee("antony", "password123", "Antony", "Mangala", "Cashier")
+
 	// Create an array of employees
-	employees := []*models.Employee{cashier, manager, pharmacist}
+	employees := []*models.Employee{richardo, evan, javier, carlos, mario, antony}
 
 	// Create a map to hold the data
 	data := map[string]interface{}{

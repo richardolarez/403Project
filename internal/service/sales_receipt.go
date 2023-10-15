@@ -18,7 +18,7 @@ type SalesReceipt struct {
 }
 
 // GenerateReceipt generates a formatted sales receipt as a string.
-func GenerateReceipt(transaction *SalesTransaction) string {
+func GenerateReceipt(transaction *models.SalesTransaction) string {
 	// Initialize the receipt text
 	receipt := fmt.Sprintf("Transaction ID: %d\n", transaction.TransactionID)
 	receipt += fmt.Sprintf("Date and Time: %s\n", transaction.TransactionDate.Format("2006-01-02 15:04:05"))
