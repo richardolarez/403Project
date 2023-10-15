@@ -10,6 +10,7 @@ const List = () => {
   const history = useNavigate();
   const [allData, setAllData] = useState([]);
   const [selectedUser, setSelectedUser] = useState(false);
+  const [userData, setUserData] = useState<UserData | null>(null);;
 
   useEffect(() => {
       axios.get(`http://localhost:8080/employees`).then(res => {
@@ -62,14 +63,36 @@ const List = () => {
     }
   
   const handleDelClick = () => {
-    history('/form')
+    if (!userData) {
+      console.error('No user selected for deletion');
+      return;
+    }
+
+    const deleteData = {
+      id: userData.key,
+      firstName: userData.FirstName
+    }
+
+    axios.delete(`http://localhost:8080/deleteEmployee`, {
+      data: deleteData,
+    })
+    .then(res => {
+      axios.get('http://localhost:8080/employees').then((res) => {
+        setAllData(res.data);
+      });
+    })
+    .catch((error) => {
+      console.error('Error deleting employee:', error);
+    });
     }
   
   const handleModClick = () => {
     history('/form')
     }
+
   const handleRowClick = (record : UserData) => {
     setSelectedUser(record.Username) // using horrible JS true value interpretation
+    setUserData(record);
     
   }
   
