@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strconv"
 
 	dbinitializer "github.com/richardolarez/403Project/init"
 	accountmanager "github.com/richardolarez/403Project/internal/account_manager"
@@ -174,6 +175,37 @@ func main() {
 		// Write the JSON response to the client
 		w.Write(receiptJSON)
 
+	})
+
+	// Define an endpoint to delete an employee by ID and first name
+	http.HandleFunc("/deleteEmployee", func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		// Parse the request parameters
+		r.ParseForm()
+		id, err := strconv.Atoi(r.FormValue("id"))
+		if err != nil {
+			http.Error(w, "Invalid ID parameter", http.StatusBadRequest)
+			return
+		}
+
+		firstName := r.FormValue("firstName")
+
+		// Call the DeleteEmployee function to delete the employee
+		err = models.DeleteEmployee(id, firstName)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Respond with a success message
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Employee deleted successfully"))
 	})
 
 	// Start the server
