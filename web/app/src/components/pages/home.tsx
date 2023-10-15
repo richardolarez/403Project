@@ -4,7 +4,7 @@ const Home = () => {
    const userName = sessionStorage.getItem("UserFName");
   return (
     <div>
-        <h1>Hewwo UwU {userName}</h1> 
+        <h1 style={{textAlign: 'center'}}>Welcome {userName}! 👋</h1> 
     </div>
   );
 }

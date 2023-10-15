@@ -2,7 +2,6 @@ import React from 'react';
 import { Form, Input, Button, Row, Col } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 
-
 const Login: React.FC = () => {
   const onFinish = (values: { username: string, password: string }) => {
     // Call the /login endpoint to authenticate the employee
@@ -30,27 +29,28 @@ const Login: React.FC = () => {
       // TODO: Handle authentication error
     });
   };
-  
-  
 
   return (
-    <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
+  <div>  
+    
+  <Row justify="center" align="middle" style={{ minHeight: '100vh' }}>
       <Col span={8}>
-        <Form
+        <img src="/poos_logo_full.png" alt="Logo" style={{width: '100%', marginBottom: '10%'}}/>
+          <Form
           name="login"
           initialValues={{ remember: true }}
           onFinish={onFinish}
           style={{ background: 'white', padding: '20px', boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)' }}
         >
           <Form.Item
-            name="username" label="username"
+            name="username" label="Username"
             rules={[{ required: true, message: 'Please enter your username!' }]}
           >
             <Input prefix={<UserOutlined />} placeholder="Username" />
           </Form.Item>
 
           <Form.Item
-            name="password" label="password"
+            name="password" label="Password"
             rules={[{ required: true, message: 'Please enter your password!' }]}
           >
             <Input.Password prefix={<LockOutlined />} placeholder="Password" />
@@ -64,6 +64,7 @@ const Login: React.FC = () => {
         </Form>
       </Col>
     </Row>
+    </div>
   );
 };
 

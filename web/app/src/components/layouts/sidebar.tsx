@@ -1,5 +1,5 @@
 import React from 'react';
-import { Menu } from 'antd';
+import { Menu} from 'antd';
 import {
     HomeOutlined,
     UserOutlined,
@@ -18,9 +18,6 @@ const handleHomeClick = () => {
 const handleUserClick = () => {
         history('/list');
     }
-const handleVideosClick = () => {
-        history('/videos');
-    }
 const handleFileClick = () => {
         history('/files');
     }
@@ -30,9 +27,17 @@ const handleCheckoutClick = () => {
 const handleInfoClick = () => {
         history('/info');
 }
+
+
 return (
       <div>
-<div style={{height: "32px", background: "rgba(255, 255, 255, 0.2)", margin: "16px"}}></div>
+        <div style={{height: "32px", margin: "16px", display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
+            <img
+                src="/poos_logo.png" // Update the image URL
+                alt="Logo"
+                style={{ marginTop: '5%', height: '100%', marginBottom: '5%',}}
+                />
+        </div>
             <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
                 <Menu.Item key="1" onClick={handleHomeClick}>
                     <HomeOutlined/>
@@ -42,15 +47,7 @@ return (
                     <UserOutlined />
                     <span> Users</span>
                 </Menu.Item>
-                <Menu.Item key="3" onClick={handleVideosClick}>
-                    <VideoCameraOutlined />
-                    <span> Videos</span>
-                </Menu.Item>
-                <Menu.Item key="4" onClick={handleFileClick}>
-                    <UploadOutlined />
-                    <span> Files</span>
-                </Menu.Item>
-                <Menu.Item key="5" onClick={handleCheckoutClick}>
+                <Menu.Item key="3" onClick={handleCheckoutClick}>
                     <DollarOutlined />
                     <span> Checkout</span>
                 </Menu.Item>
