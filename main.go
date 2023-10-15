@@ -10,6 +10,7 @@ import (
 	dbinitializer "github.com/richardolarez/403Project/init"
 	accountmanager "github.com/richardolarez/403Project/internal/account_manager"
 	"github.com/richardolarez/403Project/internal/models"
+	"github.com/richardolarez/403Project/internal/service"
 )
 
 func enableCors(w *http.ResponseWriter) {
@@ -30,6 +31,13 @@ func main() {
 	type LoginRequest struct {
 		Username string `json:"username"`
 		Password string `json:"password"`
+	}
+
+	// CheckoutRequest represents a request to process a sales transaction.
+	type CheckoutRequest struct {
+		CustomerID    int                     `json:"customer_id"`
+		Items         []*models.InventoryItem `json:"items"`
+		PaymentMethod string                  `json:"payment_method"`
 	}
 
 	// Define an endpoint to retrieve all inventory items
@@ -115,6 +123,57 @@ func main() {
 
 		// Write the JSON response to the client
 		w.Write(employeeJSON)
+	})
+
+	http.HandleFunc("/checkout", func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		// Parse the checkout request from the request body
+		var checkoutRequest CheckoutRequest
+		err := json.NewDecoder(r.Body).Decode(&checkoutRequest)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		var receipt *string
+
+		// Call the Checkout function to process the order and get a sales transaction
+		receipt, transaction, err := service.Checkout(checkoutRequest.CustomerID, checkoutRequest.Items, checkoutRequest.PaymentMethod)
+
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Convert the transaction to JSON
+		transactionJSON, err := json.Marshal(transaction)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Convert the receipt to JSON
+		receiptJSON, err := json.Marshal(receipt)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Set the Content-Type header to application/json
+		w.Header().Set("Content-Type", "application/json")
+
+		// Write the JSON response to the client
+		w.Write(transactionJSON)
+
+		// Write the JSON response to the client
+		w.Write(receiptJSON)
+
 	})
 
 	// Start the server

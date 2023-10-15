@@ -3,7 +3,7 @@ package test
 import (
 	"testing"
 
-	"github.com/SFWE403/UArizonaPharmacy/internal/models"
+	"github.com/richardolarez/403Project/internal/models"
 )
 
 func TestPharmacy(t *testing.T) {

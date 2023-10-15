@@ -20,7 +20,7 @@ type Employee struct {
 
 // NewEmployee creates a new Employee object with the specified properties and a new ID.
 func NewEmployee(username, password, firstName, lastName, role string) *Employee {
-	rand.Seed(time.Now().UnixNano())
+	rand.Seed(time.Now().UnixNano()) // ??? Problematic ???
 	id := rand.Intn(1000000)
 	return &Employee{
 		ID:        id,
@@ -35,7 +35,7 @@ func NewEmployee(username, password, firstName, lastName, role string) *Employee
 // GetEmployeeByID retrieves an employee by ID.
 func GetEmployeeByID(id int) (*Employee, error) {
 	// Read the contents of the database file
-	data, err := ioutil.ReadFile("database.json")
+	data, err := ioutil.ReadFile("./db/database.json")
 	if err != nil {
 		return nil, err
 	}
@@ -80,7 +80,7 @@ func GetEmployeeByID(id int) (*Employee, error) {
 // GetAllEmployees retrieves all employees.
 func GetAllEmployees() ([]*Employee, error) {
 	// Read the contents of the database file
-	data, err := ioutil.ReadFile("database.json")
+	data, err := ioutil.ReadFile("./db/database.json")
 	if err != nil {
 		return nil, err
 	}
