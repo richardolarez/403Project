@@ -9,12 +9,21 @@ const {Title} = Typography;
 const List = () => {
   const history = useNavigate();
   const [allData, setAllData] = useState([]);
+  const [selectedUser, setSelectedUser] = useState([]);
 
   useEffect(() => {
       axios.get(`http://localhost:8080/employees`).then(res => {
         setAllData(res.data);
       });
     }, []);
+
+  interface UserData {
+    key: any;
+    Username: any;
+    FirstName: any;
+    LastName: any;
+    Role: any;
+  }
 
   const columns = [
     {
@@ -48,9 +57,20 @@ const List = () => {
     });
   console.log(data)
 
-  const handleClick = () => {
+  const handleAddClick = () => {
     history('/form')
     }
+  
+  const handleDelClick = () => {
+    history('/form')
+    }
+  
+  const handleModClick = () => {
+    history('/form')
+    }
+  const handleRowClick = (record : UserData) => {
+    console.log(record);
+  }
   
   return (
       <div>
@@ -60,13 +80,26 @@ const List = () => {
               User List
               </Title>
               </Col>
-            <Col span={6}>
-            <Button onClick={handleClick} block>Add User</Button>
+            <Col span={2}>
+            <Button onClick={handleAddClick} block>Add</Button>
+            </Col> 
+            <Col span={2}>
+            <Button onClick={handleDelClick} block>Delete</Button>
+            </Col> 
+            <Col span={2}>
+            <Button onClick={handleModClick} block>Modify</Button>
             </Col>
           </Row>
           <Row gutter={[40, 0]}>
           <Col span={24}>
-          <Table columns={columns} dataSource={data} />
+          <Table
+              columns={columns}
+              dataSource={data}
+              onRow={(record) => ({
+                onClick: () => handleRowClick(record),
+              })}
+            />
+
           </Col>
           </Row>
       </div>
