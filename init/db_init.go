@@ -53,7 +53,7 @@ func InitializeDatabase() error {
 	evan := models.NewEmployee("evan", "password123", "Evan", "Martin", "Pharmacist")
 	javier := models.NewEmployee("javier", "password123", "Javier", "Cota", "Manager")
 	carlos := models.NewEmployee("carlos", "password123", "Carlos", "Robles", "Pharmacist")
-	mario := models.NewEmployee("mario", "password123", "Mario", "Weiler", "Cashier")
+	mario := models.NewEmployee("mario", "password123", "Mario", "Weiner", "Cashier")
 	antony := models.NewEmployee("antony", "password123", "Antony", "Mangala", "Cashier")
 
 	// Create an array of employees

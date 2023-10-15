@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
 
 	dbinitializer "github.com/richardolarez/403Project/init"
 	accountmanager "github.com/richardolarez/403Project/internal/account_manager"
@@ -39,6 +38,12 @@ func main() {
 		CustomerID    int                     `json:"customer_id"`
 		Items         []*models.InventoryItem `json:"items"`
 		PaymentMethod string                  `json:"payment_method"`
+	}
+
+	// DeleteRequest represents a request to delete an employee
+	type DeleteRequest struct {
+		ID int `json:"id"`
+		FirstName string `json:"firstName"`
 	}
 
 	// Define an endpoint to retrieve all inventory items
@@ -187,14 +192,15 @@ func main() {
 		}
 
 		// Parse the request parameters
-		r.ParseForm()
-		id, err := strconv.Atoi(r.FormValue("id"))
+		var deleteRequest DeleteRequest
+		err := json.NewDecoder(r.Body).Decode(&deleteRequest)
 		if err != nil {
 			http.Error(w, "Invalid ID parameter", http.StatusBadRequest)
 			return
 		}
 
-		firstName := r.FormValue("firstName")
+		id := deleteRequest.ID
+		firstName := deleteRequest.FirstName
 
 		// Call the DeleteEmployee function to delete the employee
 		err = models.DeleteEmployee(id, firstName)

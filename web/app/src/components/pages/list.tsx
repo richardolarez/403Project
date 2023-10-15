@@ -9,12 +9,22 @@ const {Title} = Typography;
 const List = () => {
   const history = useNavigate();
   const [allData, setAllData] = useState([]);
+  const [selectedUser, setSelectedUser] = useState(false);
+  const [userData, setUserData] = useState<UserData | null>(null);;
 
   useEffect(() => {
       axios.get(`http://localhost:8080/employees`).then(res => {
         setAllData(res.data);
       });
     }, []);
+
+  interface UserData {
+    key: any;
+    Username: any;
+    FirstName: any;
+    LastName: any;
+    Role: any;
+  }
 
   const columns = [
     {
@@ -48,25 +58,75 @@ const List = () => {
     });
   console.log(data)
 
-  const handleClick = () => {
+  const handleAddClick = () => {
     history('/form')
     }
+  
+  const handleDelClick = () => {
+    if (!userData) {
+      console.error('No user selected for deletion');
+      return;
+    }
+
+    const deleteData = {
+      id: userData.key,
+      firstName: userData.FirstName
+    }
+
+    axios.delete(`http://localhost:8080/deleteEmployee`, {
+      data: deleteData,
+    })
+    .then(res => {
+      axios.get('http://localhost:8080/employees').then((res) => {
+        setAllData(res.data);
+      });
+    })
+    .catch((error) => {
+      console.error('Error deleting employee:', error);
+    });
+    }
+  
+  const handleModClick = () => {
+    history('/form')
+    }
+
+  const handleRowClick = (record : UserData) => {
+    setSelectedUser(record.Username) // using horrible JS true value interpretation
+    setUserData(record);
+    
+  }
   
   return (
       <div>
           <Row gutter={[40, 0]}>
-            <Col span={18}>
+            <Col span={8}>
               <Title level={2}>
               User List
               </Title>
               </Col>
-            <Col span={6}>
-            <Button onClick={handleClick} block>Add User</Button>
+            <Col span={10}>
+              {selectedUser && <Title level={3}>Selected User: {selectedUser}</Title>}
+            </Col>
+            <Col span={2}>
+            <Button onClick={handleAddClick} block>Add</Button>
+            </Col> 
+            <Col span={2}>
+            <Button onClick={handleDelClick} block>Delete</Button>
+            </Col> 
+            <Col span={2}>
+            <Button onClick={handleModClick} block>Modify</Button>
             </Col>
           </Row>
           <Row gutter={[40, 0]}>
           <Col span={24}>
-          <Table columns={columns} dataSource={data} />
+          <Table
+              columns={columns}
+              dataSource={data}
+              onRow={(record) => ({
+                onClick: () => handleRowClick(record),
+              })}
+            />
+
           </Col>
           </Row>
       </div>
