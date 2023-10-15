@@ -6,7 +6,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"strconv"
 
 	dbinitializer "github.com/richardolarez/403Project/init"
 	accountmanager "github.com/richardolarez/403Project/internal/account_manager"
@@ -39,6 +38,12 @@ func main() {
 		CustomerID    int                     `json:"customer_id"`
 		Items         []*models.InventoryItem `json:"items"`
 		PaymentMethod string                  `json:"payment_method"`
+	}
+
+	// deleteRequest represents a request to delete an employee.
+	type deleteRequest struct {
+		ID        int    `json:"id"`
+		FirstName string `json:"first_name"`
 	}
 
 	// Define an endpoint to retrieve all inventory items
@@ -186,26 +191,23 @@ func main() {
 			return
 		}
 
-		// Parse the request parameters
-		r.ParseForm()
-		id, err := strconv.Atoi(r.FormValue("id"))
-		if err != nil {
-			http.Error(w, "Invalid ID parameter", http.StatusBadRequest)
+		// Parse the delete request from the request body
+		var deleteRequest deleteRequest
+		decoder := json.NewDecoder(r.Body)
+		if err := decoder.Decode(&deleteRequest); err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
 		}
-
-		firstName := r.FormValue("firstName")
 
 		// Call the DeleteEmployee function to delete the employee
-		err = models.DeleteEmployee(id, firstName)
+		err := models.DeleteEmployee(deleteRequest.ID, deleteRequest.FirstName)
 		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
+			http.Error(w, fmt.Sprintf("Error deleting employee: %v", err), http.StatusInternalServerError)
 			return
 		}
 
-		// Respond with a success message
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("Employee deleted successfully"))
+		fmt.Fprintf(w, "Employee with ID %d and first name %s deleted successfully", deleteRequest.ID, deleteRequest.FirstName)
 	})
 
 	// Start the server
