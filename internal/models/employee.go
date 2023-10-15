@@ -114,3 +114,71 @@ func GetAllEmployees() ([]*Employee, error) {
 	// Return the array of Employee objects
 	return employees, nil
 }
+
+// DeleteEmployee deletes an employee by ID and first name from the database.
+func DeleteEmployee(id int, FirstName string) error {
+	// Read the contents of the database file
+	data, err := ioutil.ReadFile("./db/database.json")
+	if err != nil {
+		return err
+	}
+
+	// Unmarshal the JSON data into a map
+	var db map[string]interface{}
+	err = json.Unmarshal(data, &db)
+	if err != nil {
+		return err
+	}
+
+	// Get the employees object from the map
+	employeesObj, ok := db["employees"]
+	if !ok {
+		return fmt.Errorf("employees object not found in database")
+	}
+
+	// Convert the employees object to a JSON string
+	employeesJSON, err := json.Marshal(employeesObj)
+	if err != nil {
+		return err
+	}
+
+	// Unmarshal the JSON data into an array of Employee objects
+	var employees []*Employee
+	err = json.Unmarshal(employeesJSON, &employees)
+	if err != nil {
+		return err
+	}
+
+	// Find the index of the employee with the specified ID and first name
+	index := -1
+	for i, employee := range employees {
+		if employee.ID == id && employee.FirstName == FirstName {
+			index = i
+			break
+		}
+	}
+
+	if index == -1 {
+		return fmt.Errorf("employee with ID %d and first name %s not found", id, FirstName)
+	}
+
+	// Remove the employee from the array
+	employees = append(employees[:index], employees[index+1:]...)
+
+	// Update the employees object in the map
+	db["employees"] = employees
+
+	// Marshal the map back to JSON
+	updatedData, err := json.Marshal(db)
+	if err != nil {
+		return err
+	}
+
+	// Write the updated JSON data to the database file
+	err = ioutil.WriteFile("./db/database.json", updatedData, 0644)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
