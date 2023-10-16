@@ -66,6 +66,44 @@ func GetCustomer(id int) (*Customer, error) {
 	return nil, fmt.Errorf("customer not found")
 }
 
+// GetAllEmployees retrieves all employees.
+func GetAllCustomers() ([]*Customer, error) {
+	// Read the contents of the database file
+	data, err := ioutil.ReadFile("./db/database.json")
+	if err != nil {
+		return nil, err
+	}
+
+	// Unmarshal the JSON data into a map
+	var db map[string]interface{}
+	err = json.Unmarshal(data, &db)
+	if err != nil {
+		return nil, err
+	}
+
+	// Get the employees object from the map
+	customersObj, ok := db["customers"]
+	if !ok {
+		return nil, fmt.Errorf("customers object not found in database")
+	}
+
+	// Convert the employees object to a JSON string
+	customersJSON, err := json.Marshal(customersObj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Unmarshal the JSON data into an array of Employee objects
+	var customers []*Customer
+	err = json.Unmarshal(customersJSON, &customers)
+	if err != nil {
+		return nil, err
+	}
+
+	// Return the array of Employee objects
+	return customers, nil
+}
+
 // AddTransaction adds a sales transaction to the customer's transaction history.
 func (c *Customer) AddTransaction(transaction *SalesTransaction) {
 	c.Transactions = append(c.Transactions, transaction)
