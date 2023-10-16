@@ -15,7 +15,7 @@ const FormApp = () => {
   
 const handleSubmit = (values: any) => {
     setLoading(true);
-    axios.post(`http://localhost:5000/users`, 
+    axios.post(`http://localhost:8080/addEmployee`, 
       values
     )
     .then(res => {
@@ -50,7 +50,7 @@ return (
             >
               <Input placeholder="Please Enter your username" />
             </Form.Item>
-            <Form.Item name="email" label="Email" 
+            <Form.Item name="password" label="password" 
             rules={[
               {
                 required: true,
