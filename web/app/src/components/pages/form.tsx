@@ -12,9 +12,10 @@ const layout = {
 const FormApp = () => {
   const [loading, setLoading] = useState(false);
   const history = useNavigate();
+  
 const handleSubmit = (values: any) => {
     setLoading(true);
-    axios.post(`http://localhost:5000/users`, 
+    axios.post(`http://localhost:8080/addEmployee`, 
       values
     )
     .then(res => {
@@ -49,56 +50,52 @@ return (
             >
               <Input placeholder="Please Enter your username" />
             </Form.Item>
-            <Form.Item name="email" label="Email" 
+            <Form.Item name="password" label="password" 
             rules={[
               {
                 required: true,
-                message: 'Please input your correct email',
-                type: 'email'
+                message: 'Please input your password'
               }
             ]}
             >
-              <Input placeholder="Please Enter your email" />
+              <Input placeholder="Please Enter your desired password" />
             </Form.Item>
-            <Form.Item name="gender" label="Gender" 
+            <Form.Item name="firstname" label="First Name" 
             rules={[
               {
                 required: true,
-                message: 'Please select your gender',
+                message: 'Please input your First name',
               }
             ]}
             >
-              <Radio.Group>
-                <Radio value="male">Male</Radio>
-                <Radio value="female">Female</Radio>
-                <Radio value="others">Others</Radio>
-              </Radio.Group>
+              <Input placeholder="Please Enter your First Name" />
             </Form.Item>
-            <Form.Item name="hobbies" label="Hobbies" 
+            <Form.Item name="lastname" label="Last Name" 
             rules={[
               {
                 required: true,
-                message: 'Please select your hobbies',
-                type: 'array'
+                message: 'Please input your Last name',
               }
             ]}
             >
-              <Select mode="multiple" placeholder="Please select you hobbies">
-                <Select.Option value="Reading">Reading</Select.Option>
-                <Select.Option value="Writing">Writing</Select.Option>
-                <Select.Option value="Coding">Coding</Select.Option>
-                <Select.Option value="Singing">Singing</Select.Option>
-                <Select.Option value="Dancing">Dancing</Select.Option>
+              <Input placeholder="Please Enter your Last Name" />
+            </Form.Item>
+            <Form.Item name="role" label="Role" 
+            rules={[
+              {
+                required: true,
+                message: 'Please select your Role'
+              }
+            ]}
+            >
+              <Select  placeholder="Please select your role">
+                <Select.Option value="Cashier">Cashier</Select.Option>
+                <Select.Option value="Manager">Manager</Select.Option>
+                <Select.Option value="Pharmacist">Pharmacist</Select.Option>
+                <Select.Option value="BadGuy">Martin Shkreli</Select.Option>
               </Select>
             </Form.Item>
-            <Form.Item name="review" label="Review"
-            >
-              <Slider />
-            </Form.Item>
-            <Form.Item name="notificaiton" label="Notificaiton" valuePropName="checked"
-            >
-              <Switch />
-            </Form.Item>
+            
             <div style={{textAlign: "right"}}>
             <Button type="primary" loading={loading} htmlType="submit">
               Save
