@@ -52,6 +52,14 @@ func main() {
 		FirstName string `json:"firstName"`
 	}
 
+	type AddRequest struct {
+		Username  string `json:"username"`
+		Password  string `json:"password"`
+		FirstName string `json:"firstname"`
+		LastName  string `json:"lastname"`
+		Role      string `json:"role"`
+	}
+
 	// Define an endpoint to retrieve all inventory items
 	http.HandleFunc("/inventory", func(w http.ResponseWriter, r *http.Request) {
 		// Retrieve all inventory items from the database
@@ -218,6 +226,49 @@ func main() {
 		// Respond with a success message
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Employee deleted successfully"))
+	})
+
+	// Define an endpoint to add an employee by username, password, first name, last name,and role
+	http.HandleFunc("/addEmployee", func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		// Parse the request parameters
+		var addRequest AddRequest
+		err := json.NewDecoder(r.Body).Decode(&addRequest)
+		if err != nil {
+			http.Error(w, "Invalid ID parameter", http.StatusBadRequest)
+			return
+		}
+
+		/*username := addRequest.Username
+		password := addRequest.Password
+		firstName := addRequest.FirstName
+		lastName := addRequest.LastName
+		role := addRequest.Role*/
+
+		// Call the AddEmployee function to delete the employee
+		employee, err := models.AddEmployee(addRequest.Username, addRequest.Password, addRequest.FirstName, addRequest.LastName, addRequest.Role)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Convert the employee to JSON
+		employeeJSON, err := json.Marshal(employee)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Respond with a success message
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Employee added successfully"))
+		w.Write(employeeJSON)
 	})
 
 	// Start the server
