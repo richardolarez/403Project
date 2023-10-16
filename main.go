@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"os"
 
 	dbinitializer "github.com/richardolarez/403Project/init"
 	accountmanager "github.com/richardolarez/403Project/internal/account_manager"
@@ -20,11 +21,16 @@ func enableCors(w *http.ResponseWriter) {
 }
 
 func main() {
-	// Initialize the database
-	err := dbinitializer.InitializeDatabase()
-	if err != nil {
-		fmt.Printf("Error initializing database: %v\n", err)
-		return
+	// Check if the database file exists
+	if _, err := os.Stat("./db/database.json"); os.IsNotExist(err) {
+		// Initialize the database
+		err := dbinitializer.InitializeDatabase()
+		if err != nil {
+			fmt.Printf("Error initializing database: %v\n", err)
+			return
+		}
+	} else {
+		fmt.Println("Database file already exists.")
 	}
 
 	// LoginRequest represents a request to authenticate an employee login.
@@ -38,6 +44,12 @@ func main() {
 		CustomerID    int                     `json:"customer_id"`
 		Items         []*models.InventoryItem `json:"items"`
 		PaymentMethod string                  `json:"payment_method"`
+	}
+
+	// DeleteRequest represents a request to delete an employee
+	type DeleteRequest struct {
+		ID        int    `json:"id"`
+		FirstName string `json:"firstName"`
 	}
 
 	// Define an endpoint to retrieve all inventory items
@@ -174,6 +186,38 @@ func main() {
 		// Write the JSON response to the client
 		w.Write(receiptJSON)
 
+	})
+
+	// Define an endpoint to delete an employee by ID and first name
+	http.HandleFunc("/deleteEmployee", func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		// Parse the request parameters
+		var deleteRequest DeleteRequest
+		err := json.NewDecoder(r.Body).Decode(&deleteRequest)
+		if err != nil {
+			http.Error(w, "Invalid ID parameter", http.StatusBadRequest)
+			return
+		}
+
+		id := deleteRequest.ID
+		firstName := deleteRequest.FirstName
+
+		// Call the DeleteEmployee function to delete the employee
+		err = models.DeleteEmployee(id, firstName)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Respond with a success message
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Employee deleted successfully"))
 	})
 
 	// Start the server
