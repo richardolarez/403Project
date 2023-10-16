@@ -6,13 +6,11 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
-
-	"github.com/richardolarez/SFWE403/internal/logger"
 )
 
 // A log entry in the log file
 type Log struct {
-	Level          logger.LogLevel        `json:"level"`
+	Level          LogLevel               `json:"level"`
 	Timestamp      string                 `json:"timestamp"`
 	Message        string                 `json:"message"`
 	AdditionalData map[string]interface{} `json:"additional_data"`
