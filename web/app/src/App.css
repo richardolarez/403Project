@@ -36,3 +36,8 @@
     transform: rotate(360deg);
   }
 }
+
+.selected-item {
+  background-color: #e1f5fe; /* Change the background color to your preference */
+  border: 2px solid #03a9f4; /* Add a border to highlight the selected item */
+}
