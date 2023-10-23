@@ -113,6 +113,30 @@ func main() {
 		w.Write(employeesJSON)
 	})
 
+	//Define an endpoint to retrieve all customers
+	http.HandleFunc("/customers", func(w http.ResponseWriter, r *http.Request) {
+		// Retrieve all customers from the database
+		enableCors(&w)
+		customers, err := models.GetAllCustomers()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Convert the list of customers to JSON
+		customersJSON, err := json.Marshal(customers)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Set the Content-Type header to application/json
+		w.Header().Set("Content-Type", "application/json")
+
+		// Write the JSON response to the client
+		w.Write(customersJSON)
+	})
+
 	// Define an endpoint to authenticate an employee login
 	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
 		enableCors(&w)
