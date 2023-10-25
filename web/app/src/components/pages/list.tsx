@@ -6,15 +6,23 @@ import axios from 'axios';
 
 const {Title} = Typography;
 
+
 const List = () => {
   const history = useNavigate();
   const [allData, setAllData] = useState([]);
   const [selectedUser, setSelectedUser] = useState(false);
-  const [userData, setUserData] = useState<UserData | null>(null);;
+  const [userData, setUserData] = useState<UserData | null>(null);
+  //Retrieve shadow realm from localstorage.
+  const [lockedAccounts, setLockedAccounts] = useState<string[]>(JSON.parse(localStorage.getItem('shadowRealm') || '[]'));
+  const [managerCheck, setLoggedInUserRole] = useState<string | null>(null);
+
+
 
   useEffect(() => {
       axios.get(`http://localhost:8080/employees`).then(res => {
         setAllData(res.data);
+        setLoggedInUserRole(sessionStorage.getItem("UserRole"));
+        //console.log("session role: " + sessionStorage.getItem("UserRole"))
       });
     }, []);
 
@@ -93,18 +101,28 @@ const List = () => {
   const handleRowClick = (record : UserData) => {
     setSelectedUser(record.Username) // using horrible JS true value interpretation
     setUserData(record);
-    
   }
-  
+
+  const handleUnlockClick = () => {
+    if (!userData) {
+      console.error('No user selected');
+      return;
+    }
+    //Remove accounts from locked list.
+    const updatedLockedAccounts = lockedAccounts.filter(account => account !== userData.Username);
+    setLockedAccounts(updatedLockedAccounts);
+    localStorage.setItem('shadowRealm', JSON.stringify(updatedLockedAccounts));
+  };
+    
   return (
       <div>
           <Row gutter={[40, 0]}>
-            <Col span={8}>
+            <Col span={10}>
               <Title level={2}>
               User List
               </Title>
               </Col>
-            <Col span={10}>
+            <Col span={15}>
               {selectedUser && <Title level={3}>Selected User: {selectedUser}</Title>}
             </Col>
             <Col span={2}>
@@ -116,6 +134,12 @@ const List = () => {
             <Col span={2}>
             <Button onClick={handleModClick} block>Modify</Button>
             </Col>
+            <Col span={2}>          
+            {managerCheck === "Manager" && (
+              <Button id="unlock" onClick={handleUnlockClick} block>Unlock</Button>
+            )}
+            </Col>
+            
           </Row>
           <Row gutter={[40, 0]}>
           <Col span={24}>
