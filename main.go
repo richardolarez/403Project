@@ -65,6 +65,14 @@ func main() {
 		Role      string `json:"role"`
 	}
 
+	type AddCustomerRequest struct {
+		FirstName   string `json:"firstname"`
+		LastName    string `json:"lastname"`
+		Email       string `json:"email"`
+		Phonenumber string `json:"phone"`
+		Address     string `json:"address"`
+	}
+
 	// Define an endpoint to retrieve all inventory items
 	http.HandleFunc("/inventory", func(w http.ResponseWriter, r *http.Request) {
 		// Retrieve all inventory items from the database
@@ -298,6 +306,43 @@ func main() {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Employee added successfully"))
 		w.Write(employeeJSON)
+	})
+
+	// Define an endpoint to add an customer by first name, last name, email, phone number, and address
+	http.HandleFunc("/addCustomer", func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		// Parse the request parameters
+		var addCustomerRequest AddCustomerRequest
+		err := json.NewDecoder(r.Body).Decode(&addCustomerRequest)
+		if err != nil {
+			http.Error(w, "Invalid ID parameter", http.StatusBadRequest)
+			return
+		}
+
+		// Call the AddCustomer function to delete the employee
+		customer, err := models.AddCustomer(addCustomerRequest.FirstName, addCustomerRequest.LastName, addCustomerRequest.Email, addCustomerRequest.Phonenumber, addCustomerRequest.Address)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Convert the customer to JSON
+		customerJSON, err := json.Marshal(customer)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Respond with a success message
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Employee added successfully"))
+		w.Write(customerJSON)
 	})
 
 	// Start the server
