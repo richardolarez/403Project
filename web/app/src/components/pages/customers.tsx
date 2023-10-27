@@ -76,7 +76,7 @@ const Customers = () => {
   console.log(data)
 
   const handleAddClick = () => {
-    history('/form')
+    history('/custForm')
     }
   
   const handleDelClick = () => {
