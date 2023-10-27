@@ -7,6 +7,7 @@ import Form from "../components/pages/form";
 import Checkout from '../components/pages/checkout';
 import MainLayout from '../components/layouts/MainLayout'; // Import the main application layout
 import LoginLayout from '../components/layouts/LoginLayout'; // Import the login page layout
+import Customers from '../components/pages/customers';
 
 const ApplicationRoutes: React.FC = () => {
   const isUserAuthenticated = sessionStorage.getItem("authenticated"); // Replace with your authentication logic
@@ -29,6 +30,7 @@ const ApplicationRoutes: React.FC = () => {
                 <Route path="/list" element={<List />} />
                 <Route path="/form" element={<Form />} />
                 <Route path="/checkout" element={<Checkout />} />
+                <Route path="/customers" element={<Customers />} />
               </Routes>
             </MainLayout>
           ) : (

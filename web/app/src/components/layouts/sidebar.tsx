@@ -7,6 +7,7 @@ import {
     UploadOutlined,
     DollarOutlined,
     InfoCircleOutlined,
+    FrownOutlined
   } from '@ant-design/icons';
 import {useNavigate}  from 'react-router';
 const SideNav = () => {
@@ -26,6 +27,9 @@ const handleCheckoutClick = () => {
     }
 const handleInfoClick = () => {
         history('/info');
+}
+const handleCustClick = () => {
+    history('/customers');
 }
 
 
@@ -47,10 +51,15 @@ return (
                     <UserOutlined />
                     <span> Users</span>
                 </Menu.Item>
+                <Menu.Item key="4" onClick={handleCustClick}>
+                    <FrownOutlined />
+                    <span> Users</span>
+                </Menu.Item>
                 <Menu.Item key="3" onClick={handleCheckoutClick}>
                     <DollarOutlined />
                     <span> Checkout</span>
                 </Menu.Item>
+                
                 <Menu.Item style={{
                     position: 'absolute',
                     bottom: 0,
