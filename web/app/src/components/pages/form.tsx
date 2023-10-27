@@ -1,7 +1,7 @@
 //src/components/pages/form.tsx
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Row, Col, Typography, Input, Form, Button, 
-Radio, Switch, Slider, Select, message} from 'antd';
+Radio, Switch, Slider, Select, message, Checkbox, Tooltip} from 'antd';
 import axios from 'axios';
 import {useNavigate} from 'react-router';
 const {Title} = Typography;
@@ -11,10 +11,18 @@ const layout = {
 };
 const FormApp = () => {
   const [loading, setLoading] = useState(false);
+  const [isCustomer, setIsCustomer] = useState(false);
+  const [userRole, setUserRole] = useState('');
+
   const history = useNavigate();
   
 const handleSubmit = (values: any) => {
     setLoading(true);
+
+    if (isCustomer) {
+      values.role = 'Customer';
+    }
+
     axios.post(`http://localhost:8080/addEmployee`, 
       values
     )
@@ -28,6 +36,24 @@ const handleSubmit = (values: any) => {
       message.error(error);
     })
   }
+
+  const roleRules = isCustomer
+    ? 
+    [] : [
+      {
+        required: true,
+        message: 'Please select your Role',
+      },
+    ];
+
+    useEffect(() => {
+      // Load user role from session storage
+      const storedUserRole = sessionStorage.getItem('UserRole');
+      if (storedUserRole) {
+        setUserRole(storedUserRole);
+      }
+    }, []);
+    
 return (
     <div>
         <Row gutter={[40, 0]}>
@@ -81,25 +107,42 @@ return (
               <Input placeholder="Please Enter your Last Name" />
             </Form.Item>
             <Form.Item name="role" label="Role" 
-            rules={[
-              {
-                required: true,
-                message: 'Please select your Role'
-              }
-            ]}
+            rules={roleRules}
             >
-              <Select  placeholder="Please select your role">
+              <Select  placeholder="Please select your role" disabled={isCustomer}>
                 <Select.Option value="Cashier">Cashier</Select.Option>
                 <Select.Option value="Manager">Manager</Select.Option>
                 <Select.Option value="Pharmacist">Pharmacist</Select.Option>
                 <Select.Option value="BadGuy">Martin Shkreli</Select.Option>
               </Select>
             </Form.Item>
-            
+
+            <Form.Item name="isCustomer" label="Is Customer">
+              <Checkbox
+                checked={isCustomer}
+                onChange={(e) => setIsCustomer(e.target.checked)}
+              >
+                Is Customer
+              </Checkbox>
+              
+            </Form.Item>
+
             <div style={{textAlign: "right"}}>
-            <Button type="primary" loading={loading} htmlType="submit">
-              Save
-            </Button>{' '}
+            {userRole !== 'Manager' && (
+            <Tooltip
+              title="You is NOT a manager!"
+              placement="bottom"
+            >
+              <Button
+                type="primary"
+                loading={loading}
+                htmlType="submit"
+                disabled={userRole !== 'Manager'}
+              >
+                Save
+              </Button>
+            </Tooltip>
+          )}
             <Button type="default" htmlType="button" onClick={() => history('/list')}>
               Back
             </Button>
