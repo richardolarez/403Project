@@ -3,8 +3,7 @@ import { Menu} from 'antd';
 import {
     HomeOutlined,
     UserOutlined,
-    VideoCameraOutlined,
-    UploadOutlined,
+    FileDoneOutlined,
     DollarOutlined,
     InfoCircleOutlined,
   } from '@ant-design/icons';
@@ -18,8 +17,8 @@ const handleHomeClick = () => {
 const handleUserClick = () => {
         history('/list');
     }
-const handleFileClick = () => {
-        history('/files');
+const handlePrescriptionsClick = () => {
+        history('/prescriptions');
     }
 const handleCheckoutClick = () => {
         history('/checkout');
@@ -47,7 +46,11 @@ return (
                     <UserOutlined />
                     <span> Users</span>
                 </Menu.Item>
-                <Menu.Item key="3" onClick={handleCheckoutClick}>
+                <Menu.Item key="3" onClick={handlePrescriptionsClick}>
+                    <FileDoneOutlined />
+                    <span> Prescriptions</span>
+                </Menu.Item>
+                <Menu.Item key="4" onClick={handleCheckoutClick}>
                     <DollarOutlined />
                     <span> Checkout</span>
                 </Menu.Item>
