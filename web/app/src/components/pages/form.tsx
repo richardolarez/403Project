@@ -11,17 +11,12 @@ const layout = {
 };
 const FormApp = () => {
   const [loading, setLoading] = useState(false);
-  const [isCustomer, setIsCustomer] = useState(false);
   const [userRole, setUserRole] = useState('');
 
   const history = useNavigate();
   
 const handleSubmit = (values: any) => {
     setLoading(true);
-
-    if (isCustomer) {
-      values.role = 'Customer';
-    }
 
     axios.post(`http://localhost:8080/addEmployee`, 
       values
@@ -37,14 +32,6 @@ const handleSubmit = (values: any) => {
     })
   }
 
-  const roleRules = isCustomer
-    ? 
-    [] : [
-      {
-        required: true,
-        message: 'Please select your Role',
-      },
-    ];
 
     useEffect(() => {
       // Load user role from session storage
@@ -107,24 +94,21 @@ return (
               <Input placeholder="Please Enter your Last Name" />
             </Form.Item>
             <Form.Item name="role" label="Role" 
-            rules={roleRules}
+            rules={
+              [
+                {
+                required: true,
+                message: 'Please select your Role',
+                }
+              ]
+            } 
             >
-              <Select  placeholder="Please select your role" disabled={isCustomer}>
+              <Select  placeholder="Please select your role">
                 <Select.Option value="Cashier">Cashier</Select.Option>
                 <Select.Option value="Manager">Manager</Select.Option>
                 <Select.Option value="Pharmacist">Pharmacist</Select.Option>
                 <Select.Option value="BadGuy">Martin Shkreli</Select.Option>
               </Select>
-            </Form.Item>
-
-            <Form.Item name="isCustomer" label="Is Customer">
-              <Checkbox
-                checked={isCustomer}
-                onChange={(e) => setIsCustomer(e.target.checked)}
-              >
-                Is Customer
-              </Checkbox>
-              
             </Form.Item>
 
             <div style={{textAlign: "right"}}>
