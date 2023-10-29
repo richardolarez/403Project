@@ -12,7 +12,6 @@ const Customers = () => {
   const [allData, setAllData] = useState([]);
   const [selectedUser, setSelectedUser] = useState(false);
   const [userData, setUserData] = useState<CustomerData | null>(null);
-  const [managerCheck, setLoggedInUserRole] = useState<string | null>(null);
 
 
 
@@ -111,7 +110,6 @@ const Customers = () => {
     setSelectedUser(record.FirstName) // using horrible JS true value interpretation
     setUserData(record);
   }
-
     
   return (
       <div>
