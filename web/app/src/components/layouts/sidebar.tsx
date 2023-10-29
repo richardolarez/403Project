@@ -7,37 +7,40 @@ import {
     UploadOutlined,
     DollarOutlined,
     InfoCircleOutlined,
+    DatabaseOutlined,
   } from '@ant-design/icons';
 import {useNavigate}  from 'react-router';
 const SideNav = () => {
     const history = useNavigate();
 
-const handleHomeClick = () => {
+    const handleHomeClick = () => {
         history('/home');
     }
-const handleUserClick = () => {
+    const handleUserClick = () => {
         history('/list');
     }
-const handleFileClick = () => {
+    const handleFileClick = () => {
         history('/files');
     }
-const handleCheckoutClick = () => {
+    const handleCheckoutClick = () => {
         history('/checkout');
     }
-const handleInfoClick = () => {
+    const handleInfoClick = () => {
         history('/info');
-}
+    }
+    const handleInventoryClick = () => {
+        history('/inventory');
+    }
 
-
-return (
-      <div>
-        <div style={{height: "32px", margin: "16px", display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-            <img
-                src="/poos_logo.png" // Update the image URL
-                alt="Logo"
-                style={{ marginTop: '5%', height: '100%', marginBottom: '5%',}}
+    return (
+        <div>
+            <div style={{height: "32px", margin: "16px", display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
+                <img
+                    src="/poos_logo.png" // Update the image URL
+                    alt="Logo"
+                    style={{ marginTop: '5%', height: '100%', marginBottom: '5%',}}
                 />
-        </div>
+            </div>
             <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
                 <Menu.Item key="1" onClick={handleHomeClick}>
                     <HomeOutlined/>
@@ -51,17 +54,21 @@ return (
                     <DollarOutlined />
                     <span> Checkout</span>
                 </Menu.Item>
+                <Menu.Item key="4" onClick={handleInventoryClick}>
+                    <DatabaseOutlined />
+                    <span> Inventory</span>
+                </Menu.Item>
                 <Menu.Item style={{
                     position: 'absolute',
                     bottom: 0,
                     zIndex: 1,
                     transition: 'all 0.2s',
-                    }}key="6" onClick={handleInfoClick}>
+                    }}key="5" onClick={handleInfoClick}>
                     <InfoCircleOutlined />
                     <span> Info</span>
                 </Menu.Item>
             </Menu>
         </div>
-  );
+    );
 }
 export default SideNav;
