@@ -7,6 +7,7 @@ import {
     UploadOutlined,
     DollarOutlined,
     InfoCircleOutlined,
+    FrownOutlined,
     DatabaseOutlined,
   } from '@ant-design/icons';
 import {useNavigate}  from 'react-router';
@@ -28,6 +29,9 @@ const SideNav = () => {
     const handleInfoClick = () => {
         history('/info');
     }
+const handleCustClick = () => {
+    history('/customers');
+}
     const handleInventoryClick = () => {
         history('/inventory');
     }
@@ -50,11 +54,16 @@ const SideNav = () => {
                     <UserOutlined />
                     <span> Users</span>
                 </Menu.Item>
-                <Menu.Item key="3" onClick={handleCheckoutClick}>
+                <Menu.Item key="3" onClick={handleCustClick}>
+                    <FrownOutlined />
+                    <span> Customers</span>
+                </Menu.Item>
+                <Menu.Item key="4" onClick={handleCheckoutClick}>
                     <DollarOutlined />
                     <span> Checkout</span>
                 </Menu.Item>
-                <Menu.Item key="4" onClick={handleInventoryClick}>
+                
+                <Menu.Item key="5" onClick={handleInventoryClick}>
                     <DatabaseOutlined />
                     <span> Inventory</span>
                 </Menu.Item>
@@ -63,7 +72,7 @@ const SideNav = () => {
                     bottom: 0,
                     zIndex: 1,
                     transition: 'all 0.2s',
-                    }}key="5" onClick={handleInfoClick}>
+                    }}key="6" onClick={handleInfoClick}>
                     <InfoCircleOutlined />
                     <span> Info</span>
                 </Menu.Item>

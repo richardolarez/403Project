@@ -9,8 +9,9 @@ const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
 };
-const FormApp = () => {
+const CustForm = () => {
   const [loading, setLoading] = useState(false);
+  const [isCustomer, setIsCustomer] = useState(false);
   const [userRole, setUserRole] = useState('');
 
   const history = useNavigate();
@@ -18,13 +19,14 @@ const FormApp = () => {
 const handleSubmit = (values: any) => {
     setLoading(true);
 
-    axios.post(`http://localhost:8080/addEmployee`, 
+
+    axios.post(`http://localhost:8080/addCustomer`, 
       values
     )
     .then(res => {
       setLoading(false);
-      message.success('User Added Successfully!');
-      history('/list');
+      message.success('Customer Added Successfully!');
+      history('/customers');
     })
     .catch(error => {
       setLoading(false);
@@ -32,6 +34,14 @@ const handleSubmit = (values: any) => {
     })
   }
 
+  const roleRules = isCustomer
+    ? 
+    [] : [
+      {
+        required: true,
+        message: 'Please select your Role',
+      },
+    ];
 
     useEffect(() => {
       // Load user role from session storage
@@ -46,14 +56,14 @@ return (
         <Row gutter={[40, 0]}>
           <Col span={23}>
             <Title style={{textAlign: 'center'}} level={2}>
-            Please Fill the User Form
+            Please Fill the Customer Form
             </Title>
             </Col>
         </Row>
         <Row gutter={[40, 0]}>
         <Col span={18}>
           <Form {...layout} onFinish={handleSubmit}>
-            <Form.Item name="username" label="UserName"
+            <Form.Item name="FirstName" label="First Name"
             rules={[
               {
                 required: true,
@@ -61,56 +71,50 @@ return (
               }
             ]}
             >
-              <Input placeholder="Please Enter your username" />
+              <Input placeholder="Please Enter First Name" />
             </Form.Item>
-            <Form.Item name="password" label="password" 
+            <Form.Item name="LastName" label="Last Name" 
             rules={[
               {
                 required: true,
-                message: 'Please input your password'
+                message: 'Please input your Last name'
               }
             ]}
             >
-              <Input placeholder="Please Enter your desired password" />
+              <Input placeholder="Please Enter Last Name" />
             </Form.Item>
-            <Form.Item name="firstname" label="First Name" 
+            <Form.Item name="Email" label="Email" 
             rules={[
               {
                 required: true,
-                message: 'Please input your First name',
+                message: 'Please input Email',
               }
             ]}
             >
-              <Input placeholder="Please Enter your First Name" />
+              <Input placeholder="Please Enter Email" />
             </Form.Item>
-            <Form.Item name="lastname" label="Last Name" 
+            <Form.Item name="phone" label="Phone Number" 
             rules={[
               {
                 required: true,
-                message: 'Please input your Last name',
+                message: 'Please input your Phone number',
               }
             ]}
             >
-              <Input placeholder="Please Enter your Last Name" />
-            </Form.Item>
-            <Form.Item name="role" label="Role" 
-            rules={
-              [
-                {
-                required: true,
-                message: 'Please select your Role',
-                }
-              ]
-            } 
-            >
-              <Select  placeholder="Please select your role">
-                <Select.Option value="Cashier">Cashier</Select.Option>
-                <Select.Option value="Manager">Manager</Select.Option>
-                <Select.Option value="Pharmacist">Pharmacist</Select.Option>
-                <Select.Option value="BadGuy">Martin Shkreli</Select.Option>
-              </Select>
+              <Input placeholder="Please Enter your Phone Number" />
             </Form.Item>
 
+            <Form.Item name="Address" label="Address" 
+            rules={[
+              {
+                required: true,
+                message: 'Please input Address',
+              }
+            ]}
+            >
+              <Input placeholder="Please Enter Address" />
+            </Form.Item>
+            
             <div style={{textAlign: "right"}}>
             {userRole == 'Manager' && (
               <Button
@@ -121,7 +125,7 @@ return (
                 Save
               </Button>
           )}
-            <Button type="default" htmlType="button" onClick={() => history('/list')}>
+            <Button type="default" htmlType="button" onClick={() => history('/customers')}>
               Back
             </Button>
               </div>
@@ -131,4 +135,4 @@ return (
     </div>
   );
 }
-export default FormApp;
+export default CustForm;

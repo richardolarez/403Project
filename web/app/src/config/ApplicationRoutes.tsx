@@ -8,6 +8,8 @@ import Checkout from '../components/pages/checkout';
 import Inventory from '../components/pages/inventory'; // Import the inventory page
 import MainLayout from '../components/layouts/MainLayout'; // Import the main application layout
 import LoginLayout from '../components/layouts/LoginLayout'; // Import the login page layout
+import Customers from '../components/pages/customers';
+import CustForm from '../components/pages/custForm';
 
 
 const ApplicationRoutes: React.FC = () => {
@@ -31,7 +33,9 @@ const ApplicationRoutes: React.FC = () => {
                 <Route path="/list" element={<List />} />
                 <Route path="/form" element={<Form />} />
                 <Route path="/checkout" element={<Checkout />} />
-                <Route path="/inventory" element={<Inventory />} /> // Add the inventory route
+                <Route path="/customers" element={<Customers />} />
+                <Route path="/custForm" element={<CustForm />} />
+                <Route path="/inventory" element={<Inventory />} />
               </Routes>
             </MainLayout>
           ) : (
