@@ -94,9 +94,6 @@ const List = () => {
     });
     }
   
-  const handleModClick = () => {
-    history('/form')
-    }
 
   const handleRowClick = (record : UserData) => {
     setSelectedUser(record.Username) // using horrible JS true value interpretation
@@ -131,9 +128,7 @@ const List = () => {
             <Col span={2}>
             <Button onClick={handleDelClick} block>Delete</Button>
             </Col> 
-            <Col span={2}>
-            <Button onClick={handleModClick} block>Modify</Button>
-            </Col>
+           
             <Col span={2}>          
             {managerCheck === "Manager" && (
               <Button id="unlock" onClick={handleUnlockClick} block>Unlock</Button>

@@ -72,7 +72,7 @@ const handleCustClick = () => {
                     bottom: 0,
                     zIndex: 1,
                     transition: 'all 0.2s',
-                    }}key="5" onClick={handleInfoClick}>
+                    }}key="6" onClick={handleInfoClick}>
                     <InfoCircleOutlined />
                     <span> Info</span>
                 </Menu.Item>

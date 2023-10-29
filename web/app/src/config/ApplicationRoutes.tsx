@@ -35,7 +35,7 @@ const ApplicationRoutes: React.FC = () => {
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/customers" element={<Customers />} />
                 <Route path="/custForm" element={<CustForm />} />
-                <Route path="/inventory" element={<Inventory />} /> // Add the inventory route
+                <Route path="/inventory" element={<Inventory />} />
               </Routes>
             </MainLayout>
           ) : (
