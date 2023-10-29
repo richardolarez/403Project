@@ -51,7 +51,7 @@ func main() {
 		PaymentMethod string                  `json:"payment_method"`
 	}
 
-	// DeleteRequest represents a request to delete an employee
+	// DeleteRequest represents a request to delete an employee/customer by ID and first name.
 	type DeleteRequest struct {
 		ID        int    `json:"id"`
 		FirstName string `json:"firstName"`
@@ -69,7 +69,7 @@ func main() {
 		FirstName   string `json:"firstname"`
 		LastName    string `json:"lastname"`
 		Email       string `json:"email"`
-		Phonenumber string `json:"phone"`
+		PhoneNumber string `json:"phonenumber"`
 		Address     string `json:"address"`
 	}
 
@@ -325,8 +325,8 @@ func main() {
 			return
 		}
 
-		// Call the AddCustomer function to delete the employee
-		customer, err := models.AddCustomer(addCustomerRequest.FirstName, addCustomerRequest.LastName, addCustomerRequest.Email, addCustomerRequest.Phonenumber, addCustomerRequest.Address)
+		// Call the AddCustomer function to add the customer
+		customer, err := models.AddCustomer(addCustomerRequest.FirstName, addCustomerRequest.LastName, addCustomerRequest.Email, addCustomerRequest.PhoneNumber, addCustomerRequest.Address)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -341,8 +341,40 @@ func main() {
 
 		// Respond with a success message
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("Employee added successfully"))
+		w.Write([]byte("Customer added successfully"))
 		w.Write(customerJSON)
+	})
+
+	// Define an endpoint to delete a customer by ID and first name
+	http.HandleFunc("/deleteCustomer", func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		// Parse the request parameters
+		var deleteRequest DeleteRequest
+		err := json.NewDecoder(r.Body).Decode(&deleteRequest)
+		if err != nil {
+			http.Error(w, "Invalid ID parameter", http.StatusBadRequest)
+			return
+		}
+
+		id := deleteRequest.ID
+		firstName := deleteRequest.FirstName
+
+		// Call the DeleteEmployee function to delete the employee
+		err = models.DeleteCustomer(id, firstName)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Respond with a success message
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Customer deleted successfully"))
 	})
 
 	// Define an endpoint to add new inventory items
