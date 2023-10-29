@@ -12,13 +12,14 @@ import (
 
 // Customer represents a customer with basic information and a transaction history.
 type Customer struct {
-	ID           int                 // Unique identifier for the customer
-	FirstName    string              // First name of the customer
-	LastName     string              // Last name of the customer
-	Email        string              // Email address of the customer
-	PhoneNumber  string              // Phone number of the customer
-	Address      string              // Address of the customer
-	Transactions []*SalesTransaction // List of sales transactions for the customer
+	ID                    int                 // Unique identifier for the customer
+	FirstName             string              // First name of the customer
+	LastName              string              // Last name of the customer
+	Email                 string              // Email address of the customer
+	PhoneNumber           string              // Phone number of the customer
+	Address               string              // Address of the customer
+	Transactions          []*SalesTransaction // List of sales transactions for the customer
+	AssignedPrescriptions []*Prescription     // List of prescriptions assigned to the customer
 }
 
 // GetCustomer retrieves a customer by ID.
@@ -179,4 +180,10 @@ func AddCustomer(firstName, lastName, email, phoneNumber, address string) (*Cust
 // AddTransaction adds a sales transaction to the customer's transaction history.
 func (c *Customer) AddTransaction(transaction *SalesTransaction) {
 	c.Transactions = append(c.Transactions, transaction)
+}
+
+// AddPrescription adds a prescription to the customer's assigned prescriptions.
+func (c *Customer) AddPrescription(prescription *Prescription) {
+	//TODO
+	c.AssignedPrescriptions = append(c.AssignedPrescriptions, prescription)
 }

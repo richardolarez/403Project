@@ -1,7 +1,6 @@
-//src/components/pages/form.tsx
+//src/components/pages/prescriptions.tsx
 import React, {useState} from 'react';
-import {Row, Col, Typography, Input, Form, Button, 
-Radio, Switch, Slider, Select, message} from 'antd';
+import {Typography, message} from 'antd';
 import axios from 'axios';
 import {useNavigate} from 'react-router';
 const {Title} = Typography;
@@ -9,7 +8,7 @@ const layout = {
   labelCol: { span: 8 },
   wrapperCol: { span: 16 },
 };
-const PrescriptionsApp = () => {
+const Prescriptions = () => {
   const [loading, setLoading] = useState(false);
   const history = useNavigate();
   
@@ -20,7 +19,7 @@ const handleSubmit = (values: any) => {
     )
     .then(res => {
       setLoading(false);
-      message.success('User Added Successfully!');
+      message.success('Prescription Added Successfully!');
       history('/list');
     })
     .catch(error => {
@@ -30,84 +29,8 @@ const handleSubmit = (values: any) => {
   }
 return (
     <div>
-        <Row gutter={[40, 0]}>
-          <Col span={23}>
-            <Title style={{textAlign: 'center'}} level={2}>
-            Please Fill the User Form
-            </Title>
-            </Col>
-        </Row>
-        <Row gutter={[40, 0]}>
-        <Col span={18}>
-          <Form {...layout} onFinish={handleSubmit}>
-            <Form.Item name="username" label="UserName"
-            rules={[
-              {
-                required: true,
-                message: 'Please input your name',
-              }
-            ]}
-            >
-              <Input placeholder="Please Enter your username" />
-            </Form.Item>
-            <Form.Item name="password" label="password" 
-            rules={[
-              {
-                required: true,
-                message: 'Please input your password'
-              }
-            ]}
-            >
-              <Input placeholder="Please Enter your desired password" />
-            </Form.Item>
-            <Form.Item name="firstname" label="First Name" 
-            rules={[
-              {
-                required: true,
-                message: 'Please input your First name',
-              }
-            ]}
-            >
-              <Input placeholder="Please Enter your First Name" />
-            </Form.Item>
-            <Form.Item name="lastname" label="Last Name" 
-            rules={[
-              {
-                required: true,
-                message: 'Please input your Last name',
-              }
-            ]}
-            >
-              <Input placeholder="Please Enter your Last Name" />
-            </Form.Item>
-            <Form.Item name="role" label="Role" 
-            rules={[
-              {
-                required: true,
-                message: 'Please select your Role'
-              }
-            ]}
-            >
-              <Select  placeholder="Please select your role">
-                <Select.Option value="Cashier">Cashier</Select.Option>
-                <Select.Option value="Manager">Manager</Select.Option>
-                <Select.Option value="Pharmacist">Pharmacist</Select.Option>
-                <Select.Option value="BadGuy">Martin Shkreli</Select.Option>
-              </Select>
-            </Form.Item>
-            
-            <div style={{textAlign: "right"}}>
-            <Button type="primary" loading={loading} htmlType="submit">
-              Save
-            </Button>{' '}
-            <Button type="default" htmlType="button" onClick={() => history('/list')}>
-              Back
-            </Button>
-              </div>
-          </Form>
-          </Col>
-        </Row>
+        TEST
     </div>
   );
 }
-export default PrescriptionsApp;
+export default Prescriptions;

@@ -1,7 +1,6 @@
 //src/components/pages/form.tsx
 import React, {useState} from 'react';
-import {Row, Col, Typography, Input, Form, Button, 
-Radio, Switch, Slider, Select, message} from 'antd';
+import {Row, Col, Typography, Input, Form, Button, Select, message} from 'antd';
 import axios from 'axios';
 import {useNavigate} from 'react-router';
 const {Title} = Typography;

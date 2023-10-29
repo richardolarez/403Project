@@ -11,11 +11,12 @@ import (
 
 // InventoryItem represents an item in the pharmacy's inventory.
 type InventoryItem struct {
-	ID          int     // Unique identifier for the item
-	Name        string  // Name of the item
-	Description string  // Description of the item
-	Price       float64 // Price of the item
-	Quantity    int     // Quantity of the item in stock
+	ID             int     // Unique identifier for the item
+	Name           string  // Name of the item
+	Description    string  // Description of the item
+	Price          float64 // Price of the item
+	Quantity       int     // Quantity of the item in stock
+	IsPrescription bool    // Is the item a prescription?
 }
 
 // GetInventory retrieves all inventory items.
@@ -81,11 +82,12 @@ func NewInventoryItem(id int, name string, description string, price float64, qu
 
 	// Add the new item to the inventory array
 	itemMap := map[string]interface{}{
-		"id":          id,
-		"name":        name,
-		"description": description,
-		"price":       price,
-		"quantity":    quantity,
+		"id":             id,
+		"name":           name,
+		"description":    description,
+		"price":          price,
+		"quantity":       quantity,
+		"isPrescription": false, // fixed variable name and set default value
 	}
 	inventoryArray = append(inventoryArray, itemMap)
 

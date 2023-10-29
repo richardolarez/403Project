@@ -3,6 +3,7 @@ import { Route, Routes, Navigate} from "react-router-dom";
 import Login from '../components/pages/login';
 import Home from '../components/pages/home';
 import List from "../components/pages/list";
+import Prescriptions from '../components/pages/prescriptions';
 import Form from "../components/pages/form";
 import Checkout from '../components/pages/checkout';
 import MainLayout from '../components/layouts/MainLayout'; // Import the main application layout
@@ -27,6 +28,7 @@ const ApplicationRoutes: React.FC = () => {
               <Routes>
                 <Route path="/Home" element={<Home />} />
                 <Route path="/list" element={<List />} />
+                <Route path="/prescriptions" element={<Prescriptions />} />
                 <Route path="/form" element={<Form />} />
                 <Route path="/checkout" element={<Checkout />} />
               </Routes>
