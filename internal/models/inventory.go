@@ -11,11 +11,12 @@ import (
 
 // InventoryItem represents an item in the pharmacy's inventory.
 type InventoryItem struct {
-	ID          int     // Unique identifier for the item
-	Name        string  // Name of the item
-	Description string  // Description of the item
-	Price       float64 // Price of the item
-	Quantity    int     // Quantity of the item in stock
+	ID             int     // Unique identifier for the item
+	Name           string  // Name of the item
+	Description    string  // Description of the item
+	Price          float64 // Price of the item
+	Quantity       int     // Quantity of the item in stock
+	IsPrescription bool    // Is the item a prescription drug?
 }
 
 // GetInventory retrieves all inventory items.
@@ -59,7 +60,7 @@ func GetInventory() ([]*InventoryItem, error) {
 }
 
 // NewInventoryItem adds a new inventory item to the database.
-func NewInventoryItem(id int, name string, description string, price float64, quantity int) error {
+func NewInventoryItem(id int, name string, description string, price float64, quantity int, isPrescription bool) error {
 	// Read the inventory data from the JSON file
 	data, err := ioutil.ReadFile("./db/database.json")
 	if err != nil {
@@ -81,11 +82,12 @@ func NewInventoryItem(id int, name string, description string, price float64, qu
 
 	// Add the new item to the inventory array
 	itemMap := map[string]interface{}{
-		"id":          id,
-		"name":        name,
-		"description": description,
-		"price":       price,
-		"quantity":    quantity,
+		"id":             id,
+		"name":           name,
+		"description":    description,
+		"price":          price,
+		"quantity":       quantity,
+		"isPrescription": isPrescription,
 	}
 	inventoryArray = append(inventoryArray, itemMap)
 
@@ -107,6 +109,47 @@ func NewInventoryItem(id int, name string, description string, price float64, qu
 	return nil
 }
 
+// GetInventoryItem retrieves an inventory item by ID.
+func GetInventoryItem(id int) (*InventoryItem, error) {
+	// Read the inventory data from the JSON file
+	data, err := ioutil.ReadFile("./db/database.json")
+	if err != nil {
+		return nil, fmt.Errorf("error reading inventory data: %v", err)
+	}
+
+	// Unmarshal the inventory data into a map
+	var inventoryData map[string]interface{}
+	err = json.Unmarshal(data, &inventoryData)
+	if err != nil {
+		return nil, fmt.Errorf("error unmarshaling inventory data: %v", err)
+	}
+
+	// Get the inventory array from the data map
+	inventoryArray, ok := inventoryData["inventory"].([]interface{})
+	if !ok {
+		return nil, fmt.Errorf("error getting inventory array from data")
+	}
+
+	// Find the item with the given ID
+	for _, itemData := range inventoryArray {
+		itemJSON, err := json.Marshal(itemData)
+		if err != nil {
+			return nil, fmt.Errorf("error marshaling inventory item data: %v", err)
+		}
+		var item InventoryItem
+		err = json.Unmarshal(itemJSON, &item)
+		if err != nil {
+			return nil, fmt.Errorf("error unmarshaling inventory item data: %v", err)
+		}
+		if item.ID == id {
+			return &item, nil
+		}
+	}
+
+	// Return an error if the item is not found
+	return nil, fmt.Errorf("item not found")
+}
+
 // IncreaseQuantity increases the quantity of the item in stock.
 func (item *InventoryItem) IncreaseQuantity(amount int) {
 	item.Quantity += amount
@@ -117,6 +160,15 @@ func (item *InventoryItem) DecreaseQuantity(amount int) {
 	if item.Quantity >= amount {
 		item.Quantity -= amount
 	}
+}
+
+// Update current inventory item
+func (item *InventoryItem) Update(name string, description string, price float64, quantity int, isPrescription bool) {
+	item.Name = name
+	item.Description = description
+	item.Price = price
+	item.Quantity = quantity
+	item.IsPrescription = isPrescription
 }
 
 // TotalValue returns the total value of the item in stock (price * quantity).
