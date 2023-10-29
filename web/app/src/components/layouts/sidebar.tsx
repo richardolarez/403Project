@@ -53,7 +53,7 @@ return (
                 </Menu.Item>
                 <Menu.Item key="4" onClick={handleCustClick}>
                     <FrownOutlined />
-                    <span> Users</span>
+                    <span> Customers</span>
                 </Menu.Item>
                 <Menu.Item key="3" onClick={handleCheckoutClick}>
                     <DollarOutlined />

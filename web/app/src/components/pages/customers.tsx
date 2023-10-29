@@ -102,7 +102,7 @@ const Customers = () => {
     });
     }
   
-  const handleModClick = () => {
+  const handleTransClick = () => {
     history('/form')
     }
 
@@ -129,7 +129,7 @@ const Customers = () => {
             <Button onClick={handleDelClick} block>Delete</Button>
             </Col> 
             <Col span={2}>
-            <Button onClick={handleModClick} block>Modify</Button>
+            <Button onClick={handleTransClick} block>Transactions</Button>
             </Col>
           </Row>
           <Row gutter={[40, 0]}>

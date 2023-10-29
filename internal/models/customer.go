@@ -137,9 +137,9 @@ func AddCustomer(firstName, lastName, email, phoneNumber, address string) (*Cust
 	}
 
 	// Get the customers object from the map
-	customerObj, ok := db["employees"]
+	customerObj, ok := db["customers"]
 	if !ok {
-		return nil, fmt.Errorf("employees object not found in database")
+		return nil, fmt.Errorf("customers object not found in database")
 	}
 
 	// Convert the customers object to a JSON string

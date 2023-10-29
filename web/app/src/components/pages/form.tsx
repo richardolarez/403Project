@@ -128,20 +128,14 @@ return (
             </Form.Item>
 
             <div style={{textAlign: "right"}}>
-            {userRole !== 'Manager' && (
-            <Tooltip
-              title="You is NOT a manager!"
-              placement="bottom"
-            >
+            {userRole == 'Manager' && (
               <Button
                 type="primary"
                 loading={loading}
                 htmlType="submit"
-                disabled={userRole !== 'Manager'}
               >
                 Save
               </Button>
-            </Tooltip>
           )}
             <Button type="default" htmlType="button" onClick={() => history('/list')}>
               Back
