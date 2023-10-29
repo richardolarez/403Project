@@ -68,7 +68,7 @@ func GetCustomer(id int) (*Customer, error) {
 	return nil, fmt.Errorf("customer not found")
 }
 
-// GetAllEmployees retrieves all employees.
+// GetAllCustomers retrieves all employees.
 func GetAllCustomers() ([]*Customer, error) {
 	// Read the contents of the database file
 	data, err := ioutil.ReadFile("./db/database.json")
@@ -83,26 +83,26 @@ func GetAllCustomers() ([]*Customer, error) {
 		return nil, err
 	}
 
-	// Get the employees object from the map
+	// Get the customers object from the map
 	customersObj, ok := db["customers"]
 	if !ok {
 		return nil, fmt.Errorf("customers object not found in database")
 	}
 
-	// Convert the employees object to a JSON string
+	// Convert the customers object to a JSON string
 	customersJSON, err := json.Marshal(customersObj)
 	if err != nil {
 		return nil, err
 	}
 
-	// Unmarshal the JSON data into an array of Employee objects
+	// Unmarshal the JSON data into an array of Customer objects
 	var customers []*Customer
 	err = json.Unmarshal(customersJSON, &customers)
 	if err != nil {
 		return nil, err
 	}
 
-	// Return the array of Employee objects
+	// Return the array of Customer objects
 	return customers, nil
 }
 
@@ -174,6 +174,74 @@ func AddCustomer(firstName, lastName, email, phoneNumber, address string) (*Cust
 	}
 
 	return newCustomer, nil
+}
+
+// DeleteCustomer deletes a customer by ID and first name from the database.
+func DeleteCustomer(id int, FirstName string) error {
+	// Read the contents of the database file
+	data, err := ioutil.ReadFile("./db/database.json")
+	if err != nil {
+		return err
+	}
+
+	// Unmarshal the JSON data into a map
+	var db map[string]interface{}
+	err = json.Unmarshal(data, &db)
+	if err != nil {
+		return err
+	}
+
+	// Get the customers object from the map
+	customersObj, ok := db["customers"]
+	if !ok {
+		return fmt.Errorf("customers object not found in database")
+	}
+
+	// Convert the customers object to a JSON string
+	customersJSON, err := json.Marshal(customersObj)
+	if err != nil {
+		return err
+	}
+
+	// Unmarshal the JSON data into an array of Customer objects
+	var customers []*Customer
+	err = json.Unmarshal(customersJSON, &customers)
+	if err != nil {
+		return err
+	}
+
+	// Find the index of the customer with the specified ID and first name
+	index := -1
+	for i, customer := range customers {
+		if customer.ID == id && customer.FirstName == FirstName {
+			index = i
+			break
+		}
+	}
+
+	if index == -1 {
+		return fmt.Errorf("customer with ID %d and first name %s not found", id, FirstName)
+	}
+
+	// Remove the customer from the array
+	customers = append(customers[:index], customers[index+1:]...)
+
+	// Update the customers object in the map
+	db["customers"] = customers
+
+	// Marshal the map back to JSON
+	updatedData, err := json.Marshal(db)
+	if err != nil {
+		return err
+	}
+
+	// Write the updated JSON data to the database file
+	err = ioutil.WriteFile("./db/database.json", updatedData, 0644)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 // AddTransaction adds a sales transaction to the customer's transaction history.
