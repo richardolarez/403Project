@@ -16,6 +16,7 @@ type Prescription struct {
 	Doses        int     // Number of drug doses
 	Strength     string  // Strength of the drug per dose
 	Price        float64 // Price of the item
+	Doctor       string  // Name of the doctor who prescribed the drug
 	CustomerID   int     // ID of the customer who the prescription s assigned to
 	IsFilled     bool    // Is the prescription filled?
 	PharmacistID int     // ID of the pharmacist who filled the prescription
@@ -62,7 +63,7 @@ func GetPrescriptions() ([]*Prescription, error) {
 }
 
 // NewPrescription adds a new prescription to the prescriptions db
-func NewPrescription(id int, drug string, doses int, strength string, price float64, customerid int) error {
+func NewPrescription(id int, drug string, doses int, strength string, price float64, doctor string, customerid int) error {
 	// Read the inventory data from the JSON file
 	data, err := ioutil.ReadFile("./db/database.json")
 	if err != nil {
@@ -89,6 +90,7 @@ func NewPrescription(id int, drug string, doses int, strength string, price floa
 		"doses":        doses,
 		"strength":     strength,
 		"price":        price,
+		"doctor":       doctor,
 		"customerid":   customerid,
 		"isfilled":     false,
 		"pharmacistid": 0,
