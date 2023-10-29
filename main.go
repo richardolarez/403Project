@@ -345,6 +345,98 @@ func main() {
 		w.Write(customerJSON)
 	})
 
+	// Define an endpoint to add new inventory items
+	http.HandleFunc("/addNewInventoryItem", func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		// Parse the request parameters
+		type AddInventoryRequest struct {
+			ID             int     `json:"id"`
+			Name           string  `json:"name"`
+			Description    string  `json:"description"`
+			Price          float64 `json:"price"`
+			Quantity       int     `json:"quantity"`
+			IsPrescription bool    `json:"isPrescription"`
+		}
+
+		var addInventoryRequest AddInventoryRequest
+
+		err := json.NewDecoder(r.Body).Decode(&addInventoryRequest)
+		if err != nil {
+			http.Error(w, "Invalid request parameters", http.StatusBadRequest)
+			return
+		}
+
+		// Call the NewInventoryItem function to add the inventory item
+		err = models.NewInventoryItem(addInventoryRequest.ID, addInventoryRequest.Name, addInventoryRequest.Description, addInventoryRequest.Price, addInventoryRequest.Quantity, addInventoryRequest.IsPrescription)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Respond with a success message
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Inventory item added successfully"))
+	})
+
+	// Define an endpoint to update inventory items
+	http.HandleFunc("/updateInventoryItem", func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		// Parse the request parameters
+		type UpdateInventoryRequest struct {
+			ID             int     `json:"id"`
+			Name           string  `json:"name"`
+			Description    string  `json:"description"`
+			Price          float64 `json:"price"`
+			Quantity       int     `json:"quantity"`
+			IsPrescription bool    `json:"isPrescription"`
+		}
+
+		var updateInventoryRequest UpdateInventoryRequest
+
+		err := json.NewDecoder(r.Body).Decode(&updateInventoryRequest)
+		if err != nil {
+			http.Error(w, "Invalid request parameters", http.StatusBadRequest)
+			return
+		}
+
+		// Call the GetInventoryItem function to get the inventory item
+		item, err := models.GetInventoryItem(updateInventoryRequest.ID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Update the inventory item
+		item.Name = updateInventoryRequest.Name
+		item.Description = updateInventoryRequest.Description
+		item.Price = updateInventoryRequest.Price
+		item.Quantity = updateInventoryRequest.Quantity
+		item.IsPrescription = updateInventoryRequest.IsPrescription
+
+		item.Update(updateInventoryRequest.Name, updateInventoryRequest.Description, updateInventoryRequest.Price, updateInventoryRequest.Quantity, updateInventoryRequest.IsPrescription)
+
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Respond with a success message
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Inventory item updated successfully"))
+	})
+
 	// Start the server
 	server := &http.Server{
 		Addr: ":8080",
