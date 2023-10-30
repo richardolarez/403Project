@@ -52,7 +52,7 @@ func main() {
 		PaymentMethod string                  `json:"payment_method"`
 	}
 
-	// DeleteRequest represents a request to delete an employee
+	// DeleteRequest represents a request to delete an employee/customer by ID and first name.
 	type DeleteRequest struct {
 		ID        int    `json:"id"`
 		FirstName string `json:"firstName"`
@@ -64,6 +64,14 @@ func main() {
 		FirstName string `json:"firstname"`
 		LastName  string `json:"lastname"`
 		Role      string `json:"role"`
+	}
+
+	type AddCustomerRequest struct {
+		FirstName   string `json:"firstname"`
+		LastName    string `json:"lastname"`
+		Email       string `json:"email"`
+		PhoneNumber string `json:"phonenumber"`
+		Address     string `json:"address"`
 	}
 
 	// Create a logger instance
@@ -121,6 +129,30 @@ func main() {
 
 		// Write the JSON response to the client
 		w.Write(employeesJSON)
+	})
+
+	//Define an endpoint to retrieve all customers
+	http.HandleFunc("/customers", func(w http.ResponseWriter, r *http.Request) {
+		// Retrieve all customers from the database
+		enableCors(&w)
+		customers, err := models.GetAllCustomers()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Convert the list of customers to JSON
+		customersJSON, err := json.Marshal(customers)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Set the Content-Type header to application/json
+		w.Header().Set("Content-Type", "application/json")
+
+		// Write the JSON response to the client
+		w.Write(customersJSON)
 	})
 
 	// Define an endpoint to authenticate an employee login
@@ -284,6 +316,167 @@ func main() {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Employee added successfully"))
 		w.Write(employeeJSON)
+	})
+
+	// Define an endpoint to add an customer by first name, last name, email, phone number, and address
+	http.HandleFunc("/addCustomer", func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		// Parse the request parameters
+		var addCustomerRequest AddCustomerRequest
+		err := json.NewDecoder(r.Body).Decode(&addCustomerRequest)
+		if err != nil {
+			http.Error(w, "Invalid ID parameter", http.StatusBadRequest)
+			return
+		}
+
+		// Call the AddCustomer function to add the customer
+		customer, err := models.AddCustomer(addCustomerRequest.FirstName, addCustomerRequest.LastName, addCustomerRequest.Email, addCustomerRequest.PhoneNumber, addCustomerRequest.Address)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Convert the customer to JSON
+		customerJSON, err := json.Marshal(customer)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Respond with a success message
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Customer added successfully"))
+		w.Write(customerJSON)
+	})
+
+	// Define an endpoint to delete a customer by ID and first name
+	http.HandleFunc("/deleteCustomer", func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		// Parse the request parameters
+		var deleteRequest DeleteRequest
+		err := json.NewDecoder(r.Body).Decode(&deleteRequest)
+		if err != nil {
+			http.Error(w, "Invalid ID parameter", http.StatusBadRequest)
+			return
+		}
+
+		id := deleteRequest.ID
+		firstName := deleteRequest.FirstName
+
+		// Call the DeleteEmployee function to delete the employee
+		err = models.DeleteCustomer(id, firstName)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Respond with a success message
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Customer deleted successfully"))
+	})
+
+	// Define an endpoint to add new inventory items
+	http.HandleFunc("/addNewInventoryItem", func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		// Parse the request parameters
+		type AddInventoryRequest struct {
+			ID             int     `json:"id"`
+			Name           string  `json:"name"`
+			Description    string  `json:"description"`
+			Price          float64 `json:"price"`
+			Quantity       int     `json:"quantity"`
+			IsPrescription bool    `json:"isPrescription"`
+		}
+
+		var addInventoryRequest AddInventoryRequest
+
+		err := json.NewDecoder(r.Body).Decode(&addInventoryRequest)
+		if err != nil {
+			http.Error(w, "Invalid request parameters", http.StatusBadRequest)
+			return
+		}
+
+		// Call the NewInventoryItem function to add the inventory item
+		err = models.NewInventoryItem(addInventoryRequest.ID, addInventoryRequest.Name, addInventoryRequest.Description, addInventoryRequest.Price, addInventoryRequest.Quantity, addInventoryRequest.IsPrescription)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Respond with a success message
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Inventory item added successfully"))
+	})
+
+	// Define an endpoint to update inventory items
+	http.HandleFunc("/updateInventoryItem", func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		// Parse the request parameters
+		type UpdateInventoryRequest struct {
+			ID             int     `json:"id"`
+			Name           string  `json:"name"`
+			Description    string  `json:"description"`
+			Price          float64 `json:"price"`
+			Quantity       int     `json:"quantity"`
+			IsPrescription bool    `json:"isPrescription"`
+		}
+
+		var updateInventoryRequest UpdateInventoryRequest
+
+		err := json.NewDecoder(r.Body).Decode(&updateInventoryRequest)
+		if err != nil {
+			http.Error(w, "Invalid request parameters", http.StatusBadRequest)
+			return
+		}
+
+		// Call the GetInventoryItem function to get the inventory item
+		item, err := models.GetInventoryItem(updateInventoryRequest.ID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Update the inventory item
+		item.Name = updateInventoryRequest.Name
+		item.Description = updateInventoryRequest.Description
+		item.Price = updateInventoryRequest.Price
+		item.Quantity = updateInventoryRequest.Quantity
+		item.IsPrescription = updateInventoryRequest.IsPrescription
+
+		item.Update(updateInventoryRequest.Name, updateInventoryRequest.Description, updateInventoryRequest.Price, updateInventoryRequest.Quantity, updateInventoryRequest.IsPrescription)
+
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Respond with a success message
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Inventory item updated successfully"))
 	})
 
 	// Start the server

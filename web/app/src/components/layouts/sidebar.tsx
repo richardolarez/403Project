@@ -7,37 +7,44 @@ import {
     UploadOutlined,
     DollarOutlined,
     InfoCircleOutlined,
+    FrownOutlined,
+    DatabaseOutlined,
   } from '@ant-design/icons';
 import {useNavigate}  from 'react-router';
 const SideNav = () => {
     const history = useNavigate();
 
-const handleHomeClick = () => {
+    const handleHomeClick = () => {
         history('/home');
     }
-const handleUserClick = () => {
+    const handleUserClick = () => {
         history('/list');
     }
-const handleFileClick = () => {
+    const handleFileClick = () => {
         history('/files');
     }
-const handleCheckoutClick = () => {
+    const handleCheckoutClick = () => {
         history('/checkout');
     }
-const handleInfoClick = () => {
+    const handleInfoClick = () => {
         history('/info');
+    }
+const handleCustClick = () => {
+    history('/customers');
 }
+    const handleInventoryClick = () => {
+        history('/inventory');
+    }
 
-
-return (
-      <div>
-        <div style={{height: "32px", margin: "16px", display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
-            <img
-                src="/poos_logo.png" // Update the image URL
-                alt="Logo"
-                style={{ marginTop: '5%', height: '100%', marginBottom: '5%',}}
+    return (
+        <div>
+            <div style={{height: "32px", margin: "16px", display: 'flex', alignItems: 'center', justifyContent: 'center',}}>
+                <img
+                    src="/poos_logo.png" // Update the image URL
+                    alt="Logo"
+                    style={{ marginTop: '5%', height: '100%', marginBottom: '5%',}}
                 />
-        </div>
+            </div>
             <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
                 <Menu.Item key="1" onClick={handleHomeClick}>
                     <HomeOutlined/>
@@ -47,9 +54,18 @@ return (
                     <UserOutlined />
                     <span> Users</span>
                 </Menu.Item>
-                <Menu.Item key="3" onClick={handleCheckoutClick}>
+                <Menu.Item key="3" onClick={handleCustClick}>
+                    <FrownOutlined />
+                    <span> Customers</span>
+                </Menu.Item>
+                <Menu.Item key="4" onClick={handleCheckoutClick}>
                     <DollarOutlined />
                     <span> Checkout</span>
+                </Menu.Item>
+                
+                <Menu.Item key="5" onClick={handleInventoryClick}>
+                    <DatabaseOutlined />
+                    <span> Inventory</span>
                 </Menu.Item>
                 <Menu.Item style={{
                     position: 'absolute',
@@ -62,6 +78,6 @@ return (
                 </Menu.Item>
             </Menu>
         </div>
-  );
+    );
 }
 export default SideNav;
