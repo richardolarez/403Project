@@ -34,7 +34,7 @@ type Logger struct {
 }
 
 // Creates a new Logger instance
-func newLogger(logDir string) *Logger {
+func NewLogger(logDir string) *Logger {
 	return &Logger{
 		logDir: logDir,
 	}
