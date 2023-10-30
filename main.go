@@ -15,6 +15,7 @@ import (
 
 	dbinitializer "github.com/richardolarez/403Project/init"
 	accountmanager "github.com/richardolarez/403Project/internal/account_manager"
+	"github.com/richardolarez/403Project/internal/logger"
 	"github.com/richardolarez/403Project/internal/models"
 	"github.com/richardolarez/403Project/internal/service"
 )
@@ -26,6 +27,7 @@ func enableCors(w *http.ResponseWriter) {
 }
 
 func main() {
+
 	// Check if the database file exists
 	if _, err := os.Stat("./db/database.json"); os.IsNotExist(err) {
 		// Initialize the database
@@ -73,13 +75,19 @@ func main() {
 		Address     string `json:"address"`
 	}
 
+	// Create a logger instance
+	logDir := "github.com/richardolarez/403Project/db"
+	loggerInst := logger.NewLogger(logDir)
+
 	// Define an endpoint to retrieve all inventory items
 	http.HandleFunc("/inventory", func(w http.ResponseWriter, r *http.Request) {
+		loggerInst.Log(logger.Info, "Received inventory request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
 		// Retrieve all inventory items from the database
 		enableCors(&w)
 		inventory, err := models.GetInventory()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error retrieving inventory to JSON", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
@@ -87,6 +95,7 @@ func main() {
 		inventoryJSON, err := json.Marshal(inventory)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error converting inventory to JSON", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
@@ -95,6 +104,8 @@ func main() {
 
 		// Write the JSON response to the client
 		w.Write(inventoryJSON)
+
+		loggerInst.Log(logger.Info, "Inventory request completed", map[string]interface{}{"response_code": http.StatusOK})
 	})
 
 	// Define an endpoint to retrieve all employees
