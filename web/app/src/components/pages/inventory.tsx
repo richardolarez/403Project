@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Typography, message } from 'antd';
+import { Typography, message, Input, Button, Row, Col } from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
+
 const { Title } = Typography;
 
 interface InventoryFormProps {
@@ -41,61 +42,44 @@ const Inventory = () => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <label>
-                Name:
-                <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                />
-            </label>
-            <label>
-                Quantity:
-                <input
-                    type="number"
-                    name="quantity"
-                    value={formData.quantity}
-                    onChange={handleChange}
-                />
-            </label>
-            <label>
-                Price:
-                <input
-                    type="number"
-                    name="price"
-                    value={formData.price}
-                    onChange={handleChange}
-                />
-            </label>
-            <label>
-                Name:
-                <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                />
-            </label>
-            <label>
-                Quantity:
-                <input
-                    type="number"
-                    name="quantity"
-                    value={formData.quantity}
-                    onChange={handleChange}
-                />
-            </label>
-            <label>
-                Price:
-                <input
-                    type="number"
-                    name="price"
-                    value={formData.price}
-                    onChange={handleChange}
-                />
-            </label>
-            <button type="submit">Submit</button>
+            <Row gutter={16}>
+                <Col span={8}>
+                    <label>
+                        Name:
+                        <Input
+                            type="text"
+                            name="name"
+                            value={formData.name}
+                            onChange={handleChange}
+                        />
+                    </label>
+                </Col>
+                <Col span={8}>
+                    <label>
+                        Quantity:
+                        <Input
+                            type="number"
+                            name="quantity"
+                            value={formData.quantity}
+                            onChange={handleChange}
+                        />
+                    </label>
+                </Col>
+                <Col span={8}>
+                    <label>
+                        Price:
+                        <Input
+                            type="number"
+                            name="price"
+                            value={formData.price}
+                            onChange={handleChange}
+                        />
+                    </label>
+                </Col>
+            </Row>
+            <Button type="primary" htmlType="submit" loading={loading}>
+                Submit
+            </Button>
         </form>
     );
 }
