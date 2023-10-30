@@ -388,7 +388,6 @@ func main() {
 
 		// Parse the request parameters
 		type AddInventoryRequest struct {
-			ID             int     `json:"id"`
 			Name           string  `json:"name"`
 			Description    string  `json:"description"`
 			Price          float64 `json:"price"`
@@ -405,7 +404,7 @@ func main() {
 		}
 
 		// Call the NewInventoryItem function to add the inventory item
-		err = models.NewInventoryItem(addInventoryRequest.ID, addInventoryRequest.Name, addInventoryRequest.Description, addInventoryRequest.Price, addInventoryRequest.Quantity, addInventoryRequest.IsPrescription)
+		err = models.NewInventoryItem(addInventoryRequest.Name, addInventoryRequest.Description, addInventoryRequest.Price, addInventoryRequest.Quantity, addInventoryRequest.IsPrescription)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

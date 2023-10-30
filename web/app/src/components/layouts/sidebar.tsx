@@ -33,7 +33,7 @@ const handleCustClick = () => {
     history('/customers');
 }
     const handleInventoryClick = () => {
-        history('/inventory');
+        history('/inventoryList');
     }
 
     return (

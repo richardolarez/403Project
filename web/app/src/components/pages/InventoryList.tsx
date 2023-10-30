@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, Typography, Row, Col, Button, Modal, Form, Input, Checkbox,
 InputNumber } from 'antd';
+import { useNavigate } from 'react-router';
 
 const { Title } = Typography;
 
@@ -15,6 +16,7 @@ interface InventoryItem {
 }
 
 const InventoryList: React.FC = () => {
+    const history = useNavigate();
     const [inventoryItems, setInventoryItems] = useState<InventoryItem[]>([]);
     const [selectedItem, setSelectedItem] = useState(false);
     const [item, setItem] = useState<InventoryItem | null>(null);
@@ -75,6 +77,10 @@ const InventoryList: React.FC = () => {
         console.log(item)
     };
 
+    const handleAddClick = () => {
+        history('/inventory')
+    }
+
     const handleModalOk = (values: any) => {
         if (!item) {
             console.error('No  selected item for update');
@@ -112,7 +118,7 @@ const InventoryList: React.FC = () => {
                     {selectedItem && <Title level={3}>Selected Item: {item?.Name}</Title>}
                 </Col>
                 <Col span={2}>
-                    <Button block>Add</Button>
+                    <Button block onClick={handleAddClick}>Add</Button>
                 </Col>
                 <Col span={2}>
                     <Button block onClick={handleUpdateClick}>Update</Button>
