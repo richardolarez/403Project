@@ -28,6 +28,8 @@ func enableCors(w *http.ResponseWriter) {
 
 func main() {
 
+	//
+
 	// Check if the database file exists
 	if _, err := os.Stat("./db/database.json"); os.IsNotExist(err) {
 		// Initialize the database
@@ -76,7 +78,7 @@ func main() {
 	}
 
 	// Create a logger instance
-	logDir := "github.com/richardolarez/403Project/db"
+	logDir := "/db"
 	loggerInst := logger.NewLogger(logDir)
 
 	// Define an endpoint to retrieve all inventory items
@@ -158,6 +160,8 @@ func main() {
 
 	// Define an endpoint to authenticate an employee login
 	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Print("Login request received")
+		loggerInst.Log(logger.Info, "Received login request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
 		enableCors(&w)
 
 		if r.Method == "OPTIONS" {
@@ -169,6 +173,7 @@ func main() {
 		err := json.NewDecoder(r.Body).Decode(&loginRequest)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
+			loggerInst.Log(logger.Error, "Error parsing login request", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
@@ -176,6 +181,7 @@ func main() {
 		employee, err := accountmanager.AuthenticateEmployee(loginRequest.Username, loginRequest.Password)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusUnauthorized)
+			loggerInst.Log(logger.Error, "Error authenticating employee login", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
@@ -183,6 +189,7 @@ func main() {
 		employeeJSON, err := json.Marshal(employee)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error converting employee to JSON", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
@@ -191,6 +198,8 @@ func main() {
 
 		// Write the JSON response to the client
 		w.Write(employeeJSON)
+		fmt.Println("Login request completed")
+		loggerInst.Log(logger.Info, "Login request completed", map[string]interface{}{"response_code": http.StatusOK})
 	})
 
 	http.HandleFunc("/checkout", func(w http.ResponseWriter, r *http.Request) {

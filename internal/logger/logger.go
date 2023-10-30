@@ -4,6 +4,7 @@ package logger
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"sync"
 	"time"
@@ -35,12 +36,14 @@ type Logger struct {
 
 // Creates a new Logger instance
 func NewLogger(logDir string) *Logger {
+	fmt.Print("NewLogger entered")
 	return &Logger{
 		logDir: logDir,
 	}
 }
 
 func (l *Logger) Log(level LogLevel, message string, additionalData map[string]interface{}) {
+	fmt.Println("Log entered")
 	l.mu.Lock()
 	defer l.mu.Unlock()
 
@@ -59,25 +62,26 @@ func (l *Logger) Log(level LogLevel, message string, additionalData map[string]i
 		return
 	}
 
-	err = l.saveLogEntryToFile(logEntryJSON)
+	err = l.saveLogEntryToFile(logEntry)
 	if err != nil {
 		return
 	}
 
-	// Print the log for testing
-	// fmt.Println(string(logEntryJSON))
+	//Print the log for testing
+	fmt.Println(string(logEntryJSON))
 }
 
 func (l *Logger) saveLogEntryToFile(logEntryJSON []byte) error {
+	fmt.Println("saveLogEntryToFile entered")
 	// Write the log entry to a log file
-	filename := l.logDir + "/logs.json"
-	file, err := os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	//filename := l.logDir + "/logs.json"
+	file, err := os.OpenFile("./db/logs.json", os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
 
-	_, err = file.Write(logEntryJSON)
+	err = os.WriteFile("./db/logs.json", logEntryJSON, 0644)
 	if err != nil {
 		return err
 	}
