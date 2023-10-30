@@ -1,8 +1,14 @@
 import React, { useState } from 'react';
-import { Typography, message } from 'antd';
+import { Typography, message, Input, Button, Row, Col, Form, Checkbox, InputNumber } from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
+
 const { Title } = Typography;
+
+const layout = {
+    labelCol: { span: 8 },
+    wrapperCol: { span: 16 },
+  };
 
 interface InventoryFormProps {
     onSubmit: (formData: FormData) => void;
@@ -10,28 +16,19 @@ interface InventoryFormProps {
 }
 
 const Inventory = () => {
-    const [formData, setFormData] = useState({
-        name: '',
-        quantity: 0,
-        price: 0,
-    });
+
     const [loading, setLoading] = useState(false);
     const history = useNavigate();
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = event.target;
-        setFormData({ ...formData, [name]: value });
-    };
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
+    const handleSubmit = (values: any) => {
         setLoading(true);
         axios
-            .post('http://localhost:8080/updateInventoryItem', formData)
+            .post('http://localhost:8080/addNewInventoryItem', values)
             .then((res) => {
                 setLoading(false);
                 message.success('Updated Item!');
-                history('/list');
+                history('/inventoryList');
             })
             .catch((error) => {
                 setLoading(false);
@@ -40,64 +37,67 @@ const Inventory = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>
-                Name:
-                <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                />
-            </label>
-            <label>
-                Quantity:
-                <input
-                    type="number"
-                    name="quantity"
-                    value={formData.quantity}
-                    onChange={handleChange}
-                />
-            </label>
-            <label>
-                Price:
-                <input
-                    type="number"
-                    name="price"
-                    value={formData.price}
-                    onChange={handleChange}
-                />
-            </label>
-            <label>
-                Name:
-                <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                />
-            </label>
-            <label>
-                Quantity:
-                <input
-                    type="number"
-                    name="quantity"
-                    value={formData.quantity}
-                    onChange={handleChange}
-                />
-            </label>
-            <label>
-                Price:
-                <input
-                    type="number"
-                    name="price"
-                    value={formData.price}
-                    onChange={handleChange}
-                />
-            </label>
-            <button type="submit">Submit</button>
-        </form>
-    );
+        <div>
+        <Row gutter={[40, 0]}>
+          <Col span={23}>
+            <Title style={{textAlign: 'center'}} level={2}>
+            Input New item
+            </Title>
+            </Col>
+        </Row>
+        <Row gutter={[40, 0]}>
+        <Col span={18}>
+        <Form
+        {...layout}
+          name="Inventory form"
+          onFinish={handleSubmit}
+        >
+              <Form.Item label="Name" name="Name">
+                <Input type="text" />
+              </Form.Item>
+              <Form.Item label="Description" name="Description">
+                <Input type="text" />
+              </Form.Item>
+              <Form.Item label="Price" name="Price">
+              <InputNumber
+                            min={0}
+                            step={1}
+                            style={{ width: '100%' }}
+                            parser={(value: string | undefined) => parseInt(value || '0') || 0}
+                            formatter={(value: number | undefined) => `${value}`}
+                        />
+              </Form.Item>
+              <Form.Item label="Quantity" name="Quantity">
+              <InputNumber
+                            min={0}
+                            step={1.0}
+                            style={{ width: '100%' }}
+                            parser={(value: string | undefined) => parseFloat(value || '0') || 0}
+                            formatter={(value: number | undefined) => `${value}`}
+                        />
+              </Form.Item>
+              <Form.Item label="Prescription" name="IsPrescription" valuePropName="checked">
+            <Checkbox />
+          </Form.Item>
+          <div style={{textAlign: "right"}}>
+            {
+              <Button
+                type="primary"
+                loading={loading}
+                htmlType="submit"
+              >
+                Save
+              </Button>
+          }
+            <Button type="default" htmlType="button" onClick={() => history('/inventoryList')}>
+              Back
+            </Button>
+              </div>
+        </Form>
+        </Col>
+        </Row>
+        </div>
+      );
 }
 
 export default Inventory;

@@ -7,6 +7,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
+	"math/rand"
+	"time"
 )
 
 // InventoryItem represents an item in the pharmacy's inventory.
@@ -60,7 +62,7 @@ func GetInventory() ([]*InventoryItem, error) {
 }
 
 // NewInventoryItem adds a new inventory item to the database.
-func NewInventoryItem(id int, name string, description string, price float64, quantity int, isPrescription bool) error {
+func NewInventoryItem(name string, description string, price float64, quantity int, isPrescription bool) error {
 	// Read the inventory data from the JSON file
 	data, err := ioutil.ReadFile("./db/database.json")
 	if err != nil {
@@ -80,14 +82,16 @@ func NewInventoryItem(id int, name string, description string, price float64, qu
 		return fmt.Errorf("error getting inventory array from data")
 	}
 
+	rand.Seed(time.Now().UnixNano())
+	id := rand.Intn(1000000)
 	// Add the new item to the inventory array
 	itemMap := map[string]interface{}{
-		"id":             id,
-		"name":           name,
-		"description":    description,
-		"price":          price,
-		"quantity":       quantity,
-		"isPrescription": isPrescription,
+		"ID":             id,
+		"Name":           name,
+		"Description":    description,
+		"Price":          price,
+		"Quantity":       quantity,
+		"IsPrescription": isPrescription,
 	}
 	inventoryArray = append(inventoryArray, itemMap)
 
@@ -101,7 +105,7 @@ func NewInventoryItem(id int, name string, description string, price float64, qu
 	}
 
 	// Write the updated inventory data to the JSON file
-	err = ioutil.WriteFile("database.json", newData, os.ModePerm)
+	err = ioutil.WriteFile("./db/database.json", newData, os.ModePerm)
 	if err != nil {
 		return fmt.Errorf("error writing inventory data: %v", err)
 	}

@@ -89,13 +89,14 @@ const Customers = () => {
       firstName: userData.FirstName
     }
 
-    axios.delete(`http://localhost:8080/deleteEmployee`, {
+    axios.delete(`http://localhost:8080/deleteCustomer`, {
       data: deleteData,
     })
     .then(res => {
-      axios.get('http://localhost:8080/employees').then((res) => {
+      axios.get('http://localhost:8080/customers').then((res) => {
         setAllData(res.data);
       });
+      setSelectedUser(false)
     })
     .catch((error) => {
       console.error('Error deleting employee:', error);
@@ -103,7 +104,7 @@ const Customers = () => {
     }
   
   const handleTransClick = () => {
-    history('/form')
+      
     }
 
   const handleRowClick = (record : CustomerData) => {
