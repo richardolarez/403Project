@@ -13,10 +13,10 @@ import (
 type LogLevel int
 
 const (
-	Debug LogLevel = iota
-	Info
-	Warning
-	Error
+	Debug   LogLevel = 1
+	Info    LogLevel = 2
+	Warning LogLevel = 3
+	Error   LogLevel = 4
 )
 
 // LogEntry represents the entry to be logged.
