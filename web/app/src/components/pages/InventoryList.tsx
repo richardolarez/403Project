@@ -6,7 +6,7 @@ InputNumber } from 'antd';
 const { Title } = Typography;
 
 interface InventoryItem {
-    Id: number;
+    ID: number;
     Name: string;
     Description: string;
     Quantity: number;
@@ -19,6 +19,7 @@ const InventoryList: React.FC = () => {
     const [selectedItem, setSelectedItem] = useState(false);
     const [item, setItem] = useState<InventoryItem | null>(null);
     const [updateModalVisible, setUpdateModalVisible] = useState(false);
+    const [form] = Form.useForm();
 
     useEffect(() => {
         const fetchInventoryItems = async () => {
@@ -74,24 +75,18 @@ const InventoryList: React.FC = () => {
         console.log(item)
     };
 
-    const handleModalOk = () => {
+    const handleModalOk = (values: any) => {
         if (!item) {
             console.error('No  selected item for update');
             return;
           } 
 
           const updateData = {
-            ID: item.Id,
-            Name: item.Name,
-            Description: item.Description,
-            Price: item.Price,
-            Quantity: item.Quantity,
-            IsPrescription: item.IsPrescription
+            ID: item.ID,
+            ...values
           }
           console.log(updateData)
-        axios.post(`http://localhost:8080/updateInventoryItem`, {
-            data: updateData,
-        }).then(res => {
+        axios.post(`http://localhost:8080/updateInventoryItem`, updateData).then(res => {
             axios.get('http://localhost:8080/inventory').then((res) => {
               setInventoryItems(res.data);
             });
@@ -137,17 +132,17 @@ const InventoryList: React.FC = () => {
             <Modal
                 title="Update Item"
                 visible={updateModalVisible}
-                onOk={handleModalOk}
                 onCancel={handleModalCancel}
+                onOk={() => form.submit()}
             >
-                <Form layout="vertical">
-                    <Form.Item label="Name">
+                <Form form ={form} layout="vertical" onFinish={handleModalOk}>
+                    <Form.Item label="Name" name="Name">
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Description">
+                    <Form.Item label="Description" name="Description">
                         <Input />
                     </Form.Item>
-                    <Form.Item label="Quantity">
+                    <Form.Item label="Quantity" name="Quantity">
                         <InputNumber
                             min={0}
                             step={1}
@@ -156,7 +151,7 @@ const InventoryList: React.FC = () => {
                             formatter={(value: number | undefined) => `${value}`}
                         />
                     </Form.Item>
-                    <Form.Item label="Price">
+                    <Form.Item label="Price" name="Price">
                         <InputNumber
                             min={0}
                             step={1.0}
@@ -165,7 +160,7 @@ const InventoryList: React.FC = () => {
                             formatter={(value: number | undefined) => `${value}`}
                         />
                     </Form.Item>
-                    <Form.Item label="Prescription">
+                    <Form.Item label="Prescription" name="IsPrescription">
                         <Checkbox />
                     </Form.Item>
                 </Form>
