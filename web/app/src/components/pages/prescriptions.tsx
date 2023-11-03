@@ -11,7 +11,7 @@ const Prescriptions = () => {
   const history = useNavigate();
   const [allData, setAllData] = useState([]);
   const [selectedUser, setSelectedUser] = useState(false);
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const [userData, setUserData] = useState<PresData | null>(null);
   //Retrieve shadow realm from localstorage.
   const [lockedAccounts, setLockedAccounts] = useState<string[]>(JSON.parse(localStorage.getItem('shadowRealm') || '[]'));
   const [managerCheck, setLoggedInUserRole] = useState<string | null>(null);
@@ -19,48 +19,48 @@ const Prescriptions = () => {
 
 
   useEffect(() => {
-      axios.get(`http://localhost:8080/employees`).then(res => {
+      axios.get(`http://localhost:8080/prescriptions`).then(res => {
         setAllData(res.data);
         setLoggedInUserRole(sessionStorage.getItem("UserRole"));
         //console.log("session role: " + sessionStorage.getItem("UserRole"))
       });
     }, []);
 
-  interface UserData {
+  interface PresData {
     key: any;
-    Username: any;
-    FirstName: any;
-    LastName: any;
-    Role: any;
+    Drug: any;
+    Doses: any;
+    CustomerID: any;
+    IsFilled: any;
   }
 
   const columns = [
     {
-      title: 'Username',
-      dataIndex: 'Username',
+      title: 'Drug',
+      dataIndex: 'Drug',
     },
     {
-      title: 'First Name',
-      dataIndex: 'FirstName'
+      title: 'Doses',
+      dataIndex: 'Doses'
     },
     {
-      title: 'Last Name',
-      dataIndex: 'LastName'
+      title: 'Customer ID',
+      dataIndex: 'CustomerID'
     },
     {
-      title: 'Role',
-      dataIndex: 'Role'
+      title: 'Filled?',
+      dataIndex: 'IsFilled'
     },
   ];
 
-  const data: { key: any; Username: any; FirstName: any; LastName: any; Role: any; }[] = [];
-    allData.map((user: any) => {
+  const data: { key: any; Drug: any; Doses: any; CustomerID: any; IsFilled: any; }[] = [];
+    allData.map((pres: any) => {
         data.push({
-        key: user.ID,
-        Username: user.Username,
-        FirstName: user.FirstName,
-        LastName:  user.LastName,
-        Role:      user.Role,
+        key: pres.ID,
+        Drug: pres.Drug,
+        Doses: pres.Doses,
+        CustomerID:  pres.CustomerID,
+        IsFilled:      pres.IsFilled,
       })
       return data;
     });
@@ -72,25 +72,25 @@ const Prescriptions = () => {
   
   const handleDelClick = () => {
     if (!userData) {
-      console.error('No user selected for deletion');
+      console.error('No prescription selected for deletion');
       return;
     }
 
     const deleteData = {
       id: userData.key,
-      firstName: userData.FirstName
+
     }
 
-    axios.delete(`http://localhost:8080/deleteEmployee`, {
+    axios.delete(`http://localhost:8080/deletePrescription`, {
       data: deleteData,
     })
     .then(res => {
-      axios.get('http://localhost:8080/employees').then((res) => {
+      axios.get('http://localhost:8080/prescriptions').then((res) => {
         setAllData(res.data);
       });
     })
     .catch((error) => {
-      console.error('Error deleting employee:', error);
+      console.error('Error deleting prescription:', error);
     });
     }
   
@@ -98,8 +98,8 @@ const Prescriptions = () => {
     history('/form')
     }
 
-  const handleRowClick = (record : UserData) => {
-    setSelectedUser(record.Username) // using horrible JS true value interpretation
+  const handleRowClick = (record : PresData) => {
+    setSelectedUser(record.key) // using horrible JS true value interpretation
     setUserData(record);
   }
 
@@ -108,10 +108,6 @@ const Prescriptions = () => {
       console.error('No user selected');
       return;
     }
-    //Remove accounts from locked list.
-    const updatedLockedAccounts = lockedAccounts.filter(account => account !== userData.Username);
-    setLockedAccounts(updatedLockedAccounts);
-    localStorage.setItem('shadowRealm', JSON.stringify(updatedLockedAccounts));
   };
     
   return (
@@ -123,16 +119,16 @@ const Prescriptions = () => {
               </Title>
               </Col>
             <Col span={15}>
-              {selectedUser && <Title level={3}>Selected User: {selectedUser}</Title>}
+              {selectedUser && <Title level={3}>Selected Prescription: {selectedUser}</Title>}
             </Col>
             <Col span={2}>
             <Button onClick={handleAddClick} block>Add</Button>
             </Col> 
             <Col span={2}>
-            <Button onClick={handleDelClick} block>Delete</Button>
+            <Button onClick={handleModClick} block>Fill</Button>
             </Col> 
             <Col span={2}>
-            <Button onClick={handleModClick} block>Modify</Button>
+            <Button onClick={handleDelClick} block>Delete</Button>
             </Col>
             <Col span={2}>          
             {managerCheck === "Manager" && (

@@ -22,48 +22,61 @@ type Prescription struct {
 	PharmacistID int     // ID of the pharmacist who filled the prescription
 }
 
-// GetInventory retrieves all inventory items.
+// NewInventoryItem creates a new InventoryItem object with the specified properties and a new ID.
+func NewPrescription(id int, drug string, doses int, strength string, price float64, doctor string, customerid int) *Prescription {
+	return &Prescription{
+		ID:           id,
+		Drug:         drug,
+		Doses:        doses,
+		Strength:     strength,
+		Price:        price,
+		Doctor:       doctor,
+		CustomerID:   customerid,
+		IsFilled:     false,
+		PharmacistID: 0,
+	}
+}
+
+// GetPrecriptions retrieves all prescription items.
 func GetPrescriptions() ([]*Prescription, error) {
-	// Read the prescription data from the JSON file
+	// Read the contents of the database file
 	data, err := ioutil.ReadFile("./db/database.json")
 	if err != nil {
-		return nil, fmt.Errorf("error reading prescriptions data: %v", err)
+		return nil, err
 	}
 
-	// Unmarshal the prescriptions data into a map
-	var prescriptionsData map[string]interface{}
-	err = json.Unmarshal(data, &prescriptionsData)
+	// Unmarshal the JSON data into a map
+	var db map[string]interface{}
+	err = json.Unmarshal(data, &db)
 	if err != nil {
-		return nil, fmt.Errorf("error unmarshaling inventory data: %v", err)
+		return nil, err
 	}
 
-	// Get the inventory array from the data map
-	prescriptionsArray, ok := prescriptionsData["prescriptions"].([]interface{})
+	// Get the prescriptions object from the map'
+	prescriptionsObj, ok := db["prescriptions"]
 	if !ok {
-		return nil, fmt.Errorf("error getting prescriptions array from data")
+		return nil, fmt.Errorf("employees object not found in database")
 	}
 
-	// Convert the prescriptions array to an array of Prescription objects
+	// Convert the prescriptions object to a JSON string
+	prescriptionsJSON, err := json.Marshal(prescriptionsObj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Unmarshal the JSON data into an array of Prescription objects
 	var prescriptions []*Prescription
-	for _, itemData := range prescriptionsArray {
-		itemJSON, err := json.Marshal(itemData)
-		if err != nil {
-			return nil, fmt.Errorf("error marshaling prescription data: %v", err)
-		}
-		var item Prescription
-		err = json.Unmarshal(itemJSON, &item)
-		if err != nil {
-			return nil, fmt.Errorf("error unmarshaling prescription data: %v", err)
-		}
-		prescriptions = append(prescriptions, &item)
+	err = json.Unmarshal(prescriptionsJSON, &prescriptions)
+	if err != nil {
+		return nil, err
 	}
 
-	// Return the list of inventory items
+	// Return the array of Prescription objects
 	return prescriptions, nil
 }
 
-// NewPrescription adds a new prescription to the prescriptions db
-func NewPrescription(id int, drug string, doses int, strength string, price float64, doctor string, customerid int) error {
+// AddPrescription adds a new prescription to the prescriptions db
+func AddPrescription(id int, drug string, doses int, strength string, price float64, doctor string, customerid int) error {
 	// Read the inventory data from the JSON file
 	data, err := ioutil.ReadFile("./db/database.json")
 	if err != nil {

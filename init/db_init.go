@@ -59,11 +59,15 @@ func InitializeDatabase() error {
 	// Create an array of employees
 	employees := []*models.Employee{richardo, evan, javier, carlos, mario, antony}
 
+	p1 := models.NewPrescription(10, "Adderall", 10, "1mg", 10.99, "Dr Kureka", 20)
+	prescriptions := []*models.Prescription{p1}
+
 	// Create a map to hold the data
 	data := map[string]interface{}{
-		"pharmacies": pharmacies,
-		"items":      items,
-		"employees":  employees,
+		"pharmacies":    pharmacies,
+		"items":         items,
+		"prescriptions": prescriptions,
+		"employees":     employees,
 	}
 
 	// Marshal the data to JSON
