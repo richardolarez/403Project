@@ -5,6 +5,7 @@ package logger
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 	"sync"
 	"time"
@@ -62,7 +63,7 @@ func (l *Logger) Log(level LogLevel, message string, additionalData map[string]i
 		return
 	}
 
-	err = l.saveLogEntryToFile(logEntry)
+	err = l.saveLogEntryToFile(logEntryJSON)
 	if err != nil {
 		return
 	}
@@ -71,22 +72,39 @@ func (l *Logger) Log(level LogLevel, message string, additionalData map[string]i
 	fmt.Println(string(logEntryJSON))
 }
 
+type LogArray struct {
+	Logs []LogEntry `json:"logs"`
+}
+
 func (l *Logger) saveLogEntryToFile(logEntryJSON []byte) error {
 	fmt.Println("saveLogEntryToFile entered")
-	// Write the log entry to a log file
-	//filename := l.logDir + "/logs.json"
-	file, err := os.OpenFile("./db/logs.json", os.O_TRUNC|os.O_CREATE|os.O_WRONLY, 0644)
+
+	// Open the log file or create it if it doesn't exist and append to it
+	file, err := os.OpenFile("./db/logs.json", os.O_RDWR|os.O_CREATE, 0644)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
 
-	err = os.WriteFile("./db/logs.json", logEntryJSON, 0644)
-	if err != nil {
+	// Decode the existing logs from the file
+	var logArray LogArray
+	err = json.NewDecoder(file).Decode(&logArray)
+	if err != nil && err != io.EOF {
 		return err
 	}
 
-	_, err = file.WriteString("\n")
+	// Append the new log entry to the logs array
+	var logEntry LogEntry
+	err = json.Unmarshal(logEntryJSON, &logEntry)
+	if err != nil {
+		return err
+	}
+	logArray.Logs = append(logArray.Logs, logEntry)
+
+	// Write the updated logs array to the file
+	file.Seek(0, 0)
+	file.Truncate(0)
+	err = json.NewEncoder(file).Encode(logArray)
 	if err != nil {
 		return err
 	}
