@@ -18,6 +18,13 @@ const CustForm = () => {
   
 const handleSubmit = (values: any) => {
     setLoading(true);
+    const logout = function() {
+      sessionStorage.removeItem('authenticated');
+      sessionStorage.removeItem("UserFname");
+      sessionStorage.removeItem("UserRole");
+  
+      window.location.href = '/login';
+     }
 
 
     axios.post(`http://localhost:8080/addCustomer`, 

@@ -3,6 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {Table, Row, Col, Button, Typography} from 'antd';
 import {useNavigate} from 'react-router';
 import axios from 'axios';
+import logout from "./home"
 
 const {Title} = Typography;
 
@@ -12,6 +13,13 @@ const Customers = () => {
   const [allData, setAllData] = useState([]);
   const [selectedUser, setSelectedUser] = useState(false);
   const [userData, setUserData] = useState<CustomerData | null>(null);
+  // const logout = function() {
+  //   sessionStorage.removeItem('authenticated');
+  //   sessionStorage.removeItem("UserFname");
+  //   sessionStorage.removeItem("UserRole");
+
+  //   window.location.href = '/login';
+  //  }
 
 
 
@@ -114,6 +122,7 @@ const Customers = () => {
     
   return (
       <div>
+        <button id="logout" style={{position:'absolute',top:15,right:15}} onClick={logout}>Logout</button>
           <Row gutter={[40, 0]}>
             <Col span={10}>
               <Title level={2}>

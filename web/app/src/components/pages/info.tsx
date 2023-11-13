@@ -3,12 +3,20 @@ import React, {useEffect, useState} from 'react';
 import {Table, Row, Col, Button, Typography} from 'antd';
 import {useNavigate} from 'react-router';
 import axios from 'axios';
+import logout from "./home"
 
 const {Title} = Typography;
 
 const Info = () => {
     const history = useNavigate();
     const [allData, setAllData] = useState([]);
+    const logout = function() {
+      sessionStorage.removeItem('authenticated');
+      sessionStorage.removeItem("UserFname");
+      sessionStorage.removeItem("UserRole");
+  
+      window.location.href = '/login';
+     }
   
     useEffect(() => {
       axios.get(`http://localhost:8080/pharmacies`).then(res => {
@@ -46,13 +54,16 @@ const Info = () => {
 
   return (
       <div>
+        
           <h1>Pharmacy Name</h1>
           <h3>Location</h3>
           <h3>Website</h3>
           <h3>Owner</h3>
           <h3>Phone Number</h3>
           <h3>Operating Hours</h3>
+          
       </div>
+      
     );
   }
 export default Info;

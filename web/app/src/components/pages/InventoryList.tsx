@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Table, Typography, Row, Col, Button, Modal, Form, Input, Checkbox,
 InputNumber } from 'antd';
 import { useNavigate } from 'react-router';
+import logout from './home'
 
 const { Title } = Typography;
 
@@ -77,6 +78,14 @@ const InventoryList: React.FC = () => {
         console.log(item)
     };
 
+    const logout = function() {
+        sessionStorage.removeItem('authenticated');
+        sessionStorage.removeItem("UserFname");
+        sessionStorage.removeItem("UserRole");
+    
+        window.location.href = '/login';
+       }
+
     const handleAddClick = () => {
         history('/inventory')
     }
@@ -110,6 +119,7 @@ const InventoryList: React.FC = () => {
 
     return (
         <div>
+            <button id="logout" style={{position:'absolute',top:15,right:15}} onClick={logout}>Logout</button>
             <Row gutter={[40, 0]}>
                 <Col span={10}>
                     <Title level={2}>Inventory List</Title>

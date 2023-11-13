@@ -12,6 +12,17 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
+function logout() {
+  
+  console.log('what the fuck is going on here');
+  
+  sessionStorage.removeItem('authenticated');
+  sessionStorage.removeItem("UserFname");
+  sessionStorage.removeItem("UserRole");
+
+  window.location.href = '/login';
+}
+
 const MainLayout: React.FC<LayoutProps> = ({ children }) => {
   const [collapse, setCollapse] = useState(false);
 
@@ -26,6 +37,7 @@ const MainLayout: React.FC<LayoutProps> = ({ children }) => {
 
   return (
     <Layout>
+      <button id="logout" style={{position:'absolute',top:15,right:15}} onClick={logout}>Logout</button>
       <Sider trigger={null} collapsible collapsed={collapse}>
         <SideNav />
       </Sider>

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Typography, message, Input, Button, Row, Col, Form, Checkbox, InputNumber } from 'antd';
 import axios from 'axios';
 import { useNavigate } from 'react-router';
+import logout from "./home"
 
 const { Title } = Typography;
 
@@ -16,6 +17,13 @@ interface InventoryFormProps {
 }
 
 const Inventory = () => {
+  const logout = function() {
+    sessionStorage.removeItem('authenticated');
+    sessionStorage.removeItem("UserFname");
+    sessionStorage.removeItem("UserRole");
+
+    window.location.href = '/login';
+   }
 
     const [loading, setLoading] = useState(false);
     const history = useNavigate();
@@ -38,6 +46,7 @@ const Inventory = () => {
 
     return (
         <div>
+        <button id="logout" style={{position:'absolute',top:15,right:15}} onClick={logout}>Logout</button>
         <Row gutter={[40, 0]}>
           <Col span={23}>
             <Title style={{textAlign: 'center'}} level={2}>
