@@ -14,13 +14,6 @@ const FormApp = () => {
   const [userRole, setUserRole] = useState('');
 
   const history = useNavigate();
-  const logout = function() {
-    sessionStorage.removeItem('authenticated');
-    sessionStorage.removeItem("UserFname");
-    sessionStorage.removeItem("UserRole");
-
-    window.location.href = '/login';
-   }
   
 const handleSubmit = (values: any) => {
     setLoading(true);
