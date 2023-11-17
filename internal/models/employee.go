@@ -10,12 +10,13 @@ import (
 
 // Employee represents an employee with basic information and a role.
 type Employee struct {
-	ID        int    // Unique identifier for the employee
-	Username  string // Username for the employee's account
-	Password  string // Password for the employee's account
-	FirstName string // First name of the employee
-	LastName  string // Last name of the employee
-	Role      string // Role of the employee (e.g., Manager, Sales Associate, etc.)
+	ID                 int    // Unique identifier for the employee
+	Username           string // Username for the employee's account
+	Password           string // Password for the employee's account
+	FirstName          string // First name of the employee
+	LastName           string // Last name of the employee
+	Role               string // Role of the employee (e.g., Manager, Sales Associate, etc.)
+	ResetPasswordToken string // Reset password token for the employee's account
 }
 
 // NewEmployee creates a new Employee object with the specified properties and a new ID.

@@ -70,9 +70,11 @@ func main() {
 	type AddCustomerRequest struct {
 		FirstName   string `json:"firstname"`
 		LastName    string `json:"lastname"`
+		DOB         string `json:"dob"`
 		Email       string `json:"email"`
 		PhoneNumber string `json:"phonenumber"`
 		Address     string `json:"address"`
+		Insurance   string `json:"insurance"`
 	}
 
 	// Create a logger instance
@@ -337,7 +339,7 @@ func main() {
 		}
 
 		// Call the AddCustomer function to add the customer
-		customer, err := models.AddCustomer(addCustomerRequest.FirstName, addCustomerRequest.LastName, addCustomerRequest.Email, addCustomerRequest.PhoneNumber, addCustomerRequest.Address)
+		customer, err := models.AddCustomer(addCustomerRequest.FirstName, addCustomerRequest.LastName, addCustomerRequest.DOB, addCustomerRequest.Email, addCustomerRequest.PhoneNumber, addCustomerRequest.Address, addCustomerRequest.Insurance)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

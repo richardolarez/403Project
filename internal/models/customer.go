@@ -15,9 +15,11 @@ type Customer struct {
 	ID           int                 // Unique identifier for the customer
 	FirstName    string              // First name of the customer
 	LastName     string              // Last name of the customer
+	DOB          string              // Date of birth of the customer
 	Email        string              // Email address of the customer
 	PhoneNumber  string              // Phone number of the customer
 	Address      string              // Address of the customer
+	Insurance    string              // Insurance plan of the customer
 	Transactions []*SalesTransaction // List of sales transactions for the customer
 }
 
@@ -68,7 +70,7 @@ func GetCustomer(id int) (*Customer, error) {
 	return nil, fmt.Errorf("customer not found")
 }
 
-// GetAllCustomers retrieves all employees.
+// GetAllCustomers retrieves all customers.
 func GetAllCustomers() ([]*Customer, error) {
 	// Read the contents of the database file
 	data, err := ioutil.ReadFile("./db/database.json")
@@ -107,7 +109,7 @@ func GetAllCustomers() ([]*Customer, error) {
 }
 
 // AddEmployee adds a new customer to the database.
-func AddCustomer(firstName, lastName, email, phoneNumber, address string) (*Customer, error) {
+func AddCustomer(firstName, lastName, dob, email, phoneNumber, address, insurance string) (*Customer, error) {
 	// Generate a new unique ID for the employee
 	rand.Seed(time.Now().UnixNano())
 	id := rand.Intn(1000000)
@@ -117,9 +119,11 @@ func AddCustomer(firstName, lastName, email, phoneNumber, address string) (*Cust
 		ID:           id,
 		FirstName:    firstName,
 		LastName:     lastName,
+		DOB:          dob,
 		Email:        email,
 		PhoneNumber:  phoneNumber,
 		Address:      address,
+		Insurance:    insurance,
 		Transactions: []*SalesTransaction{},
 	}
 
