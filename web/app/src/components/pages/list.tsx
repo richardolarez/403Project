@@ -16,13 +16,10 @@ const List = () => {
   const [lockedAccounts, setLockedAccounts] = useState<string[]>(JSON.parse(localStorage.getItem('shadowRealm') || '[]'));
   const [managerCheck, setLoggedInUserRole] = useState<string | null>(null);
 
-
-
   useEffect(() => {
       axios.get(`http://localhost:8080/employees`).then(res => {
         setAllData(res.data);
         setLoggedInUserRole(sessionStorage.getItem("UserRole"));
-        //console.log("session role: " + sessionStorage.getItem("UserRole"))
       });
     }, []);
 
@@ -75,6 +72,13 @@ const List = () => {
       console.error('No user selected for deletion');
       return;
     }
+
+  const handleModClick = () => {
+    sessionStorage.setItem('firstNameEdit', userData.FirstName);
+    sessionStorage.setItem('surnameEdit', userData.LastName);
+    sessionStorage.setItem('roleEdit', userData.Role);
+    history('/form')    
+  }
 
     const deleteData = {
       id: userData.key,

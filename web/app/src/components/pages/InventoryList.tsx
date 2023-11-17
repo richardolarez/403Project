@@ -77,6 +77,7 @@ const InventoryList: React.FC = () => {
         console.log(item)
     };
 
+
     const handleAddClick = () => {
         history('/inventory')
     }

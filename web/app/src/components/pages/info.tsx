@@ -46,13 +46,16 @@ const Info = () => {
 
   return (
       <div>
+        
           <h1>Pharmacy Name</h1>
           <h3>Location</h3>
           <h3>Website</h3>
           <h3>Owner</h3>
           <h3>Phone Number</h3>
           <h3>Operating Hours</h3>
+          
       </div>
+      
     );
   }
 export default Info;
