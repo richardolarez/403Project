@@ -4,7 +4,6 @@ package logger
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
 	"os"
 	"sync"
@@ -37,14 +36,14 @@ type Logger struct {
 
 // Creates a new Logger instance
 func NewLogger(logDir string) *Logger {
-	fmt.Print("NewLogger entered")
+	// fmt.Print("NewLogger entered")
 	return &Logger{
 		logDir: logDir,
 	}
 }
 
 func (l *Logger) Log(level LogLevel, message string, additionalData map[string]interface{}) {
-	fmt.Println("Log entered")
+	// fmt.Println("Log entered")
 	l.mu.Lock()
 	defer l.mu.Unlock()
 
@@ -69,7 +68,7 @@ func (l *Logger) Log(level LogLevel, message string, additionalData map[string]i
 	}
 
 	//Print the log for testing
-	fmt.Println(string(logEntryJSON))
+	// fmt.Println(string(logEntryJSON))
 }
 
 type LogArray struct {
@@ -77,7 +76,7 @@ type LogArray struct {
 }
 
 func (l *Logger) saveLogEntryToFile(logEntryJSON []byte) error {
-	fmt.Println("saveLogEntryToFile entered")
+	// fmt.Println("saveLogEntryToFile entered")
 
 	// Open the log file or create it if it doesn't exist and append to it
 	file, err := os.OpenFile("./db/logs.json", os.O_RDWR|os.O_CREATE, 0644)
