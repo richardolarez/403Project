@@ -1,7 +1,7 @@
 //src/components/pages/customers.tsx
 import React, {useEffect, useState} from 'react';
 import {Table, Row, Col, Button, Typography} from 'antd';
-import {useNavigate} from 'react-router';
+import {useNavigate} from 'react-router-dom';
 import axios from 'axios';
 
 const {Title} = Typography;

@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { Layout } from 'antd';
+import React, { useState } from 'react';
+import { Layout, Button } from 'antd';
 import SideNav from './sidebar';
 import {
   MenuUnfoldOutlined,
   MenuFoldOutlined
 } from '@ant-design/icons';
+import {useNavigate} from 'react-router';
 
 const { Header, Sider, Content } = Layout;
 
@@ -15,17 +16,22 @@ interface LayoutProps {
 const MainLayout: React.FC<LayoutProps> = ({ children }) => {
   const [collapse, setCollapse] = useState(false);
 
-  useEffect(() => {
-    window.innerWidth <= 760 ? setCollapse(true) : setCollapse(false);
-  }, []);
-
   const handleToggle = (event: any) => {
     event.preventDefault();
-    collapse ? setCollapse(false) : setCollapse(true);
+    setCollapse(!collapse);
+  };
+
+  const bigLogout = () => {
+    console.log('what the heck is going on here');
+    sessionStorage.removeItem('authenticated');
+    sessionStorage.removeItem("UserFName");
+    sessionStorage.removeItem("UserRole");
+    window.location.reload();
   };
 
   return (
     <Layout>
+      <Button id="bigLogout" style={{ position: 'absolute', top: 15, right: 15 }} onClick={bigLogout}>Logout</Button>
       <Sider trigger={null} collapsible collapsed={collapse}>
         <SideNav />
       </Sider>
