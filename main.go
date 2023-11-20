@@ -481,6 +481,43 @@ func main() {
 		w.Write([]byte("Inventory item updated successfully"))
 	})
 
+	// Define an endpoint to update an employee's password
+	http.HandleFunc("/updatePassword", func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		// Parse the request parameters
+		type UpdatePasswordRequest struct {
+			Username    string `json:"username"`
+			OldPassword string `json:"oldPassword"`
+			NewPassword string `json:"newPassword"`
+		}
+
+		var updatePasswordRequest UpdatePasswordRequest
+
+		err := json.NewDecoder(r.Body).Decode(&updatePasswordRequest)
+		if err != nil {
+			http.Error(w, "Invalid request parameters", http.StatusBadRequest)
+			return
+		}
+
+		//var employee *models.Employee
+		// Call the UpdatePassword function to update the employee's password
+		err = models.UpdatePassword(updatePasswordRequest.Username, updatePasswordRequest.OldPassword, updatePasswordRequest.NewPassword)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusUnauthorized)
+			return
+		}
+
+		// Respond with a success message
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Password updated successfully"))
+	})
+
 	// Start the server
 	server := &http.Server{
 		Addr: ":8080",
