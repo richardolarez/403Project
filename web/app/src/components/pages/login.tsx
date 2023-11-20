@@ -8,6 +8,8 @@ const Login: React.FC = () => {
   const [userLoginAttempts, setUserLoginAttempts] = React.useState<{ [username: string]: number }>({});
   //local storage for persistence. shadowRealm = locked users.
   const shadowRealm = React.useRef<string[]>(JSON.parse(localStorage.getItem('shadowRealm') || '[]'));
+  const barrierToEntry = React.useRef<string[]>(JSON.parse(localStorage.getItem('barrierToEntry') || '[]'));
+  const notFirstLogin = (username: string) => barrierToEntry.current.includes(username); 
   const isAccountLocked = (username: string) => shadowRealm.current.includes(username);
   const onFinish = (values: { username: string, password: string , loginAttempts: number, accountLocked: boolean}) => {
     //Check if user is banished first
@@ -15,6 +17,9 @@ const Login: React.FC = () => {
       message.error('Account locked. Please contact an administrator');
       return;
     }
+
+    const isFirstLogin = !notFirstLogin(values.username);
+
     // Call the /login endpoint to authenticate the employee
     fetch('http://localhost:8080/login', {
       method: 'POST',
@@ -31,6 +36,22 @@ const Login: React.FC = () => {
     })
     .then(employee => {
       if(!accountLocked){
+        if (isFirstLogin) {
+          // Prompt user to change password
+          let newPassword = prompt("Please enter a new password to continue: ");
+          let passwordMeetsReq = false;
+
+          while(!passwordMeetsReq){
+            if(newPassword != null && newPassword.length > 6 && newPassword != ""){
+              passwordMeetsReq = true;
+            } else{
+              newPassword = prompt("Please enter a new password to continue: ");
+            }
+          }
+          // Add the user to the barrierToEntry list
+          // barrierToEntry.current.push(values.username);
+          // localStorage.setItem('barrierToEntry', JSON.stringify(barrierToEntry.current));
+        }
         console.log('Authenticated employee:', employee);
         sessionStorage.setItem('authenticated', 'true');
         sessionStorage.setItem('UserFName', employee.FirstName);
