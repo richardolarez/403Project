@@ -17,8 +17,8 @@ clean:
 	rm -f ${BINARY_NAME}
 
 deploy:
-	go build -o build/backend main.go &
+	go run main.go &
+	cd web/app && npm install &
 	npm --prefix web/app run build &
-	go run main.go
 	
 
