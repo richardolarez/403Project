@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Input, Button, Row, Col, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import Password from 'antd/es/input/Password';
 
 const Login: React.FC = () => {
   const [loginAttempts, setLoginAttempts] = React.useState(0);
@@ -8,13 +9,58 @@ const Login: React.FC = () => {
   const [userLoginAttempts, setUserLoginAttempts] = React.useState<{ [username: string]: number }>({});
   //local storage for persistence. shadowRealm = locked users.
   const shadowRealm = React.useRef<string[]>(JSON.parse(localStorage.getItem('shadowRealm') || '[]'));
+  const barrierToEntry = React.useRef<string[]>(JSON.parse(localStorage.getItem('barrierToEntry') || '[]'));
+  //const passAlreadyChanged = (username: string) => barrierToEntry.current.includes(username); 
   const isAccountLocked = (username: string) => shadowRealm.current.includes(username);
+
+  console.log(barrierToEntry);
+
   const onFinish = (values: { username: string, password: string , loginAttempts: number, accountLocked: boolean}) => {
     //Check if user is banished first
     if(isAccountLocked(values.username)){
       message.error('Account locked. Please contact an administrator');
       return;
     }
+
+    //const isFirstLogin = !passAlreadyChanged(values.username);
+
+    const updatePassword = async (username: string, oldPassword: string) => {
+      return new Promise<void>(async (resolve, reject) => {
+        let newPassword = prompt("Please enter a new password to continue: ");
+        
+        if (newPassword != null && newPassword.length > 6 && newPassword !== "") {
+          const data = {
+            username: username,
+            oldPassword: oldPassword,
+            newPassword: newPassword
+          };
+    
+          try {
+            const response = await fetch('http://localhost:8080/updatePassword', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(data),
+            });
+    
+            if (!response.ok) {
+              throw new Error(`HTTP error! status: ${response.status}`);
+            }
+    
+            //barrierToEntry.current.push(username);
+            //localStorage.setItem('barrierToEntry', JSON.stringify(barrierToEntry.current));
+            resolve();
+          } catch (error) {
+            console.error('Error:', error);
+            reject(error);
+          }
+        } else {
+          await updatePassword(username, oldPassword);
+        }
+      });
+    };
+
     // Call the /login endpoint to authenticate the employee
     fetch('http://localhost:8080/login', {
       method: 'POST',
@@ -29,17 +75,26 @@ const Login: React.FC = () => {
       }
       return response.json();
     })
-    .then(employee => {
-      if(!accountLocked){
-        console.log('Authenticated employee:', employee);
-        sessionStorage.setItem('authenticated', 'true');
-        sessionStorage.setItem('UserFName', employee.FirstName);
-        sessionStorage.setItem('UserRole', employee.Role)
-        window.location.reload();
-      } 
-      // else{
-      //   message.error('Your account has been locked. Please contact an administrator');
+    .then(async (employee) => {
+
+      //Users must change password on FIRST login
+      //passAlreadyChanged = list of users who have alreadyb changed their password
+      //Calls updatePassword which takes current username and password as params
+      // if (!passAlreadyChanged(values.username)) {
+      //   await updatePassword(values.username, values.password);
       // }
+
+      //Crazy how just doing it properly the first time is the easiest/fastest solution.
+      if(employee.RequiresNewPass){
+        updatePassword(values.username, values.password);
+      }
+
+      console.log('Authenticated employee:', employee);
+      sessionStorage.setItem('authenticated', 'true');
+      sessionStorage.setItem('UserFName', employee.FirstName);
+      sessionStorage.setItem('UserRole', employee.Role);
+      window.location.reload();
+      
     })
     .catch(error => {
       if(loginAttempts >= 5){
