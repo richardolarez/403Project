@@ -70,9 +70,11 @@ func main() {
 	type AddCustomerRequest struct {
 		FirstName   string `json:"firstname"`
 		LastName    string `json:"lastname"`
+		DOB         string `json:"dob"`
 		Email       string `json:"email"`
 		PhoneNumber string `json:"phonenumber"`
 		Address     string `json:"address"`
+		Insurance   string `json:"insurance"`
 	}
 
 	// Create a logger instance
@@ -337,7 +339,7 @@ func main() {
 		}
 
 		// Call the AddCustomer function to add the customer
-		customer, err := models.AddCustomer(addCustomerRequest.FirstName, addCustomerRequest.LastName, addCustomerRequest.Email, addCustomerRequest.PhoneNumber, addCustomerRequest.Address)
+		customer, err := models.AddCustomer(addCustomerRequest.FirstName, addCustomerRequest.LastName, addCustomerRequest.DOB, addCustomerRequest.Email, addCustomerRequest.PhoneNumber, addCustomerRequest.Address, addCustomerRequest.Insurance)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -477,6 +479,43 @@ func main() {
 		// Respond with a success message
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Inventory item updated successfully"))
+	})
+
+	// Define an endpoint to update an employee's password
+	http.HandleFunc("/updatePassword", func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		// Parse the request parameters
+		type UpdatePasswordRequest struct {
+			Username    string `json:"username"`
+			OldPassword string `json:"oldPassword"`
+			NewPassword string `json:"newPassword"`
+		}
+
+		var updatePasswordRequest UpdatePasswordRequest
+
+		err := json.NewDecoder(r.Body).Decode(&updatePasswordRequest)
+		if err != nil {
+			http.Error(w, "Invalid request parameters", http.StatusBadRequest)
+			return
+		}
+
+		//var employee *models.Employee
+		// Call the UpdatePassword function to update the employee's password
+		err = models.UpdatePassword(updatePasswordRequest.Username, updatePasswordRequest.OldPassword, updatePasswordRequest.NewPassword)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusUnauthorized)
+			return
+		}
+
+		// Respond with a success message
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Password updated successfully"))
 	})
 
 	// Start the server
