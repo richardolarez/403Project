@@ -15,3 +15,10 @@ clean:
 	go clean &
 	npm --prefix web/app cache clean --force
 	rm -f ${BINARY_NAME}
+
+deploy:
+	go run main.go &
+	cd web/app && npm install &
+	npm --prefix web/app run build &
+	
+
