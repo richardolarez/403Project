@@ -10,12 +10,13 @@ import (
 
 // Employee represents an employee with basic information and a role.
 type Employee struct {
-	ID        int    // Unique identifier for the employee
-	Username  string // Username for the employee's account
-	Password  string // Password for the employee's account
-	FirstName string // First name of the employee
-	LastName  string // Last name of the employee
-	Role      string // Role of the employee (e.g., Manager, Sales Associate, etc.)
+	ID              int    // Unique identifier for the employee
+	Username        string // Username for the employee's account
+	Password        string // Password for the employee's account
+	FirstName       string // First name of the employee
+	LastName        string // Last name of the employee
+	Role            string // Role of the employee (e.g., Manager, Sales Associate, etc.)
+	RequiresNewPass bool
 }
 
 // NewEmployee creates a new Employee object with the specified properties and a new ID.
@@ -23,12 +24,13 @@ func NewEmployee(username, password, firstName, lastName, role string) *Employee
 	rand.Seed(time.Now().UnixNano()) // ??? Problematic ???
 	id := rand.Intn(1000000)
 	return &Employee{
-		ID:        id,
-		Username:  username,
-		Password:  password,
-		FirstName: firstName,
-		LastName:  lastName,
-		Role:      role,
+		ID:              id,
+		Username:        username,
+		Password:        password,
+		FirstName:       firstName,
+		LastName:        lastName,
+		Role:            role,
+		RequiresNewPass: true,
 	}
 }
 
@@ -191,12 +193,13 @@ func AddEmployee(username, password, firstName, lastName, role string) (*Employe
 
 	// Create the new employee
 	newEmployee := &Employee{
-		ID:        id,
-		Username:  username,
-		Password:  password,
-		FirstName: firstName,
-		LastName:  lastName,
-		Role:      role,
+		ID:              id,
+		Username:        username,
+		Password:        password,
+		FirstName:       firstName,
+		LastName:        lastName,
+		Role:            role,
+		RequiresNewPass: true,
 	}
 
 	// Read the contents of the database file
@@ -292,6 +295,7 @@ func UpdatePassword(username, oldPassword, newPassword string) error {
 			if employee.Password == oldPassword {
 				// Update the password to the new password
 				employee.Password = newPassword
+				employee.RequiresNewPass = false
 
 				// Update the employees array in the data map
 				db["employees"] = employees
