@@ -23,6 +23,23 @@ type Customer struct {
 	Transactions []*SalesTransaction // List of sales transactions for the customer
 }
 
+// NewCustomer creates a new Customer object with the specified properties and a new ID.
+func NewCustomer(firstName, lastName, dob, email, phoneNumber, address, insurance string) *Customer {
+	rand.Seed(time.Now().UnixNano()) // Seed the random number generator
+	id := rand.Intn(1000000)
+	return &Customer{
+		ID:           id,
+		FirstName:    firstName,
+		LastName:     lastName,
+		DOB:          dob,
+		Email:        email,
+		PhoneNumber:  phoneNumber,
+		Address:      address,
+		Insurance:    insurance,
+		Transactions: []*SalesTransaction{},
+	}
+}
+
 // GetCustomer retrieves a customer by ID.
 func GetCustomer(id int) (*Customer, error) {
 	// Read the customers data from the JSON file

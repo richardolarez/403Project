@@ -12,12 +12,14 @@ const Customers = () => {
   const [allData, setAllData] = useState([]);
   const [selectedUser, setSelectedUser] = useState(false);
   const [userData, setUserData] = useState<CustomerData | null>(null);
+  const [roleCheck, setLoggedInUserRole] = useState<string | null>(null);
 
 
 
   useEffect(() => {
       axios.get(`http://localhost:8080/customers`).then(res => {
         setAllData(res.data);
+        setLoggedInUserRole(sessionStorage.getItem("UserRole"));
       });
     }, []);
 
@@ -25,9 +27,11 @@ const Customers = () => {
     key: any;
     FirstName: any;
     LastName: any;
+    DOB: any;
     Email: any;
     PhoneNumber: any;
     Address: any;
+    Insurance: any;
   }
 
   const columns = [
@@ -44,12 +48,20 @@ const Customers = () => {
       dataIndex: 'Email'
     },
     {
+      title: 'Date of Birth',
+      dataIndex: 'DOB'
+    },
+    {
       title: 'Phone Number',
       dataIndex: 'PhoneNumber'
     },
     {
       title: 'address',
       dataIndex: 'Address'
+    },
+    {
+      title: 'Insurance',
+      dataIndex: 'Insurance'
     }
   ];
 
@@ -57,18 +69,22 @@ const Customers = () => {
     key: any;
     FirstName: any;
     LastName: any;
+    DOB: any;
     Email: any;
     PhoneNumber: any;
     Address: any;
+    Insurance: any;
   }[] = [];
     allData.map((user: any) => {
         data.push({
         key: user.ID,
         FirstName: user.FirstName,
         LastName:  user.LastName,
+        DOB:        user.DOB,
         Email:     user.Email,
         PhoneNumber: user.PhoneNumber,
-        Address:    user.Address
+        Address:    user.Address,
+        Insurance:  user.Insurance,
       })
       return data;
     });
@@ -127,7 +143,9 @@ const Customers = () => {
             <Button onClick={handleAddClick} block>Add</Button>
             </Col> 
             <Col span={2}>
+            {(roleCheck === "Manager" || roleCheck === "Pharmacist") && (
             <Button onClick={handleDelClick} block>Delete</Button>
+            )}
             </Col> 
             <Col span={2}>
             <Button onClick={handleTransClick} block>Transactions</Button>

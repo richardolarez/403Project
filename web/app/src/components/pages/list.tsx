@@ -127,7 +127,9 @@ const List = () => {
               {selectedUser && <Title level={3}>Selected User: {selectedUser}</Title>}
             </Col>
             <Col span={2}>
+            {managerCheck === "Manager" && (
             <Button onClick={handleAddClick} block>Add</Button>
+            )}
             </Col> 
             <Col span={2}>
             <Button onClick={handleDelClick} block>Delete</Button>
