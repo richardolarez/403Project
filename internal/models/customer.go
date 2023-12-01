@@ -25,7 +25,7 @@ type Customer struct {
 
 // NewCustomer creates a new Customer object with the specified properties and a new ID.
 func NewCustomer(firstName, lastName, dob, email, phoneNumber, address, insurance string) *Customer {
-	rand.Seed(time.Now().UnixNano()) // Seed the random number generator
+	rand.New(rand.NewSource(time.Now().UnixNano())) // Seed the random number generator
 	id := rand.Intn(1000000)
 	return &Customer{
 		ID:           id,
@@ -128,7 +128,7 @@ func GetAllCustomers() ([]*Customer, error) {
 // AddEmployee adds a new customer to the database.
 func AddCustomer(firstName, lastName, dob, email, phoneNumber, address, insurance string) (*Customer, error) {
 	// Generate a new unique ID for the employee
-	rand.Seed(time.Now().UnixNano())
+	rand.New(rand.NewSource(time.Now().UnixNano()))
 	id := rand.Intn(1000000)
 
 	// Create the new customer

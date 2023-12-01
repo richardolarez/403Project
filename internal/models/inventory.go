@@ -6,8 +6,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"os"
 	"math/rand"
+	"os"
 	"time"
 )
 
@@ -82,7 +82,7 @@ func NewInventoryItem(name string, description string, price float64, quantity i
 		return fmt.Errorf("error getting inventory array from data")
 	}
 
-	rand.Seed(time.Now().UnixNano())
+	rand.New(rand.NewSource(time.Now().UnixNano()))
 	id := rand.Intn(1000000)
 	// Add the new item to the inventory array
 	itemMap := map[string]interface{}{

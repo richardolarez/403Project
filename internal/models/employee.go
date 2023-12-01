@@ -21,7 +21,7 @@ type Employee struct {
 
 // NewEmployee creates a new Employee object with the specified properties and a new ID.
 func NewEmployee(username, password, firstName, lastName, role string, requirenewpass bool) *Employee {
-	rand.Seed(time.Now().UnixNano()) // Seed the random number generator
+	rand.New(rand.NewSource(time.Now().UnixNano())) // Seed the random number generator
 	id := rand.Intn(1000000)
 	return &Employee{
 		ID:              id,
@@ -188,7 +188,7 @@ func DeleteEmployee(id int, FirstName string) error {
 // AddEmployee adds a new employee to the database.
 func AddEmployee(username, password, firstName, lastName, role string) (*Employee, error) {
 	// Generate a new unique ID for the employee
-	rand.Seed(time.Now().UnixNano())
+	rand.New(rand.NewSource(time.Now().UnixNano()))
 	id := rand.Intn(1000000)
 
 	// Create the new employee
