@@ -49,7 +49,7 @@ func InitializeDatabase() error {
 	}
 
 	// Create sample employees and append a new employee to the employees slice
-	richardo := models.NewEmployee("richardo", "password123", "Richardo", "Larez", "Cashier", true)
+	richardo := models.NewEmployee("richardo", "password123", "Richardo", "Larez", "Manager", true)
 	evan := models.NewEmployee("evan", "password123", "Evan", "Martin", "Pharmacist", true)
 	javier := models.NewEmployee("javier", "password123", "Javier", "Cota", "Manager", true)
 	carlos := models.NewEmployee("carlos", "password123", "Carlos", "Robles", "Pharmacist", true)
