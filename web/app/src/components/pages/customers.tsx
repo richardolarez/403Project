@@ -19,6 +19,7 @@ const Customers = () => {
   useEffect(() => {
       axios.get(`http://localhost:8080/customers`).then(res => {
         setAllData(res.data);
+        setLoggedInUserRole(sessionStorage.getItem("UserRole"));
       });
     }, []);
 
