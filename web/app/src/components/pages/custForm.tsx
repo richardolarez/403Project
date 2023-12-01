@@ -116,7 +116,6 @@ return (
             </Form.Item>
             
             <div style={{textAlign: "right"}}>
-            {userRole == 'Manager' && (
               <Button
                 type="primary"
                 loading={loading}
@@ -124,7 +123,6 @@ return (
               >
                 Save
               </Button>
-          )}
             <Button type="default" htmlType="button" onClick={() => history('/customers')}>
               Back
             </Button>
