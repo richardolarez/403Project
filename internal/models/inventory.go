@@ -24,7 +24,7 @@ type InventoryItem struct {
 // GetInventory retrieves all inventory items.
 func GetInventory() ([]*InventoryItem, error) {
 	// Read the inventory data from the JSON file
-	data, err := ioutil.ReadFile("./db/database.json")
+	data, err := ioutil.ReadFile("db/database.json")
 	if err != nil {
 		return nil, fmt.Errorf("error reading inventory data: %v", err)
 	}

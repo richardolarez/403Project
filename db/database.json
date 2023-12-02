@@ -1,1 +1,180 @@
-{"customers":[{"Address":"1234 Main St","DOB":"01/01/2000","Email":"somebody@gmail.com","FirstName":"Richardo","ID":920294,"Insurance":"Blue Cross Blue Shield","LastName":"Larez","PhoneNumber":"1234567890","Transactions":[]},{"Address":"1234 Main St","DOB":"01/01/2000","Email":"somebody@gmail.com","FirstName":"Evan","ID":224271,"Insurance":"Blue Cross Blue Shield","LastName":"Martin","PhoneNumber":"1234567890","Transactions":[]},{"Address":"1234 Main St","DOB":"01/01/2000","Email":"somebody@gmail.com","FirstName":"Javier","ID":814996,"Insurance":"Blue Cross Blue Shield","LastName":"Cota","PhoneNumber":"1234567890","Transactions":[]},{"Address":"1234 Main St","DOB":"01/01/2000","Email":"somebody@gmail.com","FirstName":"Carlos","ID":424128,"Insurance":"Blue Cross Blue Shield","LastName":"Robles","PhoneNumber":"1234567890","Transactions":[]},{"Address":"1234 Main St","DOB":"01/01/2000","Email":"somebody@gmail.com","FirstName":"Mario","ID":804887,"Insurance":"Blue Cross Blue Shield","LastName":"Weiler","PhoneNumber":"1234567890","Transactions":[]},{"Address":"1234 Main St","DOB":"01/01/2000","Email":"somebody@gmail.com","FirstName":"Antony","ID":631495,"Insurance":"Blue Cross Blue Shield","LastName":"Mangala","PhoneNumber":"1234567890","Transactions":[]}],"employees":[{"ID":491537,"Username":"richardo","Password":"password","FirstName":"Richardo","LastName":"Larez","Role":"Manager","RequiresNewPass":false},{"ID":830597,"Username":"evan","Password":"password123","FirstName":"Evan","LastName":"Martin","Role":"Pharmacist","RequiresNewPass":true},{"ID":412620,"Username":"javier","Password":"password123","FirstName":"Javier","LastName":"Cota","Role":"Manager","RequiresNewPass":true},{"ID":659755,"Username":"carlos","Password":"password123","FirstName":"Carlos","LastName":"Robles","Role":"Pharmacist","RequiresNewPass":true},{"ID":509522,"Username":"mario","Password":"password123","FirstName":"Mario","LastName":"Weiler","Role":"Cashier","RequiresNewPass":true},{"ID":729178,"Username":"antony","Password":"password123","FirstName":"Antony","LastName":"Mangala","Role":"Pharmacist Technician","RequiresNewPass":true}],"items":[{"Description":"Description for Item 1","ID":1,"IsPrescription":false,"Name":"Item 1","Price":10.99,"Quantity":5},{"Description":"Description for Item 2","ID":2,"IsPrescription":false,"Name":"Item 2","Price":15.99,"Quantity":10},{"Description":"Description for Medicine 1","ID":3,"IsPrescription":false,"Name":"Medicine 1","Price":20.99,"Quantity":15},{"Description":"Description for Medicine 2","ID":4,"IsPrescription":false,"Name":"Medicine 2","Price":25.99,"Quantity":20}],"pharmacies":[{"isOpen":true,"location":"Location A","name":"Pharmacy A","owner":"Owner A","phoneNumber":1234567890,"website":"pharmacyA.com","workingHours":"9:00 AM - 5:00 PM"},{"isOpen":false,"location":"Location B","name":"Pharmacy B","owner":"Owner B","phoneNumber":9876543210,"website":"pharmacyB.com","workingHours":"10:00 AM - 6:00 PM"}]}
+{
+  "customers": [
+    {
+      "ID": 955169,
+      "FirstName": "Richardo",
+      "LastName": "Larez",
+      "DOB": "01/01/2000",
+      "Email": "somebody@gmail.com",
+      "PhoneNumber": "1234567890",
+      "Address": "1234 Main St",
+      "Insurance": "Blue Cross Blue Shield",
+      "Transactions": []
+    },
+    {
+      "ID": 152610,
+      "FirstName": "Evan",
+      "LastName": "Martin",
+      "DOB": "01/01/2000",
+      "Email": "somebody@gmail.com",
+      "PhoneNumber": "1234567890",
+      "Address": "1234 Main St",
+      "Insurance": "Blue Cross Blue Shield",
+      "Transactions": []
+    },
+    {
+      "ID": 189460,
+      "FirstName": "Javier",
+      "LastName": "Cota",
+      "DOB": "01/01/2000",
+      "Email": "somebody@gmail.com",
+      "PhoneNumber": "1234567890",
+      "Address": "1234 Main St",
+      "Insurance": "Blue Cross Blue Shield",
+      "Transactions": []
+    },
+    {
+      "ID": 438490,
+      "FirstName": "Carlos",
+      "LastName": "Robles",
+      "DOB": "01/01/2000",
+      "Email": "somebody@gmail.com",
+      "PhoneNumber": "1234567890",
+      "Address": "1234 Main St",
+      "Insurance": "Blue Cross Blue Shield",
+      "Transactions": []
+    },
+    {
+      "ID": 275874,
+      "FirstName": "Mario",
+      "LastName": "Weiler",
+      "DOB": "01/01/2000",
+      "Email": "somebody@gmail.com",
+      "PhoneNumber": "1234567890",
+      "Address": "1234 Main St",
+      "Insurance": "Blue Cross Blue Shield",
+      "Transactions": []
+    },
+    {
+      "ID": 704359,
+      "FirstName": "Antony",
+      "LastName": "Mangala",
+      "DOB": "01/01/2000",
+      "Email": "somebody@gmail.com",
+      "PhoneNumber": "1234567890",
+      "Address": "1234 Main St",
+      "Insurance": "Blue Cross Blue Shield",
+      "Transactions": []
+    }
+  ],
+  "employees": [
+    {
+      "ID": 15764,
+      "Username": "richardo",
+      "Password": "password123",
+      "FirstName": "Richardo",
+      "LastName": "Larez",
+      "Role": "Cashier",
+      "RequiresNewPass": true
+    },
+    {
+      "ID": 642074,
+      "Username": "evan",
+      "Password": "password123",
+      "FirstName": "Evan",
+      "LastName": "Martin",
+      "Role": "Pharmacist",
+      "RequiresNewPass": true
+    },
+    {
+      "ID": 321899,
+      "Username": "javier",
+      "Password": "password123",
+      "FirstName": "Javier",
+      "LastName": "Cota",
+      "Role": "Manager",
+      "RequiresNewPass": true
+    },
+    {
+      "ID": 154130,
+      "Username": "carlos",
+      "Password": "password123",
+      "FirstName": "Carlos",
+      "LastName": "Robles",
+      "Role": "Pharmacist",
+      "RequiresNewPass": true
+    },
+    {
+      "ID": 446303,
+      "Username": "mario",
+      "Password": "password123",
+      "FirstName": "Mario",
+      "LastName": "Weiler",
+      "Role": "Cashier",
+      "RequiresNewPass": true
+    },
+    {
+      "ID": 176272,
+      "Username": "antony",
+      "Password": "password123",
+      "FirstName": "Antony",
+      "LastName": "Mangala",
+      "Role": "Pharmacist Technician",
+      "RequiresNewPass": true
+    }
+  ],
+  "inventory": [
+    {
+      "ID": 1,
+      "Name": "Item 1",
+      "Description": "Description for Item 1",
+      "Price": 10.99,
+      "Quantity": 5,
+      "IsPrescription": false
+    },
+    {
+      "ID": 2,
+      "Name": "Item 2",
+      "Description": "Description for Item 2",
+      "Price": 15.99,
+      "Quantity": 10,
+      "IsPrescription": false
+    },
+    {
+      "ID": 3,
+      "Name": "Medicine 1",
+      "Description": "Description for Medicine 1",
+      "Price": 20.99,
+      "Quantity": 15,
+      "IsPrescription": false
+    },
+    {
+      "ID": 4,
+      "Name": "Medicine 2",
+      "Description": "Description for Medicine 2",
+      "Price": 25.99,
+      "Quantity": 20,
+      "IsPrescription": false
+    }
+  ],
+  "pharmacies": [
+    {
+      "name": "Pharmacy A",
+      "location": "Location A",
+      "isOpen": true,
+      "website": "pharmacyA.com",
+      "owner": "Owner A",
+      "phoneNumber": 1234567890,
+      "workingHours": "9:00 AM - 5:00 PM"
+    },
+    {
+      "name": "Pharmacy B",
+      "location": "Location B",
+      "isOpen": false,
+      "website": "pharmacyB.com",
+      "owner": "Owner B",
+      "phoneNumber": 9876543210,
+      "workingHours": "10:00 AM - 6:00 PM"
+    }
+  ]
+}
