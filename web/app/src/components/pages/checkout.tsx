@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Form, Button, Input, List } from 'antd';
 import { UserOutlined, FieldNumberOutlined, NumberOutlined } from '@ant-design/icons';
 import { v4 as uuid } from 'uuid';
+import {useNavigate} from 'react-router-dom';
 import '../../App.css';
 import PaymentPage from './payment';
 
@@ -13,6 +14,7 @@ interface cartItem {
 }
 
 const Checkout = () => {
+  const history = useNavigate();
   const [cartItems, setCartItems] = useState<cartItem[]>([]);
   const [form] = Form.useForm();
   const [selectedItem, setSelectedItem] = useState<cartItem | null>(null);
@@ -61,7 +63,7 @@ const Checkout = () => {
 
   const handlePayment = (method: string) => {
     setPaymentMethod(method);
-    window.location.href = `/payment?method=${method}`; // Navigate to payment page
+    history('/payment')
   };
 
   useEffect(() => {

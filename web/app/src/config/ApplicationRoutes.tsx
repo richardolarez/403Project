@@ -11,6 +11,7 @@ import LoginLayout from '../components/layouts/LoginLayout'; // Import the login
 import Customers from '../components/pages/customers';
 import CustForm from '../components/pages/custForm';
 import Inventory from '../components/pages/inventory';
+import PaymentPage from '../components/pages/payment';
 
 const ApplicationRoutes: React.FC = () => {
   const isUserAuthenticated = sessionStorage.getItem("authenticated"); // Replace with your authentication logic
@@ -37,6 +38,7 @@ const ApplicationRoutes: React.FC = () => {
                 <Route path="/custForm" element={<CustForm />} />
                 <Route path="/inventoryList" element={<InventoryList />} />
                 <Route path="/inventory" element={<Inventory />} />
+                <Route path='/payment' element={<PaymentPage />} />
               </Routes>
             </MainLayout>
           ) : (
