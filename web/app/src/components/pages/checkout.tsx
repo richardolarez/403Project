@@ -10,7 +10,7 @@ interface cartItem {
   id: string;
   customerid: number;
   itemid: number;
-  quantity: number;
+  paymentMethod: string;
 }
 
 const Checkout = () => {
@@ -20,9 +20,9 @@ const Checkout = () => {
   const [selectedItem, setSelectedItem] = useState<cartItem | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<string>('');
 
-  const addItemToCart = (values: { id: string; customerid: number; itemid: number; quantity: number }) => {
+  const addItemToCart = (values: { id: string; customerid: number; itemid: number; paymentMethod: string }) => {
     const itemId = uuid();
-    setCartItems([...cartItems, { id: itemId, customerid: values.customerid, itemid: values.itemid, quantity: values.quantity }]);
+    setCartItems([...cartItems, { id: itemId, customerid: values.customerid, itemid: values.itemid, paymentMethod: values.paymentMethod }]);
   };
 
   const removeItemFromCart = (cartId: string) => {
@@ -37,14 +37,14 @@ const Checkout = () => {
     setSelectedItem(item);
   };
 
-  const onFinish = (values: { id: string; customerid: number; itemid: number; quantity: number }) => {
+  const onFinish = (values: { id: string; customerid: number; itemid: number; paymentMethod: string }) => {
     console.log('onFinish call');
     fetch('http://localhost:8080/checkout', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ customerid: values.customerid, itemid: values.itemid, quantity: values.quantity }),
+      body: JSON.stringify({ customerid: values.customerid, itemid: values.itemid, paymentMethod: values.paymentMethod }),
     })
       .then((response) => {
         if (!response.ok) {
@@ -54,7 +54,7 @@ const Checkout = () => {
       })
       .then((cartItem) => {
         console.log('API response');
-        setCartItems([...cartItems, { id: values.id, customerid: values.customerid, itemid: values.itemid, quantity: values.quantity }]);
+        setCartItems([...cartItems, { id: values.id, customerid: values.customerid, itemid: values.itemid, paymentMethod: values.paymentMethod }]);
       })
       .catch((error) => {
         console.error('Failed to u', error);
@@ -105,12 +105,6 @@ const Checkout = () => {
         <Form.Item name="paymentMethod" label="Payment Method">
           <Input placeholder="Payment Method" />
         </Form.Item>
-
-        <Form.Item>
-          <Button type="default" onClick={() => handlePayment(form.getFieldValue('paymentMethod'))} style={{ width: '100%' }}>
-            Go to Payment
-          </Button>
-        </Form.Item>
         
         <Form.Item>
           <Button type="default" htmlType="submit" style={{ width: '100%' }}>
@@ -124,7 +118,7 @@ const Checkout = () => {
         dataSource={cartItems}
         renderItem={(item) => (
           <List.Item className={selectedItem && selectedItem.id === item.id ? 'selected-item' : ''} onClick={() => onItemSelected(item)}>
-            {`Customer ID: ${item.customerid}, Item ID: ${item.itemid}, Quantity: ${item.quantity}`}
+            {`Customer ID: ${item.customerid}, Item ID: ${item.itemid}`}
           </List.Item>
         )}
       />
