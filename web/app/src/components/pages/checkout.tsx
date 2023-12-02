@@ -102,12 +102,6 @@ const Checkout = () => {
           </Button>
         </Form.Item>
 
-        <Form.Item>
-          <Button type="default" htmlType="submit" style={{ width: '100%' }}>
-            Checkout
-          </Button>
-        </Form.Item>
-
         <Form.Item name="paymentMethod" label="Payment Method">
           <Input placeholder="Payment Method" />
         </Form.Item>
@@ -115,6 +109,12 @@ const Checkout = () => {
         <Form.Item>
           <Button type="default" onClick={() => handlePayment(form.getFieldValue('paymentMethod'))} style={{ width: '100%' }}>
             Go to Payment
+          </Button>
+        </Form.Item>
+        
+        <Form.Item>
+          <Button type="default" htmlType="submit" style={{ width: '100%' }}>
+            Checkout
           </Button>
         </Form.Item>
       </Form>
