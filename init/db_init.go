@@ -72,7 +72,7 @@ func InitializeDatabase() error {
 	// Create a map to hold the data
 	data := map[string]interface{}{
 		"pharmacies": pharmacies,
-		"items":      items,
+		"inventory":  items,
 		"employees":  employees,
 		"customers":  customers,
 	}
