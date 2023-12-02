@@ -85,16 +85,16 @@ func main() {
 
 	// Define an endpoint to retrieve all inventory items
 	http.HandleFunc("/inventory", func(w http.ResponseWriter, r *http.Request) {
-		loggerInst.Log(logger.Info, "Received inventory request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
 		// Retrieve all inventory items from the database
 		enableCors(&w)
 		inventory, err := models.GetInventory()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
-			loggerInst.Log(logger.Error, "Error retrieving inventory to JSON", map[string]interface{}{"error": err.Error()})
+			loggerInst.Log(logger.Error, "Error retrieving inventory to JSON", map[string]interface{}{"error": err.Error(), "inventory": inventory})
 			return
 		}
 
+		loggerInst.Log(logger.Info, "Converting inventory to JSON", map[string]interface{}{"inventory": inventory})
 		// Convert the list of inventory items to JSON
 		inventoryJSON, err := json.Marshal(inventory)
 		if err != nil {
@@ -114,7 +114,6 @@ func main() {
 
 	// Define an endpoint to retrieve all employees
 	http.HandleFunc("/employees", func(w http.ResponseWriter, r *http.Request) {
-		loggerInst.Log(logger.Info, "Received employees request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
 		// Retrieve all employees from the database
 		enableCors(&w)
 		employees, err := models.GetAllEmployees()
@@ -124,6 +123,7 @@ func main() {
 			return
 		}
 
+		loggerInst.Log(logger.Info, "Converting employees to JSON", map[string]interface{}{"employees": employees})
 		// Convert the list of employees to JSON
 		employeesJSON, err := json.Marshal(employees)
 		if err != nil {
@@ -143,7 +143,6 @@ func main() {
 
 	//Define an endpoint to retrieve all customers
 	http.HandleFunc("/customers", func(w http.ResponseWriter, r *http.Request) {
-		loggerInst.Log(logger.Info, "Received customers request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
 		// Retrieve all customers from the database
 		enableCors(&w)
 		customers, err := models.GetAllCustomers()
@@ -153,6 +152,7 @@ func main() {
 			return
 		}
 
+		loggerInst.Log(logger.Info, "Converting customers to JSON", map[string]interface{}{"customers": customers})
 		// Convert the list of customers to JSON
 		customersJSON, err := json.Marshal(customers)
 		if err != nil {
@@ -172,7 +172,6 @@ func main() {
 
 	// Define an endpoint to authenticate an employee login
 	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
-		loggerInst.Log(logger.Info, "Received login request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
 		enableCors(&w)
 
 		if r.Method == "OPTIONS" {
@@ -184,11 +183,12 @@ func main() {
 		err := json.NewDecoder(r.Body).Decode(&loginRequest)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
-			loggerInst.Log(logger.Error, "Error parsing login request", map[string]interface{}{"error": err.Error()})
+			loggerInst.Log(logger.Error, "Error parsing login request", map[string]interface{}{"error": err.Error(), "username": loginRequest.Username, "password": loginRequest.Password})
 			return
 		}
 
 		// Authenticate the employee login
+		loggerInst.Log(logger.Info, "Received login request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path, "username": loginRequest.Username, "password": loginRequest.Password})
 		employee, err := accountmanager.AuthenticateEmployee(loginRequest.Username, loginRequest.Password)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusUnauthorized)
@@ -200,7 +200,7 @@ func main() {
 		employeeJSON, err := json.Marshal(employee)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
-			loggerInst.Log(logger.Error, "Error converting employee to JSON", map[string]interface{}{"error": err.Error()})
+			loggerInst.Log(logger.Error, "Error converting employee to JSON", map[string]interface{}{"error": err.Error(), "username": loginRequest.Username, "password": loginRequest.Password})
 			return
 		}
 
@@ -209,7 +209,7 @@ func main() {
 
 		// Write the JSON response to the client
 		w.Write(employeeJSON)
-		loggerInst.Log(logger.Info, "Login request completed", map[string]interface{}{"response_code": http.StatusOK})
+		loggerInst.Log(logger.Info, "Login request completed", map[string]interface{}{"response_code": http.StatusOK, "username": loginRequest.Username, "password": loginRequest.Password})
 	})
 
 	http.HandleFunc("/checkout", func(w http.ResponseWriter, r *http.Request) {
@@ -262,17 +262,16 @@ func main() {
 
 		// Write the JSON response to the client
 		w.Write(transactionJSON)
-		loggerInst.Log(logger.Info, "Checkout request completed", map[string]interface{}{"response_code": http.StatusOK})
+		loggerInst.Log(logger.Info, "Checkout request completed", map[string]interface{}{"response_code": http.StatusOK, "transaction": transaction})
 
 		// Write the JSON response to the client
 		w.Write(receiptJSON)
-		loggerInst.Log(logger.Info, "Checkout request completed", map[string]interface{}{"response_code": http.StatusOK})
+		loggerInst.Log(logger.Info, "Checkout request completed", map[string]interface{}{"response_code": http.StatusOK, "receipt": receipt})
 
 	})
 
 	// Define an endpoint to delete an employee by ID and first name
 	http.HandleFunc("/deleteEmployee", func(w http.ResponseWriter, r *http.Request) {
-		loggerInst.Log(logger.Info, "Received delete employee request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
 		enableCors(&w)
 
 		if r.Method == "OPTIONS" {
@@ -304,7 +303,7 @@ func main() {
 		// Respond with a success message
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Employee deleted successfully"))
-		loggerInst.Log(logger.Info, "Delete employee request completed", map[string]interface{}{"response_code": http.StatusOK})
+		loggerInst.Log(logger.Info, "Delete employee request completed", map[string]interface{}{"response_code": http.StatusOK, "id": id, "firstName": firstName})
 	})
 
 	// Define an endpoint to add an employee by username, password, first name, last name,and role
@@ -352,12 +351,11 @@ func main() {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Employee added successfully"))
 		w.Write(employeeJSON)
-		loggerInst.Log(logger.Info, "Add employee request completed", map[string]interface{}{"response_code": http.StatusOK})
+		loggerInst.Log(logger.Info, "Add employee request completed", map[string]interface{}{"response_code": http.StatusOK, "employee": employee})
 	})
 
 	// Define an endpoint to add an customer by first name, last name, email, phone number, and address
 	http.HandleFunc("/addCustomer", func(w http.ResponseWriter, r *http.Request) {
-		loggerInst.Log(logger.Info, "Received add customer request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
 		enableCors(&w)
 
 		if r.Method == "OPTIONS" {
@@ -395,12 +393,11 @@ func main() {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Customer added successfully"))
 		w.Write(customerJSON)
-		loggerInst.Log(logger.Info, "Add customer request completed", map[string]interface{}{"response_code": http.StatusOK})
+		loggerInst.Log(logger.Info, "Add customer request completed", map[string]interface{}{"response_code": http.StatusOK, "customer": customer})
 	})
 
 	// Define an endpoint to delete a customer by ID and first name
 	http.HandleFunc("/deleteCustomer", func(w http.ResponseWriter, r *http.Request) {
-		loggerInst.Log(logger.Info, "Received delete customer request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
 		enableCors(&w)
 
 		if r.Method == "OPTIONS" {
@@ -432,12 +429,11 @@ func main() {
 		// Respond with a success message
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Customer deleted successfully"))
-		loggerInst.Log(logger.Info, "Delete customer request completed", map[string]interface{}{"response_code": http.StatusOK})
+		loggerInst.Log(logger.Info, "Delete customer request completed", map[string]interface{}{"response_code": http.StatusOK, "id": id, "firstName": firstName})
 	})
 
 	// Define an endpoint to add new inventory items
 	http.HandleFunc("/addNewInventoryItem", func(w http.ResponseWriter, r *http.Request) {
-		loggerInst.Log(logger.Info, "Received add inventory item request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
 		enableCors(&w)
 
 		if r.Method == "OPTIONS" {
@@ -475,12 +471,11 @@ func main() {
 		// Respond with a success message
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Inventory item added successfully"))
-		loggerInst.Log(logger.Info, "Add inventory item request completed", map[string]interface{}{"response_code": http.StatusOK})
+		loggerInst.Log(logger.Info, "Add inventory item request completed", map[string]interface{}{"response_code": http.StatusOK, "name": addInventoryRequest.Name, "description": addInventoryRequest.Description, "price": addInventoryRequest.Price, "quantity": addInventoryRequest.Quantity, "isPrescription": addInventoryRequest.IsPrescription})
 	})
 
 	// Define an endpoint to update inventory items
 	http.HandleFunc("/updateInventoryItem", func(w http.ResponseWriter, r *http.Request) {
-		loggerInst.Log(logger.Info, "Received update inventory item request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
 		enableCors(&w)
 
 		if r.Method == "OPTIONS" {
@@ -534,7 +529,7 @@ func main() {
 		// Respond with a success message
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Inventory item updated successfully"))
-		loggerInst.Log(logger.Info, "Update inventory item request completed", map[string]interface{}{"response_code": http.StatusOK})
+		loggerInst.Log(logger.Info, "Update inventory item request completed", map[string]interface{}{"response_code": http.StatusOK, "id": updateInventoryRequest.ID, "name": updateInventoryRequest.Name, "description": updateInventoryRequest.Description, "price": updateInventoryRequest.Price, "quantity": updateInventoryRequest.Quantity, "isPrescription": updateInventoryRequest.IsPrescription})
 	})
 
 	// Define an endpoint to update an employee's password
@@ -543,6 +538,7 @@ func main() {
 
 		if r.Method == "OPTIONS" {
 			w.WriteHeader(http.StatusOK)
+			loggerInst.Log(logger.Info, "Update password request completed", map[string]interface{}{"response_code": http.StatusOK})
 			return
 		}
 
@@ -558,6 +554,7 @@ func main() {
 		err := json.NewDecoder(r.Body).Decode(&updatePasswordRequest)
 		if err != nil {
 			http.Error(w, "Invalid request parameters", http.StatusBadRequest)
+			loggerInst.Log(logger.Error, "Error parsing update password request", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
@@ -566,12 +563,14 @@ func main() {
 		err = models.UpdatePassword(updatePasswordRequest.Username, updatePasswordRequest.OldPassword, updatePasswordRequest.NewPassword)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusUnauthorized)
+			loggerInst.Log(logger.Error, "Error updating password", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
 		// Respond with a success message
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Password updated successfully"))
+		loggerInst.Log(logger.Info, "Update password request completed", map[string]interface{}{"response_code": http.StatusOK, "username": updatePasswordRequest.Username, "oldPassword": updatePasswordRequest.OldPassword, "newPassword": updatePasswordRequest.NewPassword})
 	})
 
 	// Start the server
