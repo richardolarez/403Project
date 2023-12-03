@@ -19,9 +19,13 @@ const Prescriptions = () => {
     Doses: any;
     CustomerID: any;
     IsFilled: any;
+    Strength: any;
+    Price: any;
+    Doctor: any;
+    PharmacistID: any;
   }
 
-  const [form]=Form.useForm();
+  const [form] = Form.useForm();
 
   const columns = [
     {
@@ -30,15 +34,31 @@ const Prescriptions = () => {
     },
     {
       title: 'Doses',
-      dataIndex: 'Doses'
+      dataIndex: 'Doses',
     },
     {
       title: 'Customer ID',
-      dataIndex: 'CustomerID'
+      dataIndex: 'CustomerID',
     },
     {
       title: 'Filled?',
-      dataIndex: 'IsFilled'
+      dataIndex: 'IsFilled',
+    },
+    {
+      title: 'Strength',
+      dataIndex: 'Strength',
+    },
+    {
+      title: 'Price',
+      dataIndex: 'Price',
+    },
+    {
+      title: 'Doctor',
+      dataIndex: 'Doctor',
+    },
+    {
+      title: 'Pharmacist ID',
+      dataIndex: 'PharmacistID',
     },
   ];
 
@@ -61,38 +81,44 @@ const Prescriptions = () => {
 
   const onFinish = (values: any) => {
     // Call fetchPrescriptions function with form values
-    fetch('http://localhost:8080/prescriptions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(values),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setAllData(data);
+    axios
+    .post('http://localhost:8080/prescription', values)
+    .then((res) => {
+      console.log(res);
       })
       .catch((error) => {
-        console.error('Error fetching prescriptions:', error);
+        console.log(error);
       });
   };
 
   return (
     <div>
       <Form onFinish={onFinish}>
-        <Form.Item name="key" label="Key">
+        <Form.Item name="id" label="ID">
           <Input />
         </Form.Item>
-        <Form.Item name="Drug" label="Drug">
+        <Form.Item name="drug" label="Drug">
           <Input />
         </Form.Item>
-        <Form.Item name="Doses" label="Doses">
+        <Form.Item name="doses" label="Doses">
           <Input />
         </Form.Item>
-        <Form.Item name="CustomerID" label="Customer ID">
+        <Form.Item name="strength" label="Strength">
           <Input />
         </Form.Item>
-        <Form.Item name="IsFilled" label="Is Filled">
+        <Form.Item name="price" label="Price">
+          <Input />
+        </Form.Item>
+        <Form.Item name="doctor" label="Doctor">
+          <Input />
+        </Form.Item>
+        <Form.Item name="customerID" label="Customer ID">
+          <Input />
+        </Form.Item>
+        <Form.Item name="isFilled" label="Is Filled">
+          <Input />
+        </Form.Item>
+        <Form.Item name="pharmacistID" label="Pharmacist ID">
           <Input />
         </Form.Item>
         <Form.Item>
