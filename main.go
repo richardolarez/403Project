@@ -573,6 +573,111 @@ func main() {
 		loggerInst.Log(logger.Info, "Update password request completed", map[string]interface{}{"response_code": http.StatusOK, "username": updatePasswordRequest.Username, "oldPassword": updatePasswordRequest.OldPassword, "newPassword": updatePasswordRequest.NewPassword})
 	})
 
+	// Define an endpoint to retrieve all logs
+	http.HandleFunc("/logs", func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			loggerInst.Log(logger.Info, "Logs request completed", map[string]interface{}{"response_code": http.StatusOK})
+			return
+		}
+
+		// Retrieve all logs from the database
+		logReader := logger.NewLogReader("./db/logs.json", logger.Info, "", time.Time{}, time.Time{})
+		logs, err := logReader.ReadLogs()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error retrieving logs", map[string]interface{}{"error": err.Error()})
+			return
+		}
+
+		// Convert the list of logs to JSON
+		logsJSON, err := json.Marshal(logs)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error converting logs to JSON", map[string]interface{}{"error": err.Error()})
+			return
+		}
+
+		// Set the Content-Type header to application/json
+		w.Header().Set("Content-Type", "application/json")
+
+		// Write the JSON response to the client
+		w.Write(logsJSON)
+		loggerInst.Log(logger.Info, "Logs request completed", map[string]interface{}{"response_code": http.StatusOK, "logs": logs})
+	})
+
+	// Define an endpoint to retrieve logs of financial transactions during a specific time period
+	http.HandleFunc("/financialLogs", func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			loggerInst.Log(logger.Info, "Financial logs request completed", map[string]interface{}{"response_code": http.StatusOK})
+			return
+		}
+
+		// Retrieve all logs from the database
+		logReader := logger.NewLogReader("./db/logs.json", logger.Info, "Checkout", time.Time{}, time.Time{})
+		logs, err := logReader.ReadLogs()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error retrieving financial logs", map[string]interface{}{"error": err.Error()})
+			return
+		}
+
+		// Convert the list of logs to JSON
+		logsJSON, err := json.Marshal(logs)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error converting financial logs to JSON", map[string]interface{}{"error": err.Error()})
+			return
+		}
+
+		// Set the Content-Type header to application/json
+		w.Header().Set("Content-Type", "application/json")
+
+		// Write the JSON response to the client
+		w.Write(logsJSON)
+		loggerInst.Log(logger.Info, "Financial logs request completed", map[string]interface{}{"response_code": http.StatusOK, "logs": logs})
+	})
+
+	// Define an endpoint to retrieve logs of inventory during a specific time period
+	http.HandleFunc("/inventoryLogs", func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			loggerInst.Log(logger.Info, "Inventory logs request completed", map[string]interface{}{"response_code": http.StatusOK})
+			return
+		}
+
+		// Retrieve all logs from the database
+		logReader := logger.NewLogReader("./db/logs.json", logger.Info, "Inventory", time.Time{}, time.Time{})
+		logs, err := logReader.ReadLogs()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error retrieving inventory logs", map[string]interface{}{"error": err.Error()})
+			return
+		}
+
+		// Convert the list of logs to JSON
+		logsJSON, err := json.Marshal(logs)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error converting inventory logs to JSON", map[string]interface{}{"error": err.Error()})
+			return
+		}
+
+		// Set the Content-Type header to application/json
+		w.Header().Set("Content-Type", "application/json")
+
+		// Write the JSON response to the client
+		w.Write(logsJSON)
+		loggerInst.Log(logger.Info, "Inventory logs request completed", map[string]interface{}{"response_code": http.StatusOK, "logs": logs})
+	})
+
 	// Start the server
 	server := &http.Server{
 		Addr: ":8080",
