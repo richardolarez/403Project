@@ -48,7 +48,7 @@ func (l *Logger) Log(level LogLevel, message string, additionalData map[string]i
 	defer l.mu.Unlock()
 
 	// Get current time
-	timestamp := time.Now().Format("2023-01-01 15:03:02")
+	timestamp := time.Now().Format("2006-01-02 15:04:05")
 
 	logEntry := LogEntry{
 		Timestamp:      timestamp,
