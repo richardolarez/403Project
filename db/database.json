@@ -1,19 +1,93 @@
 {
+  "customers": [
+    {
+      "ID": 955169,
+      "FirstName": "Richardo",
+      "LastName": "Larez",
+      "DOB": "01/01/2000",
+      "Email": "somebody@gmail.com",
+      "PhoneNumber": "1234567890",
+      "Address": "1234 Main St",
+      "Insurance": "Blue Cross Blue Shield",
+      "Transactions": []
+    },
+    {
+      "ID": 152610,
+      "FirstName": "Evan",
+      "LastName": "Martin",
+      "DOB": "01/01/2000",
+      "Email": "somebody@gmail.com",
+      "PhoneNumber": "1234567890",
+      "Address": "1234 Main St",
+      "Insurance": "Blue Cross Blue Shield",
+      "Transactions": []
+    },
+    {
+      "ID": 189460,
+      "FirstName": "Javier",
+      "LastName": "Cota",
+      "DOB": "01/01/2000",
+      "Email": "somebody@gmail.com",
+      "PhoneNumber": "1234567890",
+      "Address": "1234 Main St",
+      "Insurance": "Blue Cross Blue Shield",
+      "Transactions": []
+    },
+    {
+      "ID": 438490,
+      "FirstName": "Carlos",
+      "LastName": "Robles",
+      "DOB": "01/01/2000",
+      "Email": "somebody@gmail.com",
+      "PhoneNumber": "1234567890",
+      "Address": "1234 Main St",
+      "Insurance": "Blue Cross Blue Shield",
+      "Transactions": []
+    },
+    {
+      "ID": 275874,
+      "FirstName": "Mario",
+      "LastName": "Weiler",
+      "DOB": "01/01/2000",
+      "Email": "somebody@gmail.com",
+      "PhoneNumber": "1234567890",
+      "Address": "1234 Main St",
+      "Insurance": "Blue Cross Blue Shield",
+      "Transactions": []
+    },
+    {
+      "ID": 704359,
+      "FirstName": "Antony",
+      "LastName": "Mangala",
+      "DOB": "01/01/2000",
+      "Email": "somebody@gmail.com",
+      "PhoneNumber": "1234567890",
+      "Address": "1234 Main St",
+      "Insurance": "Blue Cross Blue Shield",
+      "Transactions": []
+    }
+  ],
   "employees": [
     {
-      "ID": 406231,
+      "ID": 15764,
       "Username": "richardo",
       "Password": "password123",
       "FirstName": "Richardo",
       "LastName": "Larez",
-      "Role": "Cashier"
+      "Role": "Cashier",
+      "RequiresNewPass": true
     },
     {
-      "ID": 865999,
+      "ID": 642074,
       "Username": "evan",
       "Password": "password123",
       "FirstName": "Evan",
       "LastName": "Martin",
+      "Role": "Pharmacist",
+      "RequiresNewPass": true
+    },
+    {
+      "ID": 321899,
       "Role": "Pharmacist"
     },
     {
@@ -22,34 +96,38 @@
       "Password": "password123",
       "FirstName": "Javier",
       "LastName": "Cota",
-      "Role": "Manager"
+      "Role": "Manager",
+      "RequiresNewPass": true
     },
     {
-      "ID": 680686,
+      "ID": 154130,
       "Username": "carlos",
       "Password": "password123",
       "FirstName": "Carlos",
       "LastName": "Robles",
-      "Role": "Pharmacist"
+      "Role": "Pharmacist",
+      "RequiresNewPass": true
     },
     {
-      "ID": 76334,
+      "ID": 446303,
       "Username": "mario",
       "Password": "password123",
       "FirstName": "Mario",
-      "LastName": "Weiner",
-      "Role": "Cashier"
+      "LastName": "Weiler",
+      "Role": "Cashier",
+      "RequiresNewPass": true
     },
     {
-      "ID": 887761,
+      "ID": 176272,
       "Username": "antony",
       "Password": "password123",
       "FirstName": "Antony",
       "LastName": "Mangala",
-      "Role": "Cashier"
+      "Role": "Pharmacist Technician",
+      "RequiresNewPass": true
     }
   ],
-  "items": [
+  "inventory": [
     {
       "ID": 1,
       "Name": "Item 1",

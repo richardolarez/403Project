@@ -4,6 +4,7 @@ package logger
 
 import (
 	"encoding/json"
+	"io"
 	"os"
 	"sync"
 	"time"
@@ -13,10 +14,10 @@ import (
 type LogLevel int
 
 const (
-	Debug LogLevel = iota
-	Info
-	Warning
-	Error
+	Debug   LogLevel = 1
+	Info    LogLevel = 2
+	Warning LogLevel = 3
+	Error   LogLevel = 4
 )
 
 // LogEntry represents the entry to be logged.
@@ -34,13 +35,15 @@ type Logger struct {
 }
 
 // Creates a new Logger instance
-func newLogger(logDir string) *Logger {
+func NewLogger(logDir string) *Logger {
+	// fmt.Print("NewLogger entered")
 	return &Logger{
 		logDir: logDir,
 	}
 }
 
 func (l *Logger) Log(level LogLevel, message string, additionalData map[string]interface{}) {
+	// fmt.Println("Log entered")
 	l.mu.Lock()
 	defer l.mu.Unlock()
 
@@ -64,25 +67,43 @@ func (l *Logger) Log(level LogLevel, message string, additionalData map[string]i
 		return
 	}
 
-	// Print the log for testing
+	//Print the log for testing
 	// fmt.Println(string(logEntryJSON))
 }
 
+type LogArray struct {
+	Logs []LogEntry `json:"logs"`
+}
+
 func (l *Logger) saveLogEntryToFile(logEntryJSON []byte) error {
-	// Write the log entry to a log file
-	filename := l.logDir + "/logs.json"
-	file, err := os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	// fmt.Println("saveLogEntryToFile entered")
+
+	// Open the log file or create it if it doesn't exist and append to it
+	file, err := os.OpenFile("./db/logs.json", os.O_RDWR|os.O_CREATE, 0644)
 	if err != nil {
 		return err
 	}
 	defer file.Close()
 
-	_, err = file.Write(logEntryJSON)
-	if err != nil {
+	// Decode the existing logs from the file
+	var logArray LogArray
+	err = json.NewDecoder(file).Decode(&logArray)
+	if err != nil && err != io.EOF {
 		return err
 	}
 
-	_, err = file.WriteString("\n")
+	// Append the new log entry to the logs array
+	var logEntry LogEntry
+	err = json.Unmarshal(logEntryJSON, &logEntry)
+	if err != nil {
+		return err
+	}
+	logArray.Logs = append(logArray.Logs, logEntry)
+
+	// Write the updated logs array to the file
+	file.Seek(0, 0)
+	file.Truncate(0)
+	err = json.NewEncoder(file).Encode(logArray)
 	if err != nil {
 		return err
 	}

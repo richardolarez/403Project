@@ -15,6 +15,7 @@ import (
 
 	dbinitializer "github.com/richardolarez/403Project/init"
 	accountmanager "github.com/richardolarez/403Project/internal/account_manager"
+	"github.com/richardolarez/403Project/internal/logger"
 	"github.com/richardolarez/403Project/internal/models"
 	"github.com/richardolarez/403Project/internal/service"
 )
@@ -26,6 +27,9 @@ func enableCors(w *http.ResponseWriter) {
 }
 
 func main() {
+
+	//
+
 	// Check if the database file exists
 	if _, err := os.Stat("./db/database.json"); os.IsNotExist(err) {
 		// Initialize the database
@@ -51,7 +55,7 @@ func main() {
 		PaymentMethod string                  `json:"payment_method"`
 	}
 
-	// DeleteRequest represents a request to delete an employee
+	// DeleteRequest represents a request to delete an employee/customer by ID and first name.
 	type DeleteRequest struct {
 		ID        int    `json:"id"`
 		FirstName string `json:"firstName"`
@@ -68,18 +72,26 @@ func main() {
 	type AddCustomerRequest struct {
 		FirstName   string `json:"firstname"`
 		LastName    string `json:"lastname"`
+		DOB         string `json:"dob"`
 		Email       string `json:"email"`
-		Phonenumber string `json:"phone"`
+		PhoneNumber string `json:"phonenumber"`
 		Address     string `json:"address"`
+		Insurance   string `json:"insurance"`
 	}
+
+	// Create a logger instance
+	logDir := "/db"
+	loggerInst := logger.NewLogger(logDir)
 
 	// Define an endpoint to retrieve all inventory items
 	http.HandleFunc("/inventory", func(w http.ResponseWriter, r *http.Request) {
+		loggerInst.Log(logger.Info, "Received inventory request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
 		// Retrieve all inventory items from the database
 		enableCors(&w)
 		inventory, err := models.GetInventory()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error retrieving inventory to JSON", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
@@ -87,6 +99,7 @@ func main() {
 		inventoryJSON, err := json.Marshal(inventory)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error converting inventory to JSON", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
@@ -95,6 +108,8 @@ func main() {
 
 		// Write the JSON response to the client
 		w.Write(inventoryJSON)
+
+		loggerInst.Log(logger.Info, "Inventory request completed", map[string]interface{}{"response_code": http.StatusOK})
 	})
 
 	// Define an endpoint to retrieve all prescriptions
@@ -123,11 +138,13 @@ func main() {
 
 	// Define an endpoint to retrieve all employees
 	http.HandleFunc("/employees", func(w http.ResponseWriter, r *http.Request) {
+		loggerInst.Log(logger.Info, "Received employees request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
 		// Retrieve all employees from the database
 		enableCors(&w)
 		employees, err := models.GetAllEmployees()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error retrieving employees to JSON", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
@@ -135,6 +152,7 @@ func main() {
 		employeesJSON, err := json.Marshal(employees)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error converting employees to JSON", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
@@ -143,15 +161,19 @@ func main() {
 
 		// Write the JSON response to the client
 		w.Write(employeesJSON)
+
+		loggerInst.Log(logger.Info, "Employees request completed", map[string]interface{}{"response_code": http.StatusOK})
 	})
 
 	//Define an endpoint to retrieve all customers
 	http.HandleFunc("/customers", func(w http.ResponseWriter, r *http.Request) {
+		loggerInst.Log(logger.Info, "Received customers request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
 		// Retrieve all customers from the database
 		enableCors(&w)
 		customers, err := models.GetAllCustomers()
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error retrieving customers to JSON", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
@@ -159,6 +181,7 @@ func main() {
 		customersJSON, err := json.Marshal(customers)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error converting customers to JSON", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
@@ -167,10 +190,13 @@ func main() {
 
 		// Write the JSON response to the client
 		w.Write(customersJSON)
+
+		loggerInst.Log(logger.Info, "Customers request completed", map[string]interface{}{"response_code": http.StatusOK})
 	})
 
 	// Define an endpoint to authenticate an employee login
 	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+		loggerInst.Log(logger.Info, "Received login request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
 		enableCors(&w)
 
 		if r.Method == "OPTIONS" {
@@ -182,6 +208,7 @@ func main() {
 		err := json.NewDecoder(r.Body).Decode(&loginRequest)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
+			loggerInst.Log(logger.Error, "Error parsing login request", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
@@ -189,6 +216,7 @@ func main() {
 		employee, err := accountmanager.AuthenticateEmployee(loginRequest.Username, loginRequest.Password)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusUnauthorized)
+			loggerInst.Log(logger.Error, "Error authenticating employee login", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
@@ -196,6 +224,7 @@ func main() {
 		employeeJSON, err := json.Marshal(employee)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error converting employee to JSON", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
@@ -204,9 +233,11 @@ func main() {
 
 		// Write the JSON response to the client
 		w.Write(employeeJSON)
+		loggerInst.Log(logger.Info, "Login request completed", map[string]interface{}{"response_code": http.StatusOK})
 	})
 
 	http.HandleFunc("/checkout", func(w http.ResponseWriter, r *http.Request) {
+		loggerInst.Log(logger.Info, "Received checkout request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
 		enableCors(&w)
 
 		if r.Method == "OPTIONS" {
@@ -219,6 +250,7 @@ func main() {
 		err := json.NewDecoder(r.Body).Decode(&checkoutRequest)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
+			loggerInst.Log(logger.Error, "Error parsing checkout request", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
@@ -229,6 +261,7 @@ func main() {
 
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error processing checkout request", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
@@ -236,6 +269,7 @@ func main() {
 		transactionJSON, err := json.Marshal(transaction)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error converting transaction to JSON", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
@@ -243,6 +277,7 @@ func main() {
 		receiptJSON, err := json.Marshal(receipt)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error converting receipt to JSON", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
@@ -251,18 +286,22 @@ func main() {
 
 		// Write the JSON response to the client
 		w.Write(transactionJSON)
+		loggerInst.Log(logger.Info, "Checkout request completed", map[string]interface{}{"response_code": http.StatusOK})
 
 		// Write the JSON response to the client
 		w.Write(receiptJSON)
+		loggerInst.Log(logger.Info, "Checkout request completed", map[string]interface{}{"response_code": http.StatusOK})
 
 	})
 
 	// Define an endpoint to delete an employee by ID and first name
 	http.HandleFunc("/deleteEmployee", func(w http.ResponseWriter, r *http.Request) {
+		loggerInst.Log(logger.Info, "Received delete employee request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
 		enableCors(&w)
 
 		if r.Method == "OPTIONS" {
 			w.WriteHeader(http.StatusOK)
+			loggerInst.Log(logger.Info, "Delete employee request completed", map[string]interface{}{"response_code": http.StatusOK})
 			return
 		}
 
@@ -271,6 +310,7 @@ func main() {
 		err := json.NewDecoder(r.Body).Decode(&deleteRequest)
 		if err != nil {
 			http.Error(w, "Invalid ID parameter", http.StatusBadRequest)
+			loggerInst.Log(logger.Error, "Error parsing delete employee request", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
@@ -281,12 +321,14 @@ func main() {
 		err = models.DeleteEmployee(id, firstName)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error deleting employee", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
 		// Respond with a success message
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Employee deleted successfully"))
+		loggerInst.Log(logger.Info, "Delete employee request completed", map[string]interface{}{"response_code": http.StatusOK})
 	})
 
 	// Define an endpoint to add an employee by username, password, first name, last name,and role
@@ -295,6 +337,7 @@ func main() {
 
 		if r.Method == "OPTIONS" {
 			w.WriteHeader(http.StatusOK)
+			loggerInst.Log(logger.Info, "Add employee request completed", map[string]interface{}{"response_code": http.StatusOK})
 			return
 		}
 
@@ -303,6 +346,7 @@ func main() {
 		err := json.NewDecoder(r.Body).Decode(&addRequest)
 		if err != nil {
 			http.Error(w, "Invalid ID parameter", http.StatusBadRequest)
+			loggerInst.Log(logger.Error, "Error parsing add employee request", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
@@ -316,6 +360,7 @@ func main() {
 		employee, err := models.AddEmployee(addRequest.Username, addRequest.Password, addRequest.FirstName, addRequest.LastName, addRequest.Role)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error adding employee", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
@@ -323,6 +368,7 @@ func main() {
 		employeeJSON, err := json.Marshal(employee)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error converting employee to JSON", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
@@ -330,14 +376,17 @@ func main() {
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Employee added successfully"))
 		w.Write(employeeJSON)
+		loggerInst.Log(logger.Info, "Add employee request completed", map[string]interface{}{"response_code": http.StatusOK})
 	})
 
 	// Define an endpoint to add an customer by first name, last name, email, phone number, and address
 	http.HandleFunc("/addCustomer", func(w http.ResponseWriter, r *http.Request) {
+		loggerInst.Log(logger.Info, "Received add customer request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
 		enableCors(&w)
 
 		if r.Method == "OPTIONS" {
 			w.WriteHeader(http.StatusOK)
+			loggerInst.Log(logger.Info, "Add customer request completed", map[string]interface{}{"response_code": http.StatusOK})
 			return
 		}
 
@@ -346,13 +395,15 @@ func main() {
 		err := json.NewDecoder(r.Body).Decode(&addCustomerRequest)
 		if err != nil {
 			http.Error(w, "Invalid ID parameter", http.StatusBadRequest)
+			loggerInst.Log(logger.Error, "Error parsing add customer request", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
-		// Call the AddCustomer function to delete the employee
-		customer, err := models.AddCustomer(addCustomerRequest.FirstName, addCustomerRequest.LastName, addCustomerRequest.Email, addCustomerRequest.Phonenumber, addCustomerRequest.Address)
+		// Call the AddCustomer function to add the customer
+		customer, err := models.AddCustomer(addCustomerRequest.FirstName, addCustomerRequest.LastName, addCustomerRequest.DOB, addCustomerRequest.Email, addCustomerRequest.PhoneNumber, addCustomerRequest.Address, addCustomerRequest.Insurance)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error adding customer", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
@@ -360,13 +411,191 @@ func main() {
 		customerJSON, err := json.Marshal(customer)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error converting customer to JSON", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
 		// Respond with a success message
 		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("Employee added successfully"))
+		w.Write([]byte("Customer added successfully"))
 		w.Write(customerJSON)
+		loggerInst.Log(logger.Info, "Add customer request completed", map[string]interface{}{"response_code": http.StatusOK})
+	})
+
+	// Define an endpoint to delete a customer by ID and first name
+	http.HandleFunc("/deleteCustomer", func(w http.ResponseWriter, r *http.Request) {
+		loggerInst.Log(logger.Info, "Received delete customer request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			loggerInst.Log(logger.Info, "Delete customer request completed", map[string]interface{}{"response_code": http.StatusOK})
+			return
+		}
+
+		// Parse the request parameters
+		var deleteRequest DeleteRequest
+		err := json.NewDecoder(r.Body).Decode(&deleteRequest)
+		if err != nil {
+			http.Error(w, "Invalid ID parameter", http.StatusBadRequest)
+			loggerInst.Log(logger.Error, "Error parsing delete customer request", map[string]interface{}{"error": err.Error()})
+			return
+		}
+
+		id := deleteRequest.ID
+		firstName := deleteRequest.FirstName
+
+		// Call the DeleteEmployee function to delete the employee
+		err = models.DeleteCustomer(id, firstName)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error deleting customer", map[string]interface{}{"error": err.Error()})
+			return
+		}
+
+		// Respond with a success message
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Customer deleted successfully"))
+		loggerInst.Log(logger.Info, "Delete customer request completed", map[string]interface{}{"response_code": http.StatusOK})
+	})
+
+	// Define an endpoint to add new inventory items
+	http.HandleFunc("/addNewInventoryItem", func(w http.ResponseWriter, r *http.Request) {
+		loggerInst.Log(logger.Info, "Received add inventory item request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			loggerInst.Log(logger.Info, "Add inventory item request completed", map[string]interface{}{"response_code": http.StatusOK})
+			return
+		}
+
+		// Parse the request parameters
+		type AddInventoryRequest struct {
+			Name           string  `json:"name"`
+			Description    string  `json:"description"`
+			Price          float64 `json:"price"`
+			Quantity       int     `json:"quantity"`
+			IsPrescription bool    `json:"isPrescription"`
+		}
+
+		var addInventoryRequest AddInventoryRequest
+
+		err := json.NewDecoder(r.Body).Decode(&addInventoryRequest)
+		if err != nil {
+			http.Error(w, "Invalid request parameters", http.StatusBadRequest)
+			loggerInst.Log(logger.Error, "Error parsing add inventory item request", map[string]interface{}{"error": err.Error()})
+			return
+		}
+
+		// Call the NewInventoryItem function to add the inventory item
+		err = models.NewInventoryItem(addInventoryRequest.Name, addInventoryRequest.Description, addInventoryRequest.Price, addInventoryRequest.Quantity, addInventoryRequest.IsPrescription)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error adding inventory item", map[string]interface{}{"error": err.Error()})
+			return
+		}
+
+		// Respond with a success message
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Inventory item added successfully"))
+		loggerInst.Log(logger.Info, "Add inventory item request completed", map[string]interface{}{"response_code": http.StatusOK})
+	})
+
+	// Define an endpoint to update inventory items
+	http.HandleFunc("/updateInventoryItem", func(w http.ResponseWriter, r *http.Request) {
+		loggerInst.Log(logger.Info, "Received update inventory item request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			loggerInst.Log(logger.Info, "Update inventory item request completed", map[string]interface{}{"response_code": http.StatusOK})
+			return
+		}
+
+		// Parse the request parameters
+		type UpdateInventoryRequest struct {
+			ID             int     `json:"id"`
+			Name           string  `json:"name"`
+			Description    string  `json:"description"`
+			Price          float64 `json:"price"`
+			Quantity       int     `json:"quantity"`
+			IsPrescription bool    `json:"isPrescription"`
+		}
+
+		var updateInventoryRequest UpdateInventoryRequest
+
+		err := json.NewDecoder(r.Body).Decode(&updateInventoryRequest)
+		if err != nil {
+			http.Error(w, "Invalid request parameters", http.StatusBadRequest)
+			loggerInst.Log(logger.Error, "Error parsing update inventory item request", map[string]interface{}{"error": err.Error()})
+			return
+		}
+
+		// Call the GetInventoryItem function to get the inventory item
+		item, err := models.GetInventoryItem(updateInventoryRequest.ID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error retrieving inventory item", map[string]interface{}{"error": err.Error()})
+			return
+		}
+
+		// Update the inventory item
+		item.Name = updateInventoryRequest.Name
+		item.Description = updateInventoryRequest.Description
+		item.Price = updateInventoryRequest.Price
+		item.Quantity = updateInventoryRequest.Quantity
+		item.IsPrescription = updateInventoryRequest.IsPrescription
+
+		item.Update(updateInventoryRequest.Name, updateInventoryRequest.Description, updateInventoryRequest.Price, updateInventoryRequest.Quantity, updateInventoryRequest.IsPrescription)
+
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error updating inventory item", map[string]interface{}{"error": err.Error()})
+			return
+		}
+
+		// Respond with a success message
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Inventory item updated successfully"))
+		loggerInst.Log(logger.Info, "Update inventory item request completed", map[string]interface{}{"response_code": http.StatusOK})
+	})
+
+	// Define an endpoint to update an employee's password
+	http.HandleFunc("/updatePassword", func(w http.ResponseWriter, r *http.Request) {
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		// Parse the request parameters
+		type UpdatePasswordRequest struct {
+			Username    string `json:"username"`
+			OldPassword string `json:"oldPassword"`
+			NewPassword string `json:"newPassword"`
+		}
+
+		var updatePasswordRequest UpdatePasswordRequest
+
+		err := json.NewDecoder(r.Body).Decode(&updatePasswordRequest)
+		if err != nil {
+			http.Error(w, "Invalid request parameters", http.StatusBadRequest)
+			return
+		}
+
+		//var employee *models.Employee
+		// Call the UpdatePassword function to update the employee's password
+		err = models.UpdatePassword(updatePasswordRequest.Username, updatePasswordRequest.OldPassword, updatePasswordRequest.NewPassword)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusUnauthorized)
+			return
+		}
+
+		// Respond with a success message
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Password updated successfully"))
 	})
 
 	// Start the server

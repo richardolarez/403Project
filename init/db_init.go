@@ -49,15 +49,26 @@ func InitializeDatabase() error {
 	}
 
 	// Create sample employees and append a new employee to the employees slice
-	richardo := models.NewEmployee("richardo", "password123", "Richardo", "Larez", "Cashier")
-	evan := models.NewEmployee("evan", "password123", "Evan", "Martin", "Pharmacist")
-	javier := models.NewEmployee("javier", "password123", "Javier", "Cota", "Manager")
-	carlos := models.NewEmployee("carlos", "password123", "Carlos", "Robles", "Pharmacist")
-	mario := models.NewEmployee("mario", "password123", "Mario", "Weiner", "Cashier")
-	antony := models.NewEmployee("antony", "password123", "Antony", "Mangala", "Cashier")
+	richardo := models.NewEmployee("richardo", "password123", "Richardo", "Larez", "Manager", true)
+	evan := models.NewEmployee("evan", "password123", "Evan", "Martin", "Pharmacist", true)
+	javier := models.NewEmployee("javier", "password123", "Javier", "Cota", "Manager", true)
+	carlos := models.NewEmployee("carlos", "password123", "Carlos", "Robles", "Pharmacist", true)
+	mario := models.NewEmployee("mario", "password123", "Mario", "Weiler", "Cashier", true)
+	antony := models.NewEmployee("antony", "password123", "Antony", "Mangala", "Pharmacist Technician", true)
 
 	// Create an array of employees
 	employees := []*models.Employee{richardo, evan, javier, carlos, mario, antony}
+
+	//Create sameple customers and append new customer to the customers slice
+	Richardo := models.NewCustomer("Richardo", "Larez", "01/01/2000", "somebody@gmail.com", "1234567890", "1234 Main St", "Blue Cross Blue Shield")
+	Evan := models.NewCustomer("Evan", "Martin", "01/01/2000", "somebody@gmail.com", "1234567890", "1234 Main St", "Blue Cross Blue Shield")
+	Javier := models.NewCustomer("Javier", "Cota", "01/01/2000", "somebody@gmail.com", "1234567890", "1234 Main St", "Blue Cross Blue Shield")
+	Carlos := models.NewCustomer("Carlos", "Robles", "01/01/2000", "somebody@gmail.com", "1234567890", "1234 Main St", "Blue Cross Blue Shield")
+	Mario := models.NewCustomer("Mario", "Weiler", "01/01/2000", "somebody@gmail.com", "1234567890", "1234 Main St", "Blue Cross Blue Shield")
+	Antony := models.NewCustomer("Antony", "Mangala", "01/01/2000", "somebody@gmail.com", "1234567890", "1234 Main St", "Blue Cross Blue Shield")
+
+	customers := []*models.Customer{Richardo, Evan, Javier, Carlos, Mario, Antony}
+
 
 	p1 := models.NewPrescription(10, "Adderall", 10, "1mg", 10.99, "Dr Kureka", 20)
 	prescriptions := []*models.Prescription{p1}
@@ -68,6 +79,7 @@ func InitializeDatabase() error {
 		"items":         items,
 		"prescriptions": prescriptions,
 		"employees":     employees,
+    "customers":  customers,
 	}
 
 	// Marshal the data to JSON
