@@ -1,15 +1,12 @@
-// logger/logreader.go
-
 package logger
 
 import (
 	"encoding/json"
 	"os"
-	"path/filepath"
 	"strings"
+	"time"
 )
 
-// A log entry in the log file
 type Log struct {
 	Level          LogLevel               `json:"level"`
 	Timestamp      string                 `json:"timestamp"`
@@ -17,23 +14,20 @@ type Log struct {
 	AdditionalData map[string]interface{} `json:"additional_data"`
 }
 
-// LogReader reads and processes the log files.
 type LogReader struct {
 	logDir       string
 	levelFilter  LogLevel
 	searchFilter string
+	startTime    time.Time
+	endTime      time.Time
 }
 
-// NewLogReader creates a new LogReader instance. Must search by LogLevel (see logger.go for levels)
-// and input a search parameter.
-func NewLogReader(logDir string, levelFilter LogLevel, searchFilter string) *LogReader {
-	return &LogReader{logDir: logDir, levelFilter: levelFilter, searchFilter: searchFilter}
+func NewLogReader(logDir string, levelFilter LogLevel, searchFilter string, startTime, endTime time.Time) *LogReader {
+	return &LogReader{logDir: logDir, levelFilter: levelFilter, searchFilter: searchFilter, startTime: startTime, endTime: endTime}
 }
 
-// Reads the log entries from the log file.
 func (logR *LogReader) ReadLogs() ([]Log, error) {
-	filePath := filepath.Join(logR.logDir, "database.json")
-	file, err := os.Open(filePath)
+	file, err := os.Open(logR.logDir)
 	if err != nil {
 		return nil, err
 	}
@@ -41,26 +35,32 @@ func (logR *LogReader) ReadLogs() ([]Log, error) {
 
 	var logs []Log
 	decoder := json.NewDecoder(file)
+	err = decoder.Decode(&logs)
+	if err != nil {
+		return nil, err
+	}
 
-	for decoder.More() {
-		var log Log
-		if err := decoder.Decode(&log); err != nil {
-			return nil, err
-		}
+	var filteredLogs []Log
+	for _, log := range logs {
 		if logR.passesFilters(&log) {
-			logs = append(logs, log)
+			filteredLogs = append(filteredLogs, log)
 		}
 	}
-	return logs, nil
+
+	return filteredLogs, nil
 }
 
-// Checks if a log entry passes the filters.
 func (logR *LogReader) passesFilters(log *Log) bool {
 	if logR.levelFilter != 0 && log.Level != logR.levelFilter {
 		return false
 	}
 
 	if logR.searchFilter != "" && !strings.Contains(log.Message, logR.searchFilter) {
+		return false
+	}
+
+	logTime, err := time.Parse("2006-01-02 15:04:05", log.Timestamp)
+	if err != nil || (logR.startTime != time.Time{} && logTime.Before(logR.startTime)) || (logR.endTime != time.Time{} && logTime.After(logR.endTime)) {
 		return false
 	}
 
