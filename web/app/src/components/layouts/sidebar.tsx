@@ -3,8 +3,7 @@ import { Menu} from 'antd';
 import {
     HomeOutlined,
     UserOutlined,
-    VideoCameraOutlined,
-    UploadOutlined,
+    FileDoneOutlined,
     DollarOutlined,
     InfoCircleOutlined,
     FrownOutlined,
@@ -20,8 +19,13 @@ const SideNav = () => {
     const handleUserClick = () => {
         history('/list');
     }
+
     const handleFileClick = () => {
         history('/files');
+
+const handlePrescriptionsClick = () => {
+        history('/prescriptions');
+
     }
     const handleCheckoutClick = () => {
         history('/checkout');
@@ -57,6 +61,11 @@ const handleCustClick = () => {
                 <Menu.Item key="3" onClick={handleCustClick}>
                     <FrownOutlined />
                     <span> Customers</span>
+
+                <Menu.Item key="3" onClick={handlePrescriptionsClick}>
+                    <FileDoneOutlined />
+                    <span> Prescriptions</span>
+
                 </Menu.Item>
                 <Menu.Item key="4" onClick={handleCheckoutClick}>
                     <DollarOutlined />

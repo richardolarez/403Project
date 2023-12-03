@@ -112,6 +112,30 @@ func main() {
 		loggerInst.Log(logger.Info, "Inventory request completed", map[string]interface{}{"response_code": http.StatusOK})
 	})
 
+	// Define an endpoint to retrieve all prescriptions
+	http.HandleFunc("/prescriptions", func(w http.ResponseWriter, r *http.Request) {
+		// Retrieve all prescriptions from the database
+		enableCors(&w)
+		prescriptions, err := models.GetPrescriptions()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Convert the list of prescriptions to JSON
+		prescriptionsJSON, err := json.Marshal(prescriptions)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Set the Content-Type header to application/json
+		w.Header().Set("Content-Type", "application/json")
+
+		// Write the JSON response to the client
+		w.Write(prescriptionsJSON)
+	})
+
 	// Define an endpoint to retrieve all employees
 	http.HandleFunc("/employees", func(w http.ResponseWriter, r *http.Request) {
 		loggerInst.Log(logger.Info, "Received employees request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
