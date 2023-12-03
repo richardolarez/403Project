@@ -8,6 +8,7 @@ import {
     InfoCircleOutlined,
     FrownOutlined,
     DatabaseOutlined,
+    FileTextOutlined,
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router';
 
@@ -40,6 +41,10 @@ const SideNav = () => {
 
     const handleInventoryClick = () => {
         history('/inventoryList');
+    };
+
+    const handleReportsClick = () => {
+        history('/reports');
     };
 
     return (
@@ -84,6 +89,10 @@ const SideNav = () => {
                     <DatabaseOutlined />
                     <span> Inventory</span>
                 </Menu.Item>
+                <Menu.Item key="7" onClick={handleReportsClick}>
+                    <FileTextOutlined />
+                    <span> Reports</span>
+                </Menu.Item>
                 <Menu.Item
                     style={{
                         position: 'absolute',
@@ -91,7 +100,7 @@ const SideNav = () => {
                         zIndex: 1,
                         transition: 'all 0.2s',
                     }}
-                    key="7"
+                    key="8"
                     onClick={handleInfoClick}
                 >
                     <InfoCircleOutlined />
