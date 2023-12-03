@@ -112,6 +112,30 @@ func main() {
 		loggerInst.Log(logger.Info, "Inventory request completed", map[string]interface{}{"response_code": http.StatusOK})
 	})
 
+	// Define an endpoint to retrieve all prescriptions
+	http.HandleFunc("/prescriptions", func(w http.ResponseWriter, r *http.Request) {
+		// Retrieve all prescriptions from the database
+		enableCors(&w)
+		prescriptions, err := models.GetPrescriptions()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Convert the list of prescriptions to JSON
+		prescriptionsJSON, err := json.Marshal(prescriptions)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		// Set the Content-Type header to application/json
+		w.Header().Set("Content-Type", "application/json")
+
+		// Write the JSON response to the client
+		w.Write(prescriptionsJSON)
+	})
+
 	// Define an endpoint to retrieve all employees
 	http.HandleFunc("/employees", func(w http.ResponseWriter, r *http.Request) {
 		loggerInst.Log(logger.Info, "Received employees request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
@@ -572,6 +596,49 @@ func main() {
 		// Respond with a success message
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Password updated successfully"))
+	})
+
+	http.HandleFunc("/prescription", func(w http.ResponseWriter, r *http.Request) {
+		loggerInst.Log(logger.Info, "Received add prescription request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			loggerInst.Log(logger.Info, "Add prescription request completed", map[string]interface{}{"response_code": http.StatusOK})
+			return
+		}
+
+		// Parse the request parameters
+		type AddPrescriptionRequest struct {
+			ID           int     `json:"id"`
+			Drug         string  `json:"drug"`
+			Doses        int     `json:"doses"`
+			Strength     string  `json:"strength"`
+			Price        float64 `json:"price"`
+			Doctor       string  `json:"doctor"`
+			CustomerID   int     `json:"customerID"`
+			IsFilled     bool    `json:"isFilled"`
+			PharmacistID int     `json:"pharmacistID"`
+		}
+
+		var addPrescriptionRequest AddPrescriptionRequest
+
+		err := json.NewDecoder(r.Body).Decode(&addPrescriptionRequest)
+		if err != nil {
+			http.Error(w, "Invalid request parameters", http.StatusBadRequest)
+			loggerInst.Log(logger.Error, "Error parsing add prescription request", map[string]interface{}{"error": err.Error()})
+			return
+		}
+
+		// Call the NewPrescription function to add the prescription
+		err = models.AddPrescription(addPrescriptionRequest.ID, addPrescriptionRequest.Drug, addPrescriptionRequest.Doses, addPrescriptionRequest.Strength, addPrescriptionRequest.Price, addPrescriptionRequest.Doctor, addPrescriptionRequest.CustomerID)
+
+		// TODO: Save the prescription to the database or perform any other necessary operations
+
+		// Respond with a success message
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("Prescription added successfully"))
+		loggerInst.Log(logger.Info, "Add prescription request completed", map[string]interface{}{"response_code": http.StatusOK})
 	})
 
 	// Start the server

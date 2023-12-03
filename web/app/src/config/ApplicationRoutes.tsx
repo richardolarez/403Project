@@ -3,6 +3,7 @@ import { Route, Routes, Navigate} from "react-router-dom";
 import Login from '../components/pages/login';
 import Home from '../components/pages/home';
 import List from "../components/pages/list";
+import Prescriptions from '../components/pages/prescriptions';
 import Form from "../components/pages/form";
 import Checkout from '../components/pages/checkout';
 import InventoryList from '../components/pages/InventoryList'; // Import the inventory page
@@ -32,6 +33,7 @@ const ApplicationRoutes: React.FC = () => {
               <Routes>
                 <Route path="/Home" element={<Home />} />
                 <Route path="/list" element={<List />} />
+                <Route path="/prescriptions" element={<Prescriptions />} />
                 <Route path="/form" element={<Form />} />
                 <Route path="/checkout" element={<Checkout />} />
                 <Route path="/customers" element={<Customers />} />
