@@ -83,6 +83,16 @@ return (
             >
               <Input placeholder="Please Enter Last Name" />
             </Form.Item>
+            <Form.Item name="DOB" label="Date of Birth" 
+            rules={[
+              {
+                required: true,
+                message: 'Please input Date of Birth',
+              }
+            ]}
+            >
+              <Input placeholder="Please Enter Date of Birth" />
+            </Form.Item>
             <Form.Item name="Email" label="Email" 
             rules={[
               {
@@ -113,6 +123,17 @@ return (
             ]}
             >
               <Input placeholder="Please Enter Address" />
+            </Form.Item>
+
+            <Form.Item name="Insurance" label="Insurance" 
+            rules={[
+              {
+                required: true,
+                message: 'Please input Insurance',
+              }
+            ]}
+            >
+              <Input placeholder="Please Enter Insurance" />
             </Form.Item>
             
             <div style={{textAlign: "right"}}>
