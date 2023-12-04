@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/richardolarez/403Project/internal/models"
 )
@@ -69,9 +70,30 @@ func InitializeDatabase() error {
 
 	customers := []*models.Customer{Richardo, Evan, Javier, Carlos, Mario, Antony}
 
-
 	p1 := models.NewPrescription(10, "Adderall", 10, "1mg", 10.99, "Dr Kureka", 20)
 	prescriptions := []*models.Prescription{p1}
+
+	// Create sample medicines
+	medicine1 := models.Medicine{
+		ID:             1,
+		Drug:           "Adderall",
+		Doses:          5,
+		Strength:       "10mg",
+		Price:          99.99,
+		ExpirationDate: time.Now().AddDate(0, 0, 30), // Set expiration date to 30 days from now
+	}
+
+	medicine2 := models.Medicine{
+		ID:             2,
+		Drug:           "Claritin-D",
+		Doses:          10,
+		Strength:       "20mg",
+		Price:          14.99,
+		ExpirationDate: time.Now().AddDate(1, 0, 0), // Set expiration date to 2 years from now
+	}
+
+	// Create an array of medicines
+	medicines := []*models.Medicine{&medicine1, &medicine2}
 
 	// Create a map to hold the data
 	data := map[string]interface{}{
@@ -79,7 +101,8 @@ func InitializeDatabase() error {
 		"items":         items,
 		"prescriptions": prescriptions,
 		"employees":     employees,
-    "customers":  customers,
+		"customers":     customers,
+		"medicines":     medicines,
 	}
 
 	// Marshal the data to JSON
