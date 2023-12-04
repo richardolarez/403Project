@@ -4,9 +4,15 @@ package service
 
 import (
 	"fmt"
+	"sync"
 	"time"
 
 	"github.com/richardolarez/403Project/internal/models"
+)
+
+var (
+	lastID  int = 0
+	idMutex sync.Mutex
 )
 
 // Checkout creates a new sales transaction and returns a sales receipt.
@@ -56,9 +62,10 @@ func Checkout(customerID int, items []*models.InventoryItem, paymentMethod strin
 
 // generateUniqueTransactionID generates a unique transaction ID.
 func generateUniqueTransactionID() int {
-	// Implement your logic to generate a unique ID (e.g., using a database sequence)
-	// Return a unique ID here
-	return 12345
+	idMutex.Lock()
+	lastID++
+	idMutex.Unlock()
+	return lastID
 }
 
 // updateInventoryQuantities updates the inventory item quantities after a sale.
