@@ -76,9 +76,8 @@ const Inventory = () => {
                             formatter={(value: number | undefined) => `${value}`}
                         />
               </Form.Item>
-              <Form.Item label="Prescription" name="IsPrescription" valuePropName="checked">
-            <Checkbox />
-          </Form.Item>
+              
+     
           <div style={{textAlign: "right"}}>
             {
               <Button

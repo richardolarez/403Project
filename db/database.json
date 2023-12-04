@@ -1,7 +1,7 @@
 {
   "customers": [
     {
-      "ID": 126628,
+      "ID": 875008,
       "FirstName": "Richardo",
       "LastName": "Larez",
       "DOB": "01/01/2000",
@@ -13,7 +13,7 @@
       "AssignedPrescriptions": null
     },
     {
-      "ID": 402130,
+      "ID": 923017,
       "FirstName": "Evan",
       "LastName": "Martin",
       "DOB": "01/01/2000",
@@ -25,7 +25,7 @@
       "AssignedPrescriptions": null
     },
     {
-      "ID": 426153,
+      "ID": 654118,
       "FirstName": "Javier",
       "LastName": "Cota",
       "DOB": "01/01/2000",
@@ -37,7 +37,7 @@
       "AssignedPrescriptions": null
     },
     {
-      "ID": 921551,
+      "ID": 928093,
       "FirstName": "Carlos",
       "LastName": "Robles",
       "DOB": "01/01/2000",
@@ -49,7 +49,7 @@
       "AssignedPrescriptions": null
     },
     {
-      "ID": 135309,
+      "ID": 408700,
       "FirstName": "Mario",
       "LastName": "Weiler",
       "DOB": "01/01/2000",
@@ -61,7 +61,7 @@
       "AssignedPrescriptions": null
     },
     {
-      "ID": 96511,
+      "ID": 689211,
       "FirstName": "Antony",
       "LastName": "Mangala",
       "DOB": "01/01/2000",
@@ -75,7 +75,7 @@
   ],
   "employees": [
     {
-      "ID": 417454,
+      "ID": 57572,
       "Username": "richardo",
       "Password": "password123",
       "FirstName": "Richardo",
@@ -84,7 +84,7 @@
       "RequiresNewPass": true
     },
     {
-      "ID": 901934,
+      "ID": 229031,
       "Username": "evan",
       "Password": "password123",
       "FirstName": "Evan",
@@ -93,7 +93,7 @@
       "RequiresNewPass": true
     },
     {
-      "ID": 765261,
+      "ID": 163125,
       "Username": "javier",
       "Password": "password123",
       "FirstName": "Javier",
@@ -102,7 +102,7 @@
       "RequiresNewPass": true
     },
     {
-      "ID": 891444,
+      "ID": 43700,
       "Username": "carlos",
       "Password": "password123",
       "FirstName": "Carlos",
@@ -111,7 +111,7 @@
       "RequiresNewPass": true
     },
     {
-      "ID": 524419,
+      "ID": 731630,
       "Username": "mario",
       "Password": "password123",
       "FirstName": "Mario",
@@ -120,7 +120,7 @@
       "RequiresNewPass": true
     },
     {
-      "ID": 448088,
+      "ID": 309748,
       "Username": "antony",
       "Password": "password123",
       "FirstName": "Antony",
@@ -132,35 +132,248 @@
   "inventory": [
     {
       "ID": 1,
-      "Name": "Item 1",
-      "Description": "Description for Item 1",
-      "Price": 10.99,
-      "Quantity": 5,
-      "IsPrescription": false
+      "Name": "Toothpaste",
+      "Description": "Toothpaste for oral hygiene",
+      "Price": 2.99,
+      "Quantity": 50
     },
     {
       "ID": 2,
-      "Name": "Item 2",
-      "Description": "Description for Item 2",
-      "Price": 15.99,
-      "Quantity": 10,
-      "IsPrescription": false
+      "Name": "Shampoo",
+      "Description": "Shampoo for hair care",
+      "Price": 5.99,
+      "Quantity": 30
     },
     {
       "ID": 3,
-      "Name": "Medicine 1",
-      "Description": "Description for Medicine 1",
-      "Price": 20.99,
-      "Quantity": 15,
-      "IsPrescription": false
+      "Name": "Soap",
+      "Description": "Soap for body cleansing",
+      "Price": 1.99,
+      "Quantity": 40
     },
     {
       "ID": 4,
-      "Name": "Medicine 2",
-      "Description": "Description for Medicine 2",
-      "Price": 25.99,
-      "Quantity": 20,
-      "IsPrescription": false
+      "Name": "Toilet Paper",
+      "Description": "Toilet paper for personal hygiene",
+      "Price": 3.99,
+      "Quantity": 60
+    },
+    {
+      "ID": 5,
+      "Name": "Laundry Detergent",
+      "Description": "Detergent for laundry",
+      "Price": 8.99,
+      "Quantity": 25
+    },
+    {
+      "ID": 6,
+      "Name": "Hand Sanitizer",
+      "Description": "Hand sanitizer for hygiene",
+      "Price": 4.99,
+      "Quantity": 20
+    },
+    {
+      "ID": 7,
+      "Name": "Face Mask",
+      "Description": "Face mask for protection",
+      "Price": 1.99,
+      "Quantity": 100
+    },
+    {
+      "ID": 8,
+      "Name": "Band-Aids",
+      "Description": "Band-Aids for minor injuries",
+      "Price": 3.49,
+      "Quantity": 50
+    },
+    {
+      "ID": 9,
+      "Name": "Cough Syrup",
+      "Description": "Cough syrup for relief",
+      "Price": 6.99,
+      "Quantity": 30
+    },
+    {
+      "ID": 10,
+      "Name": "Vitamins",
+      "Description": "Vitamins for health",
+      "Price": 9.99,
+      "Quantity": 40
+    },
+    {
+      "ID": 11,
+      "Name": "Pain Reliever",
+      "Description": "Pain reliever for headaches",
+      "Price": 4.49,
+      "Quantity": 50
+    },
+    {
+      "ID": 12,
+      "Name": "Allergy Medicine",
+      "Description": "Medicine for allergies",
+      "Price": 7.99,
+      "Quantity": 20
+    },
+    {
+      "ID": 13,
+      "Name": "Antacid",
+      "Description": "Antacid for heartburn",
+      "Price": 3.99,
+      "Quantity": 30
+    },
+    {
+      "ID": 14,
+      "Name": "Sunscreen",
+      "Description": "Sunscreen for sun protection",
+      "Price": 10.99,
+      "Quantity": 15
+    },
+    {
+      "ID": 15,
+      "Name": "Lip Balm",
+      "Description": "Lip balm for dry lips",
+      "Price": 2.49,
+      "Quantity": 40
+    },
+    {
+      "ID": 16,
+      "Name": "Bread",
+      "Description": "Freshly baked bread",
+      "Price": 1.49,
+      "Quantity": 75
+    },
+    {
+      "ID": 17,
+      "Name": "Milk",
+      "Description": "Whole milk for daily consumption",
+      "Price": 2.29,
+      "Quantity": 50
+    },
+    {
+      "ID": 18,
+      "Name": "Eggs",
+      "Description": "Farm-fresh eggs",
+      "Price": 3.99,
+      "Quantity": 60
+    },
+    {
+      "ID": 19,
+      "Name": "Cheese",
+      "Description": "Cheddar cheese for snacking",
+      "Price": 4.49,
+      "Quantity": 35
+    },
+    {
+      "ID": 20,
+      "Name": "Chicken Breast",
+      "Description": "Boneless chicken breast",
+      "Price": 7.99,
+      "Quantity": 25
+    },
+    {
+      "ID": 21,
+      "Name": "Pasta",
+      "Description": "Durum wheat pasta",
+      "Price": 1.99,
+      "Quantity": 45
+    },
+    {
+      "ID": 22,
+      "Name": "Tomatoes",
+      "Description": "Fresh tomatoes for cooking",
+      "Price": 0.99,
+      "Quantity": 30
+    },
+    {
+      "ID": 23,
+      "Name": "Potatoes",
+      "Description": "Russet potatoes for various dishes",
+      "Price": 2.49,
+      "Quantity": 40
+    },
+    {
+      "ID": 24,
+      "Name": "Canned Beans",
+      "Description": "Canned beans for convenience",
+      "Price": 1.79,
+      "Quantity": 50
+    },
+    {
+      "ID": 25,
+      "Name": "Frozen Pizza",
+      "Description": "Ready-to-bake frozen pizza",
+      "Price": 5.99,
+      "Quantity": 20
+    },
+    {
+      "ID": 26,
+      "Name": "Fresh Fruits",
+      "Description": "Assorted fresh fruits",
+      "Price": 6.99,
+      "Quantity": 30
+    },
+    {
+      "ID": 27,
+      "Name": "Yogurt",
+      "Description": "Greek yogurt for a healthy snack",
+      "Price": 3.49,
+      "Quantity": 40
+    },
+    {
+      "ID": 28,
+      "Name": "Salmon Fillet",
+      "Description": "Fresh salmon fillet",
+      "Price": 9.99,
+      "Quantity": 15
+    },
+    {
+      "ID": 29,
+      "Name": "Cereal",
+      "Description": "Whole grain cereal for breakfast",
+      "Price": 4.99,
+      "Quantity": 35
+    },
+    {
+      "ID": 30,
+      "Name": "Olive Oil",
+      "Description": "Extra virgin olive oil",
+      "Price": 8.49,
+      "Quantity": 25
+    },
+    {
+      "ID": 31,
+      "Name": "Honey",
+      "Description": "Pure honey for sweetening",
+      "Price": 3.29,
+      "Quantity": 40
+    },
+    {
+      "ID": 32,
+      "Name": "Green Tea",
+      "Description": "Organic green tea leaves",
+      "Price": 2.99,
+      "Quantity": 50
+    },
+    {
+      "ID": 33,
+      "Name": "Ground Coffee",
+      "Description": "Medium roast ground coffee",
+      "Price": 6.49,
+      "Quantity": 30
+    },
+    {
+      "ID": 34,
+      "Name": "Peanut Butter",
+      "Description": "Smooth peanut butter",
+      "Price": 2.79,
+      "Quantity": 45
+    },
+    {
+      "ID": 35,
+      "Name": "Granola Bars",
+      "Description": "Nutritious granola bars",
+      "Price": 3.99,
+      "Quantity": 50
     }
   ],
   "medicines": [
@@ -170,7 +383,7 @@
       "Doses": 5,
       "Strength": "10mg",
       "Price": 99.99,
-      "ExpirationDate": "2024-01-02T21:24:55.760545-07:00"
+      "ExpirationDate": "2024-01-02T23:23:01.382527-07:00"
     },
     {
       "ID": 2,
@@ -178,7 +391,7 @@
       "Doses": 10,
       "Strength": "20mg",
       "Price": 14.99,
-      "ExpirationDate": "2024-12-03T21:24:55.760705-07:00"
+      "ExpirationDate": "2024-12-03T23:23:01.382771-07:00"
     }
   ],
   "pharmacies": [

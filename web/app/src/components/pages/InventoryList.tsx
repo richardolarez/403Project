@@ -57,13 +57,7 @@ const InventoryList: React.FC = () => {
             title: 'Price',
             dataIndex: 'Price',
         },
-        {
-            title: 'Prescription?',
-            dataIndex: 'IsPrescription',
-            render: (IsPrescription: boolean) => (
-                IsPrescription ? '✓' : 'X'
-            ),
-        },
+       
     ];
 
     const handleRowClick = (record: InventoryItem) => {
@@ -166,9 +160,6 @@ const InventoryList: React.FC = () => {
                             parser={(value: string | undefined) => parseFloat(value || '0') || 0}
                             formatter={(value: number | undefined) => `${value}`}
                         />
-                    </Form.Item>
-                    <Form.Item label="Prescription" name="IsPrescription">
-                        <Checkbox />
                     </Form.Item>
                 </Form>
             </Modal>
