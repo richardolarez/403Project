@@ -9,13 +9,33 @@ const Home = () => {
 
 const [isModalVisible, setIsModalVisible] = React.useState(false);
 const [newPassword, setNewPassword] = React.useState('');
-//const [oldPassword, setOldPassword] = React.useState('');
 const [currentUsername, setCurrentUsername] = React.useState('');
 const [currentPassword, setCurrentPassword] = React.useState('');
-//const [shouldUpdatePassword, setShouldUpdatePassword] = React.useState(false);
 const [resolveModalPromise, setResolveModalPromise] = React.useState<(() => void) | null>(null);
+const [userRole, setUserRole] = useState('');
 
+useEffect(() => {
+  // Load user role from session storage
+  const storedUserRole = sessionStorage.getItem('UserRole');
+  if (storedUserRole) {
+    setUserRole(storedUserRole);
+  }
 
+  if (userRole =='Manager') {
+    axios.post(`http://localhost:8080/medicine`
+    )
+    .then(res => {
+      setLoading(false);
+      message.success('Customer Added Successfully!');
+      history('/customers');
+    })
+    .catch(error => {
+      setLoading(false);
+      message.error(error);
+    })
+  }
+  }
+}, []);
 
 const handleOk = async () => {
   if (newPassword && currentUsername) {
