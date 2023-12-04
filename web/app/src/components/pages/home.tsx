@@ -15,8 +15,8 @@ const [currentUsername, setCurrentUsername] = React.useState('');
 const [currentPassword, setCurrentPassword] = React.useState('');
 const [resolveModalPromise, setResolveModalPromise] = React.useState<(() => void) | null>(null);
 const [userRole, setUserRole] = useState('');
-const [lowQuantityDrugs, setLowQuantityDrugs] = useState<string[]>([]);
-const [expiredDrugs, setExpiredDrugs] = useState<string[]>([]);
+const [lowQuantityDrugs, setLowQuantityDrugs] = useState<MedicineItem[]>([]);
+const [expiredDrugs, setExpiredDrugs] = useState<MedicineItem[]>([]);
 
 interface MedicineItem {
   ID: number;
@@ -46,7 +46,7 @@ useEffect(() => {
         // Filter items with quantity less than 20
         const lowQuantityDrugs = res.data
           .filter((item: MedicineItem) => item.Doses < 20)
-          .map((item: MedicineItem) => item.Drug);
+          .map((item: MedicineItem) => item);
 
         setLowQuantityDrugs(lowQuantityDrugs);
 
@@ -66,7 +66,7 @@ useEffect(() => {
               console.log(expirationDate)
               return expirationDate < twelveMonthsAgo;
             })
-            .map((item: MedicineItem) => item.Drug);
+            .map((item: MedicineItem) => item);
 
           setExpiredDrugs(expiredDrugs);
       })
@@ -176,7 +176,13 @@ const updatePassword = async (username: string, oldPassword: string, newPassword
           <p>Low quantity drugs:</p>
           <ul>
           {lowQuantityDrugs.map(drug => (
-            <li key={drug}>{drug}</li>
+            <li key={drug.ID}>
+            <p>Drug: {drug.Drug}</p>
+            <p>Doses: {drug.Doses}</p>
+            <p>Strength: {drug.Strength}</p>
+            <p>Price: {drug.Price}</p>
+            <p>Expiration Date: {drug.ExpirationDate}</p>
+          </li>
           ))}
         </ul>
       </Modal>
@@ -189,7 +195,13 @@ const updatePassword = async (username: string, oldPassword: string, newPassword
           <p>expired drugs:</p>
           <ul>
           {expiredDrugs.map(drug => (
-            <li key={drug}>{drug}</li>
+            <li key={drug.ID}>
+              <p>Drug: {drug.Drug}</p>
+              <p>Doses: {drug.Doses}</p>
+              <p>Strength: {drug.Strength}</p>
+              <p>Price: {drug.Price}</p>
+              <p>Expiration Date: {drug.ExpirationDate}</p>
+            </li>
           ))}
         </ul>
       </Modal>
