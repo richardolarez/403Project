@@ -309,8 +309,126 @@ func InitializeDatabase() error {
 		ExpirationDate: time.Now().AddDate(1, 0, 0), // Set expiration date to 2 years from now
 	}
 
+	// Sample Medicines
+	medicine3 := models.Medicine{
+		ID:             3,
+		Drug:           "Ibuprofen",
+		Doses:          30,
+		Strength:       "200mg",
+		Price:          5.49,
+		ExpirationDate: time.Now().AddDate(1, 6, 0), // Set expiration date to 1.5 years from now
+	}
+
+	medicine4 := models.Medicine{
+		ID:             4,
+		Drug:           "Amoxicillin",
+		Doses:          20,
+		Strength:       "500mg",
+		Price:          8.99,
+		ExpirationDate: time.Now().AddDate(2, 0, 0), // Set expiration date to 2 years from now
+	}
+
+	medicine5 := models.Medicine{
+		ID:             5,
+		Drug:           "Lisinopril",
+		Doses:          30,
+		Strength:       "10mg",
+		Price:          12.79,
+		ExpirationDate: time.Now().AddDate(0, 11, 0), // Set expiration date to 11 months from now
+	}
+
+	medicine6 := models.Medicine{
+		ID:             6,
+		Drug:           "Omeprazole",
+		Doses:          14,
+		Strength:       "20mg",
+		Price:          6.49,
+		ExpirationDate: time.Now().AddDate(1, 3, 0), // Set expiration date to 1.25 years from now
+	}
+
+	medicine7 := models.Medicine{
+		ID:             7,
+		Drug:           "Zithromax",
+		Doses:          5,
+		Strength:       "250mg",
+		Price:          19.99,
+		ExpirationDate: time.Now().AddDate(1, 6, 0), // Set expiration date to 1.5 years from now
+	}
+
+	medicine8 := models.Medicine{
+		ID:             8,
+		Drug:           "Prednisone",
+		Doses:          10,
+		Strength:       "5mg",
+		Price:          7.99,
+		ExpirationDate: time.Now().AddDate(0, 9, 0), // Set expiration date to 9 months from now
+	}
+
+	medicine9 := models.Medicine{
+		ID:             9,
+		Drug:           "Metformin",
+		Doses:          30,
+		Strength:       "500mg",
+		Price:          10.29,
+		ExpirationDate: time.Now().AddDate(1, 0, 0), // Set expiration date to 1 year from now
+	}
+
+	medicine10 := models.Medicine{
+		ID:             10,
+		Drug:           "Hydrochlorothiazide",
+		Doses:          20,
+		Strength:       "25mg",
+		Price:          14.49,
+		ExpirationDate: time.Now().AddDate(0, 8, 0), // Set expiration date to 8 months from now
+	}
+
+	medicine11 := models.Medicine{
+		ID:             11,
+		Drug:           "Atorvastatin",
+		Doses:          30,
+		Strength:       "40mg",
+		Price:          9.99,
+		ExpirationDate: time.Now().AddDate(1, 0, 0), // Set expiration date to 1 year from now
+	}
+
+	medicine12 := models.Medicine{
+		ID:             12,
+		Drug:           "Ciprofloxacin",
+		Doses:          10,
+		Strength:       "500mg",
+		Price:          15.79,
+		ExpirationDate: time.Now().AddDate(0, 10, 0), // Set expiration date to 10 months from now
+	}
+
+	medicine13 := models.Medicine{
+		ID:             13,
+		Drug:           "Albuterol",
+		Doses:          15,
+		Strength:       "90mcg",
+		Price:          22.49,
+		ExpirationDate: time.Now().AddDate(1, 2, 0), // Set expiration date to 1.17 years from now
+	}
+
+	medicine14 := models.Medicine{
+		ID:             14,
+		Drug:           "Sertraline",
+		Doses:          30,
+		Strength:       "50mg",
+		Price:          11.99,
+		ExpirationDate: time.Now().AddDate(0, 7, 0), // Set expiration date to 7 months from now
+	}
+
+	medicine15 := models.Medicine{
+		ID:             15,
+		Drug:           "Levothyroxine",
+		Doses:          30,
+		Strength:       "100mcg",
+		Price:          8.49,
+		ExpirationDate: time.Now().AddDate(0, 11, 0), // Set expiration date to 11 months from now
+	}
+
 	// Create an array of medicines
-	medicines := []*models.Medicine{&medicine1, &medicine2}
+	medicines := []*models.Medicine{&medicine1, &medicine2, &medicine3, &medicine4, &medicine5, &medicine6, &medicine7, &medicine8, &medicine9, &medicine10, &medicine11, &medicine12, &medicine13, &medicine14, &medicine15}
 
 	// Create a map to hold the data
 	data := map[string]interface{}{
