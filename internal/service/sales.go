@@ -4,8 +4,8 @@ package service
 
 import (
 	"fmt"
+	"strconv"
 	"sync"
-	"time"
 
 	"github.com/richardolarez/403Project/internal/models"
 )
@@ -17,54 +17,69 @@ var (
 
 // SalesTransaction represents a sales transaction with basic information and a list of items sold.
 type Cart struct {
-	CustomerID int // Name of the customer associated with the transaction
-	ID         int // Unique identifier for the transaction
-	ItemID     int // Unique identifier for the item
+	CustomerID    string // Name of the customer associated with the transaction
+	ID            string // Unique identifier for the transaction
+	ItemID        string // Unique identifier for the item
+	PaymentMethod string // Payment method used for the transaction
 }
 
 // Checkout creates a new sales transaction and returns a sales receipt.
-func Checkout(customerID int, items []*models.InventoryItem, paymentMethod string, cartItems []*Cart) (*string, *models.SalesTransaction, error) {
+func Checkout(customerID int, paymentMethod string, cartItems []*Cart) (*SalesReceipt, error) {
+	items := []*models.InventoryItem{}
+
+	for _, item := range cartItems {
+		paymentMethod = item.PaymentMethod
+		itemID, err := strconv.Atoi(item.ItemID)
+
+		thisItem, err := models.GetInventoryItem(itemID)
+
+		if err != nil {
+			return nil, err
+		}
+		items = append(items, thisItem)
+	}
+
 	// Calculate the total amount based on item prices and quantities
 	var totalAmount float64
 	for _, item := range items {
-		totalAmount += item.Price * float64(item.Quantity)
+		totalAmount += item.Price
 	}
 
 	// Generate a unique transaction ID (you can implement this logic)
-	transactionID := generateUniqueTransactionID()
+	// transactionID := generateUniqueTransactionID()
 
-	// Create a SalesTransaction object
-	transaction := &models.SalesTransaction{
-		TransactionID:   transactionID,
-		CustomerID:      customerID,
-		TransactionDate: time.Now(),
-		ItemsSold:       items,
-		TotalAmount:     totalAmount,
-		PaymentMethod:   paymentMethod,
-	}
+	// // Create a SalesTransaction object
+	// transaction := &models.SalesTransaction{
+	// 	TransactionID:   transactionID,
+	// 	CustomerID:      customerID,
+	// 	TransactionDate: time.Now(),
+	// 	ItemsSold:       items,
+	// 	TotalAmount:     totalAmount,
+	// 	PaymentMethod:   paymentMethod,
+	// }
 
 	// Retrieve or create the customer object using the customer repository
-	customer, err := models.GetCustomer(customerID)
-	if err != nil {
-		return nil, nil, nil
-	}
+	// customer, err := models.GetCustomer(customerID)
+	// if err != nil {
+	// 	return "none", nil
+	// }
 
-	// Append the transaction to the customer's transaction history
-	customer.AddTransaction(transaction)
+	// // Append the transaction to the customer's transaction history
+	// customer.AddTransaction(transaction)
 
 	// Update the inventory quantities based on items sold
 	if err := updateInventoryQuantities(items); err != nil {
-		return nil, nil, err
+		return nil, err
 	}
 
 	// Save the transaction and customer to the database (you can implement this logic)
 
 	// Generate a sales receipt using the SalesReceipt.GenerateReceipt function
-	receipt := GenerateReceipt(transaction)
+	receipt := GenerateReceipt(totalAmount, customerID, paymentMethod, items)
 
 	// Print or save the receipt as needed
 
-	return &receipt, transaction, nil
+	return receipt, nil
 }
 
 // generateUniqueTransactionID generates a unique transaction ID.

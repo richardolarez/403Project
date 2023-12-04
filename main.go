@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 	"syscall"
 	"time"
 
@@ -50,10 +51,10 @@ func main() {
 
 	// CheckoutRequest represents a request to process a sales transaction.
 	type CheckoutRequest struct {
-		CustomerID    int                     `json:"customer_id"`
-		Items         []*models.InventoryItem `json:"items"`
-		PaymentMethod string                  `json:"payment_method"`
-		CartItems     []*service.Cart         `json:"cartItems"`
+		CartItems     []*service.Cart `json:"cartItems"`
+		CustomerID    string          `json:"customer_id"`
+		ItemID        string          `json:"item_id"`
+		PaymentMethod string          `json:"payment_method"`
 	}
 
 	// DeleteRequest represents a request to delete an employee/customer by ID and first name.
@@ -257,27 +258,26 @@ func main() {
 			return
 		}
 
-		var receipt *string
-
 		// Call the Checkout function to process the order and get a sales transaction
-		receipt, transaction, err := service.Checkout(checkoutRequest.CustomerID, checkoutRequest.Items, checkoutRequest.PaymentMethod, checkoutRequest.CartItems)
-
+		customerID, err := strconv.Atoi(checkoutRequest.CustomerID)
+		receipt, err := service.Checkout(customerID, checkoutRequest.PaymentMethod, checkoutRequest.CartItems)
+		print(receipt)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			loggerInst.Log(logger.Error, "Error processing checkout request", map[string]interface{}{"error": err.Error()})
 			return
 		}
 
-		// Convert the transaction to JSON
-		transactionJSON, err := json.Marshal(transaction)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			loggerInst.Log(logger.Error, "Error converting transaction to JSON", map[string]interface{}{"error": err.Error()})
-			return
-		}
+		// // Convert the transaction to JSON
+		// transactionJSON, err := json.Marshal(transaction)
+		// if err != nil {
+		// 	http.Error(w, err.Error(), http.StatusInternalServerError)
+		// 	loggerInst.Log(logger.Error, "Error converting transaction to JSON", map[string]interface{}{"error": err.Error()})
+		// 	return
+		// }
 
 		// Convert the receipt to JSON
-		receiptJSON, err := json.Marshal(receipt)
+		receiptJSON, err := json.Marshal(&receipt)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			loggerInst.Log(logger.Error, "Error converting receipt to JSON", map[string]interface{}{"error": err.Error()})
@@ -287,9 +287,9 @@ func main() {
 		// Set the Content-Type header to application/json
 		w.Header().Set("Content-Type", "application/json")
 
-		// Write the JSON response to the client
-		w.Write(transactionJSON)
-		loggerInst.Log(logger.Info, "Checkout request completed", map[string]interface{}{"response_code": http.StatusOK, "transaction": transaction})
+		// // Write the JSON response to the client
+		// w.Write(transactionJSON)
+		// loggerInst.Log(logger.Info, "Checkout request completed", map[string]interface{}{"response_code": http.StatusOK, "transaction": transaction})
 
 		// Write the JSON response to the client
 		w.Write(receiptJSON)
