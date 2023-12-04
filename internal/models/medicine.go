@@ -32,17 +32,35 @@ func newMedicine(id int, drug string, doses int, strength string, price float64,
 // GetMedicine retrieves all medicine items from the database.
 func GetMedicine() ([]*Medicine, error) {
 	// Read the contents of the database file
-	data, err := ioutil.ReadFile("db/database.json")
+	data, err := ioutil.ReadFile("./db/database.json")
 	if err != nil {
 		return nil, err
 	}
 
 	// Unmarshal the JSON data into a slice of Medicine structs
-	var medicine []*Medicine
-	err = json.Unmarshal(data, &medicine)
+	var db map[string]interface{}
+	err = json.Unmarshal(data, &db)
 	if err != nil {
 		return nil, err
 	}
+	medicineObj, ok := db["medicines"]
+	if !ok {
+		return nil, err
+	}
+
+	// Convert the employees object to a JSON string
+	medicineJson, err := json.Marshal(medicineObj)
+	if err != nil {
+		return nil, err
+	}
+
+	// Unmarshal the JSON data into an array of Employee objects
+	var medicine []*Medicine
+	err = json.Unmarshal(medicineJson, &medicine)
+	if err != nil {
+		return nil, err
+	}
+
 
 	return medicine, nil
 }
@@ -50,7 +68,7 @@ func GetMedicine() ([]*Medicine, error) {
 // addMedicine adds a new Medicine to the database.
 func addMedicine(medicine *Medicine) error {
 	// Read the contents of the database file
-	data, err := ioutil.ReadFile("db/database.json")
+	data, err := ioutil.ReadFile("./db/database.json")
 	if err != nil {
 		return err
 	}
@@ -72,7 +90,7 @@ func addMedicine(medicine *Medicine) error {
 	}
 
 	// Write the updated JSON data back to the database file
-	err = ioutil.WriteFile("db/database.json", updatedData, 0644)
+	err = ioutil.WriteFile("./db/database.json", updatedData, 0644)
 	if err != nil {
 		return err
 	}
