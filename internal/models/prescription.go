@@ -121,7 +121,7 @@ func AddPrescription(id int, drug string, doses int, strength string, price floa
 	}
 
 	// Write the updated prescriptions data to the JSON file
-	err = ioutil.WriteFile("database.json", newData, os.ModePerm)
+	err = ioutil.WriteFile("./db/database.json", newData, os.ModePerm)
 	if err != nil {
 		return fmt.Errorf("error writing prescriptions data: %v", err)
 	}
