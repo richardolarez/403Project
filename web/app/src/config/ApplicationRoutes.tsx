@@ -14,6 +14,7 @@ import CustForm from '../components/pages/custForm';
 import Inventory from '../components/pages/inventory';
 import PaymentPage from '../components/pages/payment';
 import Reports from '../components/pages/reports';
+import Info from '../components/pages/info';
 
 const ApplicationRoutes: React.FC = () => {
   const isUserAuthenticated = sessionStorage.getItem("authenticated"); // Replace with your authentication logic
@@ -43,6 +44,7 @@ const ApplicationRoutes: React.FC = () => {
                 <Route path="/inventory" element={<Inventory />} />
                 <Route path='/payment' element={<PaymentPage />} />
                 <Route path='/reports' element={<Reports />} />
+                <Route path="/info" element={<Info />} />
               </Routes>
             </MainLayout>
           ) : (
