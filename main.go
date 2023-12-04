@@ -738,6 +738,11 @@ func main() {
 		err = models.AddPrescription(addPrescriptionRequest.ID, addPrescriptionRequest.Drug, addPrescriptionRequest.Doses, addPrescriptionRequest.Strength, addPrescriptionRequest.Price, addPrescriptionRequest.Doctor, addPrescriptionRequest.CustomerID)
 
 		// TODO: Save the prescription to the database or perform any other necessary operations
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error adding prescription", map[string]interface{}{"error": err.Error()})
+			return
+		}
 
 		// Respond with a success message
 		w.WriteHeader(http.StatusOK)

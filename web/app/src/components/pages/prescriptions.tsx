@@ -14,15 +14,15 @@ const Prescriptions = () => {
 
 
   interface PresData {
-    key: any;
-    Drug: any;
-    Doses: any;
-    CustomerID: any;
-    IsFilled: any;
-    Strength: any;
-    Price: any;
-    Doctor: any;
-    PharmacistID: any;
+    ID: number;
+    Drug: string;
+    Doses: number;
+    CustomerID: number;
+    IsFilled: boolean;
+    Strength: string;
+    Price: number;
+    Doctor: string;
+    PharmacistID: number;
   }
 
   const [form] = Form.useForm();
@@ -69,7 +69,7 @@ const Prescriptions = () => {
       Drug: pres.Drug,
       Doses: pres.Doses,
       CustomerID:  pres.CustomerID,
-      IsFilled: pres.IsFilled,
+      IsFilled: true,
     });
     return data;
   });
@@ -81,20 +81,29 @@ const Prescriptions = () => {
 
   const onFinish = (values: any) => {
     // Call fetchPrescriptions function with form values
-    axios
-    .post('http://localhost:8080/prescription', values)
-    .then((res) => {
-      console.log(res);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const payload = {
+      id: parseInt(values.id),
+      drug: values.drug,
+      doses: parseInt(values.doses),
+      strength: values.strength,
+      price: parseFloat(values.price),
+      doctor: values.doctor,
+      customerID: parseInt(values.customerID),
+      pharmacistID: parseInt(values.pharmacistID),
+      isFilled: !!values.IsFilled, // Convert to boolean
+    };
+
+       axios.post('http://localhost:8080/prescription', payload, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
   };
 
   return (
     <div>
       <Form onFinish={onFinish}>
-        <Form.Item name="id" label="ID">
+        <Form.Item name="id" label="Prescription ID">
           <Input />
         </Form.Item>
         <Form.Item name="drug" label="Drug">
