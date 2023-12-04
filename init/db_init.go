@@ -287,7 +287,7 @@ func InitializeDatabase() error {
 
 	customers := []*models.Customer{Richardo, Evan, Javier, Carlos, Mario, Antony}
 
-	p1 := models.NewPrescription(10, "Adderall", 10, "1mg", 10.99, "Dr Kureka", 20)
+	p1 := models.NewPrescription(10, "Adderall", 10, "1mg", 10.99, "Dr Kureka", 20, "No", 33333)
 	prescriptions := []*models.Prescription{p1}
 
 	// Create sample medicines
