@@ -12,13 +12,18 @@ const Prescriptions = () => {
   const [userData, setUserData] = useState<PresData | null>(null);
   const [roleCheck, setLoggedInUserRole] = useState<string | null>(null);
 
+  useEffect(() => {
+    axios.get(`http://localhost:8080/prescriptions`).then(res => {
+      setAllData(res.data);
+  });
+  }, []);
 
   interface PresData {
     ID: number;
     Drug: string;
     Doses: number;
     CustomerID: number;
-    IsFilled: boolean;
+    IsFilled: any;
     Strength: string;
     Price: number;
     Doctor: string;
@@ -62,17 +67,22 @@ const Prescriptions = () => {
     },
   ];
 
-  const data: { key: any; Drug: any; Doses: any; CustomerID: any; IsFilled: any; }[] = [];
-  allData.map((pres: any) => {
-    data.push({
-      key: pres.ID,
-      Drug: pres.Drug,
-      Doses: pres.Doses,
-      CustomerID:  pres.CustomerID,
-      IsFilled: true,
-    });
-    return data;
+  const data: { Drug: any; Doses: any; CustomerID: any; IsFilled: any; Strength: any; Price: any; Doctor: any; PharmacistID: any;}[] = [];
+allData.map((pres: any) => {
+  data.push({
+    Drug: pres.Drug,
+    Doses: pres.Doses,
+    CustomerID:  pres.CustomerID,
+    IsFilled: pres.IsFilled, 
+    Strength: pres.Strength,
+    Price: pres.Price,
+    Doctor: pres.Doctor,
+    PharmacistID: pres.PharmacistID,
   });
+  return data;
+});
+
+
 
   const handleAddClick = () => {
     history('/addPrescription');
@@ -88,12 +98,12 @@ const Prescriptions = () => {
       strength: values.strength,
       price: parseFloat(values.price),
       doctor: values.doctor,
-      customerID: parseInt(values.customerID),
-      pharmacistID: parseInt(values.pharmacistID),
-      isFilled: !!values.IsFilled, // Convert to boolean
+      customerid: parseInt(values.customerID),
+      pharmacistid: parseInt(values.pharmacistID),
+      isfilled: "Yes",
     };
 
-       axios.post('http://localhost:8080/prescription', payload, {
+    axios.post('http://localhost:8080/prescription', payload, {
       headers: {
         'Content-Type': 'application/json'
       }
@@ -124,15 +134,12 @@ const Prescriptions = () => {
         <Form.Item name="customerID" label="Customer ID">
           <Input />
         </Form.Item>
-        <Form.Item name="isFilled" label="Is Filled">
-          <Input />
-        </Form.Item>
         <Form.Item name="pharmacistID" label="Pharmacist ID">
           <Input />
         </Form.Item>
         <Form.Item>
           <Button type="primary" htmlType="submit">
-            Submit
+            Fill Prescription
           </Button>
         </Form.Item>
       </Form>
