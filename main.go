@@ -540,7 +540,6 @@ func main() {
 		item.Description = updateInventoryRequest.Description
 		item.Price = updateInventoryRequest.Price
 		item.Quantity = updateInventoryRequest.Quantity
-		item.IsPrescription = updateInventoryRequest.IsPrescription
 
 		item.Update(updateInventoryRequest.Name, updateInventoryRequest.Description, updateInventoryRequest.Price, updateInventoryRequest.Quantity, updateInventoryRequest.IsPrescription)
 
