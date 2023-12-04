@@ -297,6 +297,7 @@ func InitializeDatabase() error {
 		Doses:          5,
 		Strength:       "10mg",
 		Price:          99.99,
+		Quantity:       10,
 		ExpirationDate: time.Now().AddDate(0, 0, 30), // Set expiration date to 30 days from now
 	}
 
@@ -306,6 +307,7 @@ func InitializeDatabase() error {
 		Doses:          10,
 		Strength:       "20mg",
 		Price:          14.99,
+		Quantity:       20,
 		ExpirationDate: time.Now().AddDate(1, 0, 0), // Set expiration date to 2 years from now
 	}
 
