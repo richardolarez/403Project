@@ -1,7 +1,7 @@
 {
   "customers": [
     {
-      "ID": 875008,
+      "ID": 43167,
       "FirstName": "Richardo",
       "LastName": "Larez",
       "DOB": "01/01/2000",
@@ -13,7 +13,7 @@
       "AssignedPrescriptions": null
     },
     {
-      "ID": 923017,
+      "ID": 943312,
       "FirstName": "Evan",
       "LastName": "Martin",
       "DOB": "01/01/2000",
@@ -25,7 +25,7 @@
       "AssignedPrescriptions": null
     },
     {
-      "ID": 654118,
+      "ID": 208084,
       "FirstName": "Javier",
       "LastName": "Cota",
       "DOB": "01/01/2000",
@@ -37,7 +37,7 @@
       "AssignedPrescriptions": null
     },
     {
-      "ID": 928093,
+      "ID": 304044,
       "FirstName": "Carlos",
       "LastName": "Robles",
       "DOB": "01/01/2000",
@@ -49,7 +49,7 @@
       "AssignedPrescriptions": null
     },
     {
-      "ID": 408700,
+      "ID": 757332,
       "FirstName": "Mario",
       "LastName": "Weiler",
       "DOB": "01/01/2000",
@@ -61,7 +61,7 @@
       "AssignedPrescriptions": null
     },
     {
-      "ID": 689211,
+      "ID": 903184,
       "FirstName": "Antony",
       "LastName": "Mangala",
       "DOB": "01/01/2000",
@@ -75,7 +75,7 @@
   ],
   "employees": [
     {
-      "ID": 57572,
+      "ID": 568650,
       "Username": "richardo",
       "Password": "password123",
       "FirstName": "Richardo",
@@ -84,7 +84,7 @@
       "RequiresNewPass": true
     },
     {
-      "ID": 229031,
+      "ID": 261422,
       "Username": "evan",
       "Password": "password123",
       "FirstName": "Evan",
@@ -93,7 +93,7 @@
       "RequiresNewPass": true
     },
     {
-      "ID": 163125,
+      "ID": 324155,
       "Username": "javier",
       "Password": "password123",
       "FirstName": "Javier",
@@ -102,7 +102,7 @@
       "RequiresNewPass": true
     },
     {
-      "ID": 43700,
+      "ID": 193152,
       "Username": "carlos",
       "Password": "password123",
       "FirstName": "Carlos",
@@ -111,7 +111,7 @@
       "RequiresNewPass": true
     },
     {
-      "ID": 731630,
+      "ID": 326292,
       "Username": "mario",
       "Password": "password123",
       "FirstName": "Mario",
@@ -120,7 +120,7 @@
       "RequiresNewPass": true
     },
     {
-      "ID": 309748,
+      "ID": 381559,
       "Username": "antony",
       "Password": "password123",
       "FirstName": "Antony",
@@ -383,7 +383,7 @@
       "Doses": 5,
       "Strength": "10mg",
       "Price": 99.99,
-      "ExpirationDate": "2024-01-02T23:23:01.382527-07:00"
+      "ExpirationDate": "2024-01-02T23:35:55.052693-07:00"
     },
     {
       "ID": 2,
@@ -391,7 +391,111 @@
       "Doses": 10,
       "Strength": "20mg",
       "Price": 14.99,
-      "ExpirationDate": "2024-12-03T23:23:01.382771-07:00"
+      "ExpirationDate": "2024-12-03T23:35:55.052818-07:00"
+    },
+    {
+      "ID": 3,
+      "Drug": "Ibuprofen",
+      "Doses": 30,
+      "Strength": "200mg",
+      "Price": 5.49,
+      "ExpirationDate": "2025-06-03T23:35:55.052819-07:00"
+    },
+    {
+      "ID": 4,
+      "Drug": "Amoxicillin",
+      "Doses": 20,
+      "Strength": "500mg",
+      "Price": 8.99,
+      "ExpirationDate": "2025-12-03T23:35:55.052819-07:00"
+    },
+    {
+      "ID": 5,
+      "Drug": "Lisinopril",
+      "Doses": 30,
+      "Strength": "10mg",
+      "Price": 12.79,
+      "ExpirationDate": "2024-11-03T23:35:55.052819-07:00"
+    },
+    {
+      "ID": 6,
+      "Drug": "Omeprazole",
+      "Doses": 14,
+      "Strength": "20mg",
+      "Price": 6.49,
+      "ExpirationDate": "2025-03-03T23:35:55.052819-07:00"
+    },
+    {
+      "ID": 7,
+      "Drug": "Zithromax",
+      "Doses": 5,
+      "Strength": "250mg",
+      "Price": 19.99,
+      "ExpirationDate": "2025-06-03T23:35:55.052819-07:00"
+    },
+    {
+      "ID": 8,
+      "Drug": "Prednisone",
+      "Doses": 10,
+      "Strength": "5mg",
+      "Price": 7.99,
+      "ExpirationDate": "2024-09-03T23:35:55.05282-07:00"
+    },
+    {
+      "ID": 9,
+      "Drug": "Metformin",
+      "Doses": 30,
+      "Strength": "500mg",
+      "Price": 10.29,
+      "ExpirationDate": "2024-12-03T23:35:55.05282-07:00"
+    },
+    {
+      "ID": 10,
+      "Drug": "Hydrochlorothiazide",
+      "Doses": 20,
+      "Strength": "25mg",
+      "Price": 14.49,
+      "ExpirationDate": "2024-08-03T23:35:55.05282-07:00"
+    },
+    {
+      "ID": 11,
+      "Drug": "Atorvastatin",
+      "Doses": 30,
+      "Strength": "40mg",
+      "Price": 9.99,
+      "ExpirationDate": "2024-12-03T23:35:55.05282-07:00"
+    },
+    {
+      "ID": 12,
+      "Drug": "Ciprofloxacin",
+      "Doses": 10,
+      "Strength": "500mg",
+      "Price": 15.79,
+      "ExpirationDate": "2024-10-03T23:35:55.05282-07:00"
+    },
+    {
+      "ID": 13,
+      "Drug": "Albuterol",
+      "Doses": 15,
+      "Strength": "90mcg",
+      "Price": 22.49,
+      "ExpirationDate": "2025-02-03T23:35:55.05282-07:00"
+    },
+    {
+      "ID": 14,
+      "Drug": "Sertraline",
+      "Doses": 30,
+      "Strength": "50mg",
+      "Price": 11.99,
+      "ExpirationDate": "2024-07-03T23:35:55.052821-07:00"
+    },
+    {
+      "ID": 15,
+      "Drug": "Levothyroxine",
+      "Doses": 30,
+      "Strength": "100mcg",
+      "Price": 8.49,
+      "ExpirationDate": "2024-11-03T23:35:55.052821-07:00"
     }
   ],
   "pharmacies": [
