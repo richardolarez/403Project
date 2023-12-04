@@ -14,17 +14,19 @@ type Medicine struct {
 	Doses          int       // Number of drug doses
 	Strength       string    // Strength of the drug per dose
 	Price          float64   // Price of the item
+	Quantity       int       // Quantity of the item in stock
 	ExpirationDate time.Time // Expiration date of the drug
 }
 
 // newMedicine creates a new instance of the Medicine struct.
-func newMedicine(id int, drug string, doses int, strength string, price float64, expirationDate time.Time) *Medicine {
+func newMedicine(id int, drug string, doses int, strength string, price float64, quantity int, expirationDate time.Time) *Medicine {
 	return &Medicine{
 		ID:             id,
 		Drug:           drug,
 		Doses:          doses,
 		Strength:       strength,
 		Price:          price,
+		Quantity:       quantity,
 		ExpirationDate: expirationDate,
 	}
 }
@@ -60,7 +62,6 @@ func GetMedicine() ([]*Medicine, error) {
 	if err != nil {
 		return nil, err
 	}
-
 
 	return medicine, nil
 }
