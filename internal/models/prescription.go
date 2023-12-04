@@ -103,20 +103,20 @@ func AddPrescription(id int, drug string, doses int, strength string, price floa
 			}
 			break
 		}
-
-	// Add the new item to the inventory array
-	itemMap := map[string]interface{}{
-		"id":           id,
-		"drug":         drug,
-		"doses":        doses,
-		"strength":     strength,
-		"price":        price,
-		"doctor":       doctor,
-		"customerid":   customerid,
-		"isfilled":     isfilled,
-		"pharmacistid": pharmacistid,
-
 	}
+
+	// // Add the new item to the inventory array
+	// itemMap := map[string]interface{}{
+	// 	"id":           id,
+	// 	"drug":         drug,
+	// 	"doses":        doses,
+	// 	"strength":     strength,
+	// 	"price":        price,
+	// 	"doctor":       doctor,
+	// 	"customerid":   customerid,
+	// 	"isfilled":     isfilled,
+	// 	"pharmacistid": pharmacistid,
+	// }
 
 	// Marshal the Database struct back into JSON
 	data, err = json.Marshal(database)
