@@ -134,6 +134,8 @@ func main() {
 
 		// Write the JSON response to the client
 		w.Write(prescriptionsJSON)
+
+		loggerInst.Log(logger.Info, "Prescriptions request completed", map[string]interface{}{"response_code": http.StatusOK})
 	})
 
 	// Define an endpoint to retrieve all employees
@@ -721,11 +723,13 @@ func main() {
 			Price        float64 `json:"price"`
 			Doctor       string  `json:"doctor"`
 			CustomerID   int     `json:"customerID"`
-			IsFilled     bool    `json:"isFilled"`
+			IsFilled     string  `json:"isFilled"`
 			PharmacistID int     `json:"pharmacistID"`
 		}
 
 		var addPrescriptionRequest AddPrescriptionRequest
+
+		fmt.Println("Received JSON data:", r.Body)
 
 		err := json.NewDecoder(r.Body).Decode(&addPrescriptionRequest)
 		if err != nil {
@@ -735,7 +739,7 @@ func main() {
 		}
 
 		// Call the NewPrescription function to add the prescription
-		err = models.AddPrescription(addPrescriptionRequest.ID, addPrescriptionRequest.Drug, addPrescriptionRequest.Doses, addPrescriptionRequest.Strength, addPrescriptionRequest.Price, addPrescriptionRequest.Doctor, addPrescriptionRequest.CustomerID)
+		err = models.AddPrescription(addPrescriptionRequest.ID, addPrescriptionRequest.Drug, addPrescriptionRequest.Doses, addPrescriptionRequest.Strength, addPrescriptionRequest.Price, addPrescriptionRequest.Doctor, addPrescriptionRequest.CustomerID, addPrescriptionRequest.IsFilled, addPrescriptionRequest.PharmacistID)
 
 		// TODO: Save the prescription to the database or perform any other necessary operations
 		if err != nil {

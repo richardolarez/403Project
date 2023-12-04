@@ -18,12 +18,12 @@ type Prescription struct {
 	Price        float64 // Price of the item
 	Doctor       string  // Name of the doctor who prescribed the drug
 	CustomerID   int     // ID of the customer who the prescription s assigned to
-	IsFilled     bool    // Is the prescription filled?
+	IsFilled     string  // Is the prescription filled?
 	PharmacistID int     // ID of the pharmacist who filled the prescription
 }
 
 // NewInventoryItem creates a new InventoryItem object with the specified properties and a new ID.
-func NewPrescription(id int, drug string, doses int, strength string, price float64, doctor string, customerid int) *Prescription {
+func NewPrescription(id int, drug string, doses int, strength string, price float64, doctor string, customerid int, isfilled string, pharmacistid int) *Prescription {
 	return &Prescription{
 		ID:           id,
 		Drug:         drug,
@@ -32,8 +32,8 @@ func NewPrescription(id int, drug string, doses int, strength string, price floa
 		Price:        price,
 		Doctor:       doctor,
 		CustomerID:   customerid,
-		IsFilled:     false,
-		PharmacistID: 0,
+		IsFilled:     isfilled,
+		PharmacistID: pharmacistid,
 	}
 }
 
@@ -76,7 +76,7 @@ func GetPrescriptions() ([]*Prescription, error) {
 }
 
 // AddPrescription adds a new prescription to the prescriptions db
-func AddPrescription(id int, drug string, doses int, strength string, price float64, doctor string, customerid int) error {
+func AddPrescription(id int, drug string, doses int, strength string, price float64, doctor string, customerid int, isfilled string, pharmacistid int) error {
 	// Read the inventory data from the JSON file
 	data, err := ioutil.ReadFile("./db/database.json")
 	if err != nil {
@@ -104,9 +104,9 @@ func AddPrescription(id int, drug string, doses int, strength string, price floa
 		"strength":     strength,
 		"price":        price,
 		"doctor":       doctor,
-		"customerID":   customerid,
-		"isFilled":     false,
-		"pharmacistID": 0,
+		"customerid":   customerid,
+		"isfilled":     isfilled,
+		"pharmacistid": pharmacistid,
 	}
 	prescriptionsArray = append(prescriptionsArray, itemMap)
 
