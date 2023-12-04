@@ -15,11 +15,20 @@ interface InventoryItem {
     IsPrescription: boolean;
 }
 
+interface Medicine {
+    ID: number;
+    Drug: string;
+    Doses: number;
+    Price: number;
+    ExpirationDate: Date;
+}
+
 const InventoryList: React.FC = () => {
     const history = useNavigate();
     const [inventoryItems, setInventoryItems] = useState<InventoryItem[]>([]);
     const [selectedItem, setSelectedItem] = useState(false);
     const [item, setItem] = useState<InventoryItem | null>(null);
+    const [medicines, setMedicines] = useState<Medicine[]>([]);
     const [updateModalVisible, setUpdateModalVisible] = useState(false);
     const [form] = Form.useForm();
 
@@ -31,6 +40,12 @@ const InventoryList: React.FC = () => {
                     setInventoryItems(response.data);
                 } else {
                     console.error('Failed to fetch inventory items');
+                }
+                const medicineResponse = await axios.get('http://localhost:8080/medicines');
+                if (medicineResponse.status === 200) {
+                    setMedicines(medicineResponse.data);
+                } else {
+                    console.error('Failed to fetch medicine data');
                 }
             } catch (error) {
                 console.error('Failed to fetch inventory items:', error);
@@ -58,6 +73,33 @@ const InventoryList: React.FC = () => {
             dataIndex: 'Price',
         },
        
+    ];
+
+    const medicineColumns = [
+        {
+            title: 'ID',
+            dataIndex: 'ID',
+        },
+        {
+            title: 'Drug',
+            dataIndex: 'Drug',
+        },
+        {
+            title: 'Doses',
+            dataIndex: 'Doses',
+        },
+        {
+            title: 'Strength',
+            dataIndex: 'Strength',
+        },
+        {
+            title: 'Price',
+            dataIndex: 'Price',
+        },
+        {
+            title: 'ExpirationDate',
+            dataIndex: 'ExpirationDate',
+        },
     ];
 
     const handleRowClick = (record: InventoryItem) => {
@@ -127,6 +169,14 @@ const InventoryList: React.FC = () => {
                         onRow={(record) => ({
                             onClick: () => handleRowClick(record),
                         })}
+                    />
+                </Col>
+            </Row>
+            <Row gutter={[40, 0]}>
+                <Col span={24}>
+                    <Table
+                        columns={medicineColumns}
+                        dataSource={medicines}
                     />
                 </Col>
             </Row>
