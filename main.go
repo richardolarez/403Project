@@ -629,7 +629,7 @@ func main() {
 
 		// Write the JSON response to the client
 		w.Write(logsJSON)
-		loggerInst.Log(logger.Info, "Logs request completed", map[string]interface{}{"response_code": http.StatusOK, "logs": logs})
+		loggerInst.Log(logger.Info, "Logs request completed", map[string]interface{}{"response_code": http.StatusOK})
 	})
 
 	// Define an endpoint to retrieve logs of financial transactions during a specific time period
@@ -664,7 +664,7 @@ func main() {
 
 		// Write the JSON response to the client
 		w.Write(logsJSON)
-		loggerInst.Log(logger.Info, "Financial logs request completed", map[string]interface{}{"response_code": http.StatusOK, "logs": logs})
+		loggerInst.Log(logger.Info, "Financial logs request completed", map[string]interface{}{"response_code": http.StatusOK})
 	})
 
 	// Define an endpoint to retrieve logs of inventory during a specific time period
@@ -699,7 +699,7 @@ func main() {
 
 		// Write the JSON response to the client
 		w.Write(logsJSON)
-		loggerInst.Log(logger.Info, "Inventory logs request completed", map[string]interface{}{"response_code": http.StatusOK, "logs": logs})
+		loggerInst.Log(logger.Info, "Inventory logs request completed", map[string]interface{}{"response_code": http.StatusOK})
 	})
 
 	http.HandleFunc("/prescription", func(w http.ResponseWriter, r *http.Request) {
