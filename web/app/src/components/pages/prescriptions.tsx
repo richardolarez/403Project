@@ -14,15 +14,15 @@ const Prescriptions = () => {
 
 
   interface PresData {
-    key: any;
-    Drug: any;
-    Doses: any;
-    CustomerID: any;
-    IsFilled: any;
-    Strength: any;
-    Price: any;
-    Doctor: any;
-    PharmacistID: any;
+    ID: number;
+    Drug: string;
+    Doses: number;
+    CustomerID: number;
+    IsFilled: boolean;
+    Strength: string;
+    Price: number;
+    Doctor: string;
+    PharmacistID: number;
   }
 
   const [form] = Form.useForm();
@@ -69,20 +69,32 @@ const Prescriptions = () => {
       Drug: pres.Drug,
       Doses: pres.Doses,
       CustomerID:  pres.CustomerID,
-      IsFilled: pres.IsFilled,
+      IsFilled: true,
     });
     return data;
   });
 
-  const handleAddClick = () => {
-    history('/addPrescription');
-  };
-
 
   const onFinish = (values: any) => {
+
+    const payload = {
+      id: parseInt(values.id),
+      drug: values.drug,
+      doses: parseInt(values.doses),
+      strength: values.strength,
+      price: parseFloat(values.price),
+      doctor: values.doctor,
+      customerID: parseInt(values.customerID),
+      pharmacistID: parseInt(values.pharmacistID),
+      isFilled: !!values.IsFilled, // Convert to boolean
+    };
+
     // Call fetchPrescriptions function with form values
-    axios
-    .post('http://localhost:8080/prescription', values)
+    axios.post('http://localhost:8080/prescription', payload, {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
     .then((res) => {
       console.log(res);
       })
@@ -94,7 +106,7 @@ const Prescriptions = () => {
   return (
     <div>
       <Form onFinish={onFinish}>
-        <Form.Item name="id" label="ID">
+        <Form.Item name="id" label="Prescription ID">
           <Input />
         </Form.Item>
         <Form.Item name="drug" label="Drug">
@@ -113,9 +125,6 @@ const Prescriptions = () => {
           <Input />
         </Form.Item>
         <Form.Item name="customerID" label="Customer ID">
-          <Input />
-        </Form.Item>
-        <Form.Item name="isFilled" label="Is Filled">
           <Input />
         </Form.Item>
         <Form.Item name="pharmacistID" label="Pharmacist ID">

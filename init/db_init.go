@@ -69,7 +69,6 @@ func InitializeDatabase() error {
 
 	customers := []*models.Customer{Richardo, Evan, Javier, Carlos, Mario, Antony}
 
-
 	p1 := models.NewPrescription(10, "Adderall", 10, "1mg", 10.99, "Dr Kureka", 20)
 	prescriptions := []*models.Prescription{p1}
 
@@ -79,7 +78,7 @@ func InitializeDatabase() error {
 		"items":         items,
 		"prescriptions": prescriptions,
 		"employees":     employees,
-    "customers":  customers,
+		"customers":     customers,
 	}
 
 	// Marshal the data to JSON

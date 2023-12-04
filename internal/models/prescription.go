@@ -104,14 +104,15 @@ func AddPrescription(id int, drug string, doses int, strength string, price floa
 		"strength":     strength,
 		"price":        price,
 		"doctor":       doctor,
-		"customerid":   customerid,
-		"isfilled":     false,
-		"pharmacistid": 0,
+		"customerID":   customerid,
+		"isFilled":     false,
+		"pharmacistID": 0,
 	}
+
 	prescriptionsArray = append(prescriptionsArray, itemMap)
 
 	// Update the prescriptions data map
-	prescriptionsData["prescription"] = prescriptionsArray
+	prescriptionsData["prescriptions"] = prescriptionsArray
 
 	// Marshal the prescription data back to JSON
 	newData, err := json.Marshal(prescriptionsData)
