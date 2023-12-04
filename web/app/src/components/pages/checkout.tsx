@@ -50,11 +50,7 @@ const Checkout = () => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        return response.text();
-      })
-      .then((text) => {
-        console.log(text);  // Log the response text
-        return JSON.parse(text);  // Parse the text as JSON
+        return response.json();
       })
       .then((cartItem) => {
         console.log('API response');
