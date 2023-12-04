@@ -174,6 +174,7 @@ const InventoryList: React.FC = () => {
             </Row>
             <Row gutter={[40, 0]}>
                 <Col span={24}>
+                <Title level={3}>Medications</Title>
                     <Table
                         columns={medicineColumns}
                         dataSource={medicines}
