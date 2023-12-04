@@ -105,6 +105,10 @@ const Checkout = () => {
         <Form.Item name="paymentMethod" label="Payment Method">
           <Input placeholder="Payment Method" />
         </Form.Item>
+
+        <Form.Item name="signature" label="Signature" rules={[{ required: true, message: 'Please enter your signature' }]}>
+          <Input placeholder="Signature" />
+        </Form.Item>
         
         <Form.Item>
           <Button type="default" htmlType="submit" style={{ width: '100%' }}>
