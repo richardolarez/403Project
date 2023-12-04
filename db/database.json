@@ -88,6 +88,10 @@
     },
     {
       "ID": 321899,
+      "Role": "Pharmacist"
+    },
+    {
+      "ID": 463577,
       "Username": "javier",
       "Password": "password123",
       "FirstName": "Javier",
@@ -175,6 +179,19 @@
       "owner": "Owner B",
       "phoneNumber": 9876543210,
       "workingHours": "10:00 AM - 6:00 PM"
+    }
+  ],
+  "prescriptions": [
+    {
+      "ID": 10,
+      "Drug": "Adderall",
+      "Doses": 10,
+      "Strength": "1mg",
+      "Price": 10.99,
+      "Doctor": "Dr Kureka",
+      "CustomerID": 20,
+      "IsFilled": false,
+      "PharmacistID": 0
     }
   ]
 }

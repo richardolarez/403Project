@@ -33,15 +33,18 @@ func (logR *LogReader) ReadLogs() ([]Log, error) {
 	}
 	defer file.Close()
 
-	var logs []Log
+	var database struct {
+		Logs []Log `json:"logs"`
+	}
+
 	decoder := json.NewDecoder(file)
-	err = decoder.Decode(&logs)
+	err = decoder.Decode(&database)
 	if err != nil {
 		return nil, err
 	}
 
 	var filteredLogs []Log
-	for _, log := range logs {
+	for _, log := range database.Logs {
 		if logR.passesFilters(&log) {
 			filteredLogs = append(filteredLogs, log)
 		}
@@ -49,6 +52,7 @@ func (logR *LogReader) ReadLogs() ([]Log, error) {
 
 	return filteredLogs, nil
 }
+
 
 func (logR *LogReader) passesFilters(log *Log) bool {
 	if logR.levelFilter != 0 && log.Level != logR.levelFilter {

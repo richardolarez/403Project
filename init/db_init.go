@@ -69,12 +69,17 @@ func InitializeDatabase() error {
 
 	customers := []*models.Customer{Richardo, Evan, Javier, Carlos, Mario, Antony}
 
+
+	p1 := models.NewPrescription(10, "Adderall", 10, "1mg", 10.99, "Dr Kureka", 20)
+	prescriptions := []*models.Prescription{p1}
+
 	// Create a map to hold the data
 	data := map[string]interface{}{
-		"pharmacies": pharmacies,
-		"inventory":  items,
-		"employees":  employees,
-		"customers":  customers,
+		"pharmacies":    pharmacies,
+		"items":         items,
+		"prescriptions": prescriptions,
+		"employees":     employees,
+    "customers":  customers,
 	}
 
 	// Marshal the data to JSON

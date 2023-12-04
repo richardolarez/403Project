@@ -21,6 +21,7 @@ type Customer struct {
 	Address      string              // Address of the customer
 	Insurance    string              // Insurance plan of the customer
 	Transactions []*SalesTransaction // List of sales transactions for the customer
+  AssignedPrescriptions []*Prescription 
 }
 
 // NewCustomer creates a new Customer object with the specified properties and a new ID.
@@ -268,4 +269,10 @@ func DeleteCustomer(id int, FirstName string) error {
 // AddTransaction adds a sales transaction to the customer's transaction history.
 func (c *Customer) AddTransaction(transaction *SalesTransaction) {
 	c.Transactions = append(c.Transactions, transaction)
+}
+
+// AddPrescription adds a prescription to the customer's assigned prescriptions.
+func (c *Customer) AddPrescription(prescription *Prescription) {
+	//TODO
+	c.AssignedPrescriptions = append(c.AssignedPrescriptions, prescription)
 }
