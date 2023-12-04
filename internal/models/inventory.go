@@ -13,12 +13,11 @@ import (
 
 // InventoryItem represents an item in the pharmacy's inventory.
 type InventoryItem struct {
-	ID             int     // Unique identifier for the item
-	Name           string  // Name of the item
-	Description    string  // Description of the item
-	Price          float64 // Price of the item
-	Quantity       int     // Quantity of the item in stock
-	IsPrescription bool    // Is the item a prescription drug?
+	ID          int     // Unique identifier for the item
+	Name        string  // Name of the item
+	Description string  // Description of the item
+	Price       float64 // Price of the item
+	Quantity    int     // Quantity of the item in stock
 }
 
 // GetInventory retrieves all inventory items.
@@ -173,7 +172,6 @@ func (item *InventoryItem) Update(name string, description string, price float64
 	item.Description = description
 	item.Price = price
 	item.Quantity = quantity
-	item.IsPrescription = isPrescription
 
 	// Read the inventory data from the JSON file
 	data, err := ioutil.ReadFile("./db/database.json")

@@ -44,7 +44,7 @@ const Checkout = () => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ customerid: values.customerid, itemid: values.itemid, paymentMethod: values.paymentMethod }),
+      body: JSON.stringify({ customerid: values.customerid, itemid: values.itemid, paymentMethod: values.paymentMethod, cartItems: cartItems }),
     })
       .then((response) => {
         if (!response.ok) {
