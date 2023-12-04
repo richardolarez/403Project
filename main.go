@@ -738,11 +738,50 @@ func main() {
 		err = models.AddPrescription(addPrescriptionRequest.ID, addPrescriptionRequest.Drug, addPrescriptionRequest.Doses, addPrescriptionRequest.Strength, addPrescriptionRequest.Price, addPrescriptionRequest.Doctor, addPrescriptionRequest.CustomerID)
 
 		// TODO: Save the prescription to the database or perform any other necessary operations
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error adding prescription", map[string]interface{}{"error": err.Error()})
+			return
+		}
 
 		// Respond with a success message
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte("Prescription added successfully"))
 		loggerInst.Log(logger.Info, "Add prescription request completed", map[string]interface{}{"response_code": http.StatusOK})
+	})
+
+	http.HandleFunc("/medicines", func(w http.ResponseWriter, r *http.Request) {
+		loggerInst.Log(logger.Info, "Received get medicines request", map[string]interface{}{"request_method": r.Method, "request_path": r.URL.Path})
+		enableCors(&w)
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			loggerInst.Log(logger.Info, "Get medicines request completed", map[string]interface{}{"response_code": http.StatusOK})
+			return
+		}
+
+		// Call the GetMedicine function to retrieve the medicines
+		medicines, err := models.GetMedicine()
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error retrieving medicines", map[string]interface{}{"error": err.Error()})
+			return
+		}
+
+		// Convert the list of medicines to JSON
+		medicinesJSON, err := json.Marshal(medicines)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			loggerInst.Log(logger.Error, "Error converting medicines to JSON", map[string]interface{}{"error": err.Error()})
+			return
+		}
+
+		// Set the Content-Type header to application/json
+		w.Header().Set("Content-Type", "application/json")
+
+		// Write the JSON response to the client
+		w.Write(medicinesJSON)
+		loggerInst.Log(logger.Info, "Get medicines request completed", map[string]interface{}{"response_code": http.StatusOK})
 	})
 
 	// Start the server

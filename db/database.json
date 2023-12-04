@@ -1,7 +1,7 @@
 {
   "customers": [
     {
-      "ID": 496415,
+      "ID": 126628,
       "FirstName": "Richardo",
       "LastName": "Larez",
       "DOB": "01/01/2000",
@@ -13,7 +13,7 @@
       "AssignedPrescriptions": null
     },
     {
-      "ID": 870697,
+      "ID": 402130,
       "FirstName": "Evan",
       "LastName": "Martin",
       "DOB": "01/01/2000",
@@ -25,7 +25,7 @@
       "AssignedPrescriptions": null
     },
     {
-      "ID": 626042,
+      "ID": 426153,
       "FirstName": "Javier",
       "LastName": "Cota",
       "DOB": "01/01/2000",
@@ -37,7 +37,7 @@
       "AssignedPrescriptions": null
     },
     {
-      "ID": 530103,
+      "ID": 921551,
       "FirstName": "Carlos",
       "LastName": "Robles",
       "DOB": "01/01/2000",
@@ -49,7 +49,7 @@
       "AssignedPrescriptions": null
     },
     {
-      "ID": 113055,
+      "ID": 135309,
       "FirstName": "Mario",
       "LastName": "Weiler",
       "DOB": "01/01/2000",
@@ -61,7 +61,7 @@
       "AssignedPrescriptions": null
     },
     {
-      "ID": 272840,
+      "ID": 96511,
       "FirstName": "Antony",
       "LastName": "Mangala",
       "DOB": "01/01/2000",
@@ -75,7 +75,7 @@
   ],
   "employees": [
     {
-      "ID": 172789,
+      "ID": 417454,
       "Username": "richardo",
       "Password": "password123",
       "FirstName": "Richardo",
@@ -84,7 +84,7 @@
       "RequiresNewPass": true
     },
     {
-      "ID": 602529,
+      "ID": 901934,
       "Username": "evan",
       "Password": "password123",
       "FirstName": "Evan",
@@ -93,7 +93,7 @@
       "RequiresNewPass": true
     },
     {
-      "ID": 189214,
+      "ID": 765261,
       "Username": "javier",
       "Password": "password123",
       "FirstName": "Javier",
@@ -102,7 +102,7 @@
       "RequiresNewPass": true
     },
     {
-      "ID": 234120,
+      "ID": 891444,
       "Username": "carlos",
       "Password": "password123",
       "FirstName": "Carlos",
@@ -111,7 +111,7 @@
       "RequiresNewPass": true
     },
     {
-      "ID": 211382,
+      "ID": 524419,
       "Username": "mario",
       "Password": "password123",
       "FirstName": "Mario",
@@ -120,7 +120,7 @@
       "RequiresNewPass": true
     },
     {
-      "ID": 820977,
+      "ID": 448088,
       "Username": "antony",
       "Password": "password123",
       "FirstName": "Antony",
@@ -129,7 +129,7 @@
       "RequiresNewPass": true
     }
   ],
-  "items": [
+  "inventory": [
     {
       "ID": 1,
       "Name": "Item 1",
@@ -170,7 +170,7 @@
       "Doses": 5,
       "Strength": "10mg",
       "Price": 99.99,
-      "ExpirationDate": "2024-01-02T20:22:08.464639-07:00"
+      "ExpirationDate": "2024-01-02T21:24:55.760545-07:00"
     },
     {
       "ID": 2,
@@ -178,7 +178,7 @@
       "Doses": 10,
       "Strength": "20mg",
       "Price": 14.99,
-      "ExpirationDate": "2024-12-03T20:22:08.464746-07:00"
+      "ExpirationDate": "2024-12-03T21:24:55.760705-07:00"
     }
   ],
   "pharmacies": [
