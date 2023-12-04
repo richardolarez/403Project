@@ -18,7 +18,7 @@ func InitializeDatabase() error {
 	pharmacies := []*models.Pharmacy{pharmacy1, pharmacy2}
 
 	// Create an array of InventoryItems
-	items := []*models.InventoryItem{
+	inventory := []*models.InventoryItem{
 		{
 			ID:          1,
 			Name:        "Item 1",
@@ -98,7 +98,7 @@ func InitializeDatabase() error {
 	// Create a map to hold the data
 	data := map[string]interface{}{
 		"pharmacies":    pharmacies,
-		"items":         items,
+		"inventory":     inventory,
 		"prescriptions": prescriptions,
 		"employees":     employees,
 		"customers":     customers,

@@ -127,6 +127,8 @@ const Prescriptions = () => {
           </Button>
         </Form.Item>
       </Form>
+
+      <Table columns={columns} dataSource={data} />
     </div>
   );
 };
