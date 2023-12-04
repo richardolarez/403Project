@@ -53,6 +53,7 @@ func main() {
 		CustomerID    int                     `json:"customer_id"`
 		Items         []*models.InventoryItem `json:"items"`
 		PaymentMethod string                  `json:"payment_method"`
+		CartItems     []*service.Cart         `json:"cartItems"`
 	}
 
 	// DeleteRequest represents a request to delete an employee/customer by ID and first name.
@@ -257,7 +258,7 @@ func main() {
 		var receipt *string
 
 		// Call the Checkout function to process the order and get a sales transaction
-		receipt, transaction, err := service.Checkout(checkoutRequest.CustomerID, checkoutRequest.Items, checkoutRequest.PaymentMethod)
+		receipt, transaction, err := service.Checkout(checkoutRequest.CustomerID, checkoutRequest.Items, checkoutRequest.PaymentMethod, checkoutRequest.CartItems)
 
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)

@@ -15,8 +15,15 @@ var (
 	idMutex sync.Mutex
 )
 
+// SalesTransaction represents a sales transaction with basic information and a list of items sold.
+type Cart struct {
+	CustomerID int // Name of the customer associated with the transaction
+	ID         int // Unique identifier for the transaction
+	ItemID     int // Unique identifier for the item
+}
+
 // Checkout creates a new sales transaction and returns a sales receipt.
-func Checkout(customerID int, items []*models.InventoryItem, paymentMethod string) (*string, *models.SalesTransaction, error) {
+func Checkout(customerID int, items []*models.InventoryItem, paymentMethod string, cartItems []*Cart) (*string, *models.SalesTransaction, error) {
 	// Calculate the total amount based on item prices and quantities
 	var totalAmount float64
 	for _, item := range items {
