@@ -104,14 +104,14 @@ func AddPrescription(id int, drug string, doses int, strength string, price floa
 		"strength":     strength,
 		"price":        price,
 		"doctor":       doctor,
-		"customerid":   customerid,
-		"isfilled":     false,
-		"pharmacistid": 0,
+		"customerID":   customerid,
+		"isFilled":     false,
+		"pharmacistID": 0,
 	}
 	prescriptionsArray = append(prescriptionsArray, itemMap)
 
 	// Update the prescriptions data map
-	prescriptionsData["prescription"] = prescriptionsArray
+	prescriptionsData["prescriptions"] = prescriptionsArray
 
 	// Marshal the prescription data back to JSON
 	newData, err := json.Marshal(prescriptionsData)
@@ -120,7 +120,7 @@ func AddPrescription(id int, drug string, doses int, strength string, price floa
 	}
 
 	// Write the updated prescriptions data to the JSON file
-	err = ioutil.WriteFile("database.json", newData, os.ModePerm)
+	err = ioutil.WriteFile("./db/database.json", newData, os.ModePerm)
 	if err != nil {
 		return fmt.Errorf("error writing prescriptions data: %v", err)
 	}
