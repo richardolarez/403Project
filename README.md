@@ -1,7 +1,9 @@
-How to run the project
+# Project Overview
+This is a full-stack class project for a simple POS system for a hypothetical pharmacy system
 
-When in the parent directory run the command 'make run'
+# Frontend
+The frontend was implemented using React.ts
 
-You can also start the server from the parent directory and running go run main.go
 
-Then going to the directory with the app which is /web/app and running npm start
+# Backend
+The backend was implemented using golang
